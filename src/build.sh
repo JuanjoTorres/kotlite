@@ -7,7 +7,7 @@ if java -jar lib/jflex-full-1.7.0.jar compiler/lexic/Scanner.flex; then
 
   cd compiler/sintax
 
-  if java -jar lib/java-cup-11b.jar Parser.cup; then
+  if java -jar ../../lib/java-cup-11b.jar Parser.cup; then
     echo "CUP ejecutado correctamente"
   else
     echo "Error de CUP"
