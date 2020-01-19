@@ -1,0 +1,60 @@
+# http://mdaines.github.io/grammophone/
+
+# En la producción JOIN hay que sustituir el OR por otro símbolo:
+# Sustituir [ JOIN -> || ] por [ JOIN -> $$ ]
+
+PROGRAM -> DECLS FUNCTIONS .
+FUNCTIONS -> FUNCTIONS FUNCTION .
+FUNCTIONS -> .
+FUNCTION  -> fun id ( ARGS ) : BASIC { BLOCK RTNPART } .
+RTNPART -> return FACTOR .
+RTNPART -> .
+BLOCK -> DECLS STATMENTS .
+BLOCK -> .
+DECLS -> DECLS DECL .
+DECLS -> .
+DECL -> TYPE id : BASIC ; .
+ARGS -> ARGS ARG .
+ARGS -> .
+ARG -> id : BASIC; .
+STATMENTS -> id = BOOL ; .
+STATMENTS -> if ( BOOL ) { BLOCK } ELSEPART .
+STATMENTS -> while ( BOOL ) { BLOCK } .
+ELSEPART -> else { BLOCK } .
+ELSEPART -> .
+BOOL -> BOOL JOIN RELATION .
+BOOL -> RELATION .
+RELATION -> EXPR OPREL EXPR .
+RELATION -> EXPR .
+EXPR -> EXPR ADD TERM .
+EXPR -> TERM .
+TERM -> TERM MULT UNARY .
+TERM -> UNARY .
+UNARY -> ! UNARY .
+UNARY -> FACTOR .
+ADD	-> + .
+ADD -> - .
+MULT -> * .
+MULT -> / .
+JOIN -> || .
+JOIN -> && .
+OPREL -> == .
+OPREL -> != .
+OPREL -> < .
+OPREL -> <= .
+OPREL -> > .
+OPREL -> >= .
+TYPE -> var .
+TYPE -> val .
+BASIC -> Int .
+BASIC -> Float .
+BASIC -> Char .
+BASIC -> String .
+BASIC -> Boolean .
+BASIC -> None .
+FACTOR -> ( BOOL ) .
+FACTOR -> id .
+FACTOR -> literal .
+FACTOR -> num .
+FACTOR -> true .
+FACTOR -> false .
