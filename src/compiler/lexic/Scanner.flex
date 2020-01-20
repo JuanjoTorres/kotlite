@@ -2,14 +2,18 @@
   Per poder compilar aquest fitxer s'ha d'haver instal·lat JFlex
  **/
 
-// Cabecera del documento
-package jlex_cup_example.compiler_components.jflex;
-
-import java.io.*;
+/**
+ * Assignatura 21742 - Compiladors I
+ * Estudis: Grau en Informàtica
+ * Itinerari: Computació
+ * Curs: 2017-2018
+ *
+ * Professor: Pere Palmer
+ */
+// El codi que es copiarà tal qual al document. A l'inici
+package compiler.lexic;
 
 import java_cup.runtime.*;
-import java_cup.runtime.ComplexSymbolFactory.ComplexSymbol;
-import jlex_cup_example.compiler_components.cup.ParserSym;
 
 %%
 
@@ -19,97 +23,126 @@ import jlex_cup_example.compiler_components.cup.ParserSym;
  ****/
 %cup
 %public      // Para indicar si la clase es publica
-%class Lexer // Nombre de la clase
+%class Scanner // Nombre de la clase
 %unicode
-
 %line
 %column
 
 %eofval{
-  return symbol(ParserSym.EOF); // CREAR UN SIMBOLO END_OF_FILE
+  return symbol(ParserSym.EOF);
 %eofval}
 
-alpha = [a-zA-Z_]
-digit = [0-9]
-alnum = {alpha}|{digit}
-print = [ -~]
+// El següent codi es copiarà també, dins de la classe. És a dir, si es posa res
+// ha de ser en el format adient: mètodes, atributs, etc.
+%{
+    /***
+       Mecanismes de gestió de símbols basat en ComplexSymbol. Tot i que en
+       aquest cas potser no és del tot necessari.
+     ***/
+    /**
+     Construcció d'un symbol sense atribut associat.
+     **/
+    private ComplexSymbol symbol(int type) {
+        return new ComplexSymbol(ParserSym.terminalNames[type], type);
+    }
 
-ID        = {alpha}+{alnum}*
-INT_LIT   = [+-]?{digit}*
-FLOAT_LIT = {digit}*.{digit}+
-CHAR_LIT  = (\'{print}\')|(\'\[nftrbv]\')
-STRING    = \"{print}*\"
+    /**
+     Construcció d'un symbol amb un atribut associat.
+     **/
+    private Symbol symbol(int type, Object value) {
+        return new ComplexSymbol(ParserSym.terminalNames[type], type, value);
+    }
+%}
+
+
+
+// Definiciones
+
+digit           = [0-9]
+digits          = {digit}+
+letter          = [a-zA-Z]
+letterNums      = [a-zA-Z0-9_]*
+identificador   = {letter}{letterNums}
+
+white           = [ \t]+
+eol             = [\r\n]+
+input           = [^\r\n]
+
 %%
-"//".*              { printf("Eat up comment at line %d\n", lineno); }
 
-"/*"                { printf("Eat up comment from line %d ", lineno);
-                      BEGIN(ML_COMMENT); }
-<ML_COMMENT>"*/"    { printf("to line %d\n", lineno); BEGIN(INITIAL); }
-<ML_COMMENT>[^*\n]+
-<ML_COMMENT>"*"
-<ML_COMMENT>"\n"    { lineno += 1; }
+{digits} { return symbol(ParserSym.NUM, this.yytext()); }
+"+"      { return symbol(ParserSym.ADD);                  }
+"-"      { return symbol(ParserSym.SUB);                  }
+"*"      { return symbol(ParserSym.MUL);                  }
+"/"      { return symbol(ParserSym.DIV);                  }
+"%"      { return symbol(ParserSym.MOD);                  }
+"("      { return symbol(ParserSym.LPAREN);               }
+")"      { return symbol(ParserSym.RPAREN);               }
 
-"Char"              { ret_print("KEYWORD_CHAR");   }
-"Int"               { ret_print("KEYWORD_INT");    }
-"Float"             { ret_print("KEYWORD_FLOAT");  }
-"String"            { ret_print("KEYWORD_STRING"); }
-"Boolean"           { ret_print("KEYWORD_BOOL");   }
-"None"              { ret_print("KEYWORD_VOID");   }
-"var"               { ret_print("KEYWORD_VAR");    }
-"val"               { ret_print("KEYWORD_CONST");  }
+// Regles/accions
 
-"if"                { ret_print("KEYWORD_IF");       }
-"else"              { ret_print("KEYWORD_ELSE");     }
-"while"             { ret_print("KEYWORD_WHILE");    }
-"fun"               { ret_print("KEYWORD_FUNCTION"); }
-"return"            { ret_print("KEYWORD_RETURN");   }
-"True"              { ret_print("KEYWORD_TRUE");     }
-"False"             { ret_print("KEYWORD_FALSE");    }
+//Operadores
+"+" { return symbol(ParserSym.PLUS); }
+"-" { return symbol(ParserSym.MINUS); }
+"*" { return symbol(ParserSym.MULTI); }
+"/" { return symbol(ParserSym.DIV); }
+"=" { return symbol(ParserSym.ASSIGN); }
 
-"+"|"-"             { ret_print("ADD_OP"); }
-"*"                 { ret_print("MUL_OP"); }
-"/"                 { ret_print("DIV_OP"); }
-"||"                { ret_print("OR_OP");  }
-"&&"                { ret_print("AND_OP"); }
-"!"                 { ret_print("NOT_OP"); }
-"=="|"!="           { ret_print("EQU_OP"); }
-">"|"<"|">="|"<="   { ret_print("REL_OP"); }
+//Delimitadores
+"(" { return symbol(ParserSym.LPAREN); }
+")" { return symbol(ParserSym.RPAREN); }
+"{" { return symbol(ParserSym.LBRACKET); }
+"}" { return symbol(ParserSym.RBRACKET); }
+":" { return symbol(ParserSym.COLON); }
+";" { return symbol(ParserSym.SEMICOLON); }
 
-"("                 { ret_print("LPAREN"); }
-")"                 { ret_print("RPAREN"); }
-"{"                 { ret_print("LBRACE"); }
-"}"                 { ret_print("RBRACE"); }
-";"                 { ret_print("SEMI");   }
-","                 { ret_print("COMMA");  }
-"="                 { ret_print("ASSIGN"); }
-":"                 { ret_print("COLON");  }
+//Operadores binarios
+"&&" { return symbol(ParserSym.AND); }
+"||" { return symbol(ParserSym.OR); }
+"!" { return symbol(ParserSym.NOT); }
 
-{ID}                { ret_print("ID");           }
-{INT_LIT}           { ret_print("VALUE_INT");    }
-{FLOAT_LIT}         { ret_print("VALUE_FLOAT");  }
-{CHAR_LIT}          { ret_print("VALUE_CHAR");   }
-{STRING}            { ret_print("VALUE_STRING"); }
+//Operadores relacionales
+"==" { return symbol(ParserSym.EQUALS); }
+"!=" { return symbol(ParserSym.NOTEQUALS); }
+"<" { return symbol(ParserSym.LESSTHAN); }
+"<=" { return symbol(ParserSym.LESSOREQUALS); }
+"=>" { return symbol(ParserSym.GREATEROREQUALS); }
+">" { return symbol(ParserSym.GREATERTHAN); }
 
-"\n"              { lineno +=1; }
-[ \t\r\f]+        /* eat up whitespace */
+//Valores booleanos
+"true" { return symbol(ParserSym.TRUE); }
+"false" { return symbol(ParserSym.FALSE); }
 
-.                 { yyerror("Unrecognized character"); }
+//Tipos
+"Int" { return symbol(ParserSym.INT); }
+"Float" { return symbol(ParserSym.FLOAT); }
+"Char" { return symbol(ParserSym.CHAR); }
+"String" { return symbol(ParserSym.STRING); }
+"Boolean" { return symbol(ParserSym.BOOLEAN); }
+"None" { return symbol(ParserSym.None); }
+
+//Bucle y condicional
+"while" { return symbol(ParserSym.WHILE); }
+"if" { return symbol(ParserSym.IF); }
+"else" { return symbol(ParserSym.ELSE); }
+
+//Variables y constantes
+"var" { return symbol(ParserSym.VAR); }
+"val" { return symbol(ParserSym.VAL); }
+
+//Return
+"return" { return symbol(ParserSym.RETURN); }
+
+//Identificador
+{letter} ({letter}|{digit}|_)* { return symbol(ParserSym.ID, yytext()); }
+
+//Integer
+{digit}|{pos_digit}{digit}* { return symbol(ParserSym.INT, yytext()); }
 
 
-void ret_print(char *token_type) {
-    printf("yytext: %s\ttoken: %s\tlineno: %d\n", yytext, token_type, lineno);
-}
+{white}     { /* no fer res */ }
+{eol} { return symbol(ParserSym.EOF);                 }
 
-void yyerror(char *message) {
-    printf("Error: \"%s\" in line %d. Token = %s\n", message, lineno, yytext);
-    exit(1);
-}
 
-int main(int argc, char *argv[]) {
-
-    yyin = fopen(argv[1], "r");
-    yylex();
-    fclose(yyin);
-
-    return 0;
-}
+/* error fallback */
+[^]      { return symbol(ParserSym.ERROR);                }
