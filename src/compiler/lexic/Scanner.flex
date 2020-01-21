@@ -83,6 +83,7 @@ eol         = [\r\n]+
 "}" { return symbol(ParserSym.RBRACKET); }
 ":" { return symbol(ParserSym.COLON); }
 ";" { return symbol(ParserSym.SEMICOLON); }
+"," { return symbol(ParserSym.COMMA); }
 
 //Operadores binarios
 "&&" { return symbol(ParserSym.AND); }

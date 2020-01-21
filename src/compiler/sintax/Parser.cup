@@ -16,8 +16,8 @@ terminal PLUS, MINUS, MULTI, DIV;
 // Asignacion: =
 terminal ASSIGN;
 
-//Delimitadores: ( ) { } : ;
-terminal LPAREN, RPAREN, LBRACKET, RBRACKET, COLON, SEMICOLON;
+//Delimitadores: ( ) { } : ; ,
+terminal LPAREN, RPAREN, LBRACKET, RBRACKET, COLON, SEMICOLON, COMMA;
 
 //Operaciones booleanas: && || !
 terminal AND, OR, NOT;
@@ -47,11 +47,17 @@ terminal String ID, NUM, LITERAL;
 nonterminal SymbolProgram Program;
 nonterminal SymbolFunctions Functions;
 nonterminal SymbolFunction Function;
+nonterminal SymbolFunctioncall Functioncall;
 nonterminal SymbolRtnpart Rtnpart;
 nonterminal SymbolDecls Decls;
 nonterminal SymbolDecl Decl;
+
+nonterminal SymbolArgsdec Argsdec;
+nonterminal SymbolLargsdec Largsdec;
+
 nonterminal SymbolArgs Args;
-nonterminal SymbolArg Arg;
+nonterminal SymbolLargs Largs;
+
 nonterminal SymbolStatments Statments;
 nonterminal SymbolStatment Statment;
 nonterminal SymbolElsepart Elsepart;
@@ -82,8 +88,11 @@ Functions ::= Functions:v1 Function:v2
               {: RESULT = new SymbolFunctions(v1, v2); :}
               | {: RESULT = new SymbolFunctions(); :};
 
-Function ::= FUN Id:id LPAREN Args:v1 RPAREN COLON Basic:v2 LBRACKET Decls:v3 Statments:v4 Rtnpart:v5 RBRACKET
+Function ::= FUN Id:id LPAREN Argsdec:v1 RPAREN COLON Basic:v2 LBRACKET Decls:v3 Statments:v4 Rtnpart:v5 RBRACKET
               {: RESULT = new SymbolFunction(id, v1, v2, v3, v4, v5); :};
+
+Functioncall ::= Id:id LPAREN Args:v1 RPAREN
+              {: RESULT = new SymbolFunctioncall(id, v1); :};
 
 Rtnpart ::= RETURN Factor:v1
               {: RESULT = new SymbolRtnpart(v1); :}
@@ -96,12 +105,23 @@ Decls ::= Decls:v1 Decl:v2
 Decl ::= Type:v1 Id:id COLON Basic:v2 SEMICOLON
               {: RESULT = new SymbolDecl(id, v1, v2); :};
 
-Args ::= Args:v1 Arg:v2
-              {: RESULT = new SymbolArgs(v1, v2); :}
-              | {: RESULT = new SymbolArgs(); :};
+Argsdec ::= Largsdec:v1
+              {: RESULT = new SymbolArgsdec(v1); :}
+              | {: RESULT = new SymbolArgsdec(); :};
 
-Arg ::= Id:id COLON Basic:v1 SEMICOLON
-              {: RESULT = new SymbolArg(id, v1); :};
+Largsdec ::= Largsdec:v1 SEMICOLON Id:id COLON Basic:v2
+              {: RESULT = new SymbolLargsdec(v1, id, v2); :}
+        | Id:id COLON Basic:v1
+              {: RESULT = new SymbolLargsdec(id, v1); :};
+
+Args ::= Largs:v1
+              {: RESULT = new SymbolArgs(v1); :}
+            | {: RESULT = new SymbolArgs(); :};
+
+Largs ::= Largs:v1 COMMA Factor:v2
+              {: RESULT = new SymbolLargs(v1, v2); :}
+           | Factor:v1
+            {: RESULT = new SymbolLargs(v1); :};
 
 Statments ::= Statments:v1 Statment:v2
               {: RESULT = new SymbolStatments(v1, v2); :}
@@ -112,7 +132,11 @@ Statment ::= Id:id ASSIGN Bool:v1 SEMICOLON
 	    | IF LPAREN Bool:v1 RPAREN LBRACKET Decls:v2 Statments:v3 RBRACKET Elsepart:v4
               {: RESULT = new SymbolStatment(v1, v2, v3, v4); :}
 	    | WHILE LPAREN Bool:v1 RPAREN LBRACKET Decls:v2 Statments:v3 RBRACKET
-              {: RESULT = new SymbolStatment(v1, v2, v3); :};
+              {: RESULT = new SymbolStatment(v1, v2, v3); :}
+	    | Id:id ASSIGN Functioncall:v1 SEMICOLON
+              {: RESULT = new SymbolStatment(id ,v1); :}
+	    | Functioncall:v1 SEMICOLON
+              {: RESULT = new SymbolStatment(v1); :};
 
 Elsepart ::= ELSE LBRACKET Decls:v1 Statments:v2 RBRACKET
               {: RESULT = new SymbolElsepart(v1, v2); :}
