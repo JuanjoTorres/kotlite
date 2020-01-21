@@ -7,13 +7,10 @@ package compiler.sintax.symbols;
 
 import java.io.PrintWriter;
 
-public class SymbolAdd extends SymbolBase {
+public class SymbolPlus extends SymbolBase {
 
-    private int SYMBOL;
-
-    public SymbolAdd(int symbol) {
-        super("Add", 0);
-        this.SYMBOL = symbol;
+    public SymbolPlus() {
+        super("Plus", 0);
     }
 
     @Override

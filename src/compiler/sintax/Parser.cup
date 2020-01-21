@@ -2,6 +2,7 @@ package compiler.sintax;
 
 import java.util.*;
 import java_cup.runtime.*;
+import compiler.sintax.symbols.*;
 
 class Parser;
 
@@ -73,7 +74,7 @@ nonterminal SymbolOprel Oprel;
 nonterminal SymbolType Type;
 nonterminal SymbolBasic Basic;
 nonterminal SymbolFactor Factor;
-nonterminal SymbolIdentifier Id;
+nonterminal SymbolId Id;
 
 
 /* Precedence declarations */
