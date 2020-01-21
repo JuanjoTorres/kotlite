@@ -28,8 +28,8 @@ terminal EQUALS, NOTEQUALS, LESSTHAN, LESSOREQUALS, GREATEROREQUALS, GREATERTHAN
 // Tipos booleanos: true false
 terminal TRUE, FALSE;
 
-//Tipos básicos int float char string boolean none
-terminal INT, FLOAT, CHAR, STRING, BOOLEAN, NONE;
+//Tipos básicos int string boolean none
+terminal INT, STRING, BOOLEAN, NONE;
 
 // Bucle y condicionales: while if else
 terminal WHILE, IF, ELSE;
@@ -48,8 +48,7 @@ nonterminal SymbolProgram Program;
 nonterminal SymbolFunctions Functions;
 nonterminal SymbolFunction Function;
 nonterminal SymbolRtnpart Rtnpart;
-nonterminal SymbolBlock Block;
-nonterminal SymbolDecls Decl;
+nonterminal SymbolDecls Decls;
 nonterminal SymbolDecl Decl;
 nonterminal SymbolArgs Args;
 nonterminal SymbolArg Arg;
@@ -68,6 +67,7 @@ nonterminal SymbolOprel Oprel;
 nonterminal SymbolType Type;
 nonterminal SymbolBasic Basic;
 nonterminal SymbolFactor Factor;
+nonterminal SymbolIdentifier Id;
 
 
 /* Precedence declarations */
@@ -82,130 +82,121 @@ Functions ::= Functions:v1 Function:v2
               {: RESULT = new SymbolFunctions(v1, v2); :}
               | {: RESULT = new SymbolFunctions(); :};
 
-Function ::= FUN ID LPAREN Args:v1 RPAREN COLON Basic:v2 LBRACKET Block:v3 Rtnpart:v4 RBRACKET
-              {: RESULT = new SymbolFunction(v1, v2, v3, v4); :};
+Function ::= FUN Id:id LPAREN Args:v1 RPAREN COLON Basic:v2 LBRACKET Decls:v3 Statments:v4 Rtnpart:v5 RBRACKET
+              {: RESULT = new SymbolFunction(id, v1, v2, v3, v4, v5); :};
 
 Rtnpart ::= RETURN Factor:v1
               {: RESULT = new SymbolRtnpart(v1); :}
               | {: RESULT = new SymbolRtnpart(); :};
 
-Block ::= Decls:v1 Statments:v2
-              {: RESULT = new SymbolBlock(v1, v2); :}
-              | {: RESULT = new SymbolBlock(); :};
-
-Decls ::= Decls:v1 ID COLON Decl:v2 SEMICOLON
-              {: RESULT = new SymbolDecls(v1, v2); :}
-              | {: RESULT = new SymbolBlock(); :};
-
-Decl ::= Decls:v1 ID COLON Decl:v2 SEMICOLON
+Decls ::= Decls:v1 Decl:v2
               {: RESULT = new SymbolDecls(v1, v2); :}
               | {: RESULT = new SymbolDecls(); :};
+
+Decl ::= Type:v1 Id:id COLON Basic:v2 SEMICOLON
+              {: RESULT = new SymbolDecl(id, v1, v2); :};
 
 Args ::= Args:v1 Arg:v2
               {: RESULT = new SymbolArgs(v1, v2); :}
               | {: RESULT = new SymbolArgs(); :};
 
-Arg ::= ID COLON Basic:v1 SEMICOLON
-              {: RESULT = new SymbolArg(v1); :};
+Arg ::= Id:id COLON Basic:v1 SEMICOLON
+              {: RESULT = new SymbolArg(id, v1); :};
 
-Statments ::= Statements:v1 Statement:v2
-              {: RESULT = new SymbolStatements(v1, v2); :}
-	    | {: RESULT = new SymbolStatements(); :};
+Statments ::= Statments:v1 Statment:v2
+              {: RESULT = new SymbolStatments(v1, v2); :}
+	        | {: RESULT = new SymbolStatments(); :};
 
-Statment ::= ID ASSIGN Bool:v1 SEMICOLON
-              {: RESULT = new SymbolStatement(v1); :}
-	    | IF LPAREN Bool:v1 RPAREN LBRACKET Block:v2 RBRACKET Elsepart:v3
-              {: RESULT = new SymbolStatement(v1, v2, v3); :}
-	    | WHILE LPAREN Bool:v1 RPAREN LBRACKET Block:v2 RBRACKET
-              | {: RESULT = new SymbolStatement(v1, v2); :};
+Statment ::= Id:id ASSIGN Bool:v1 SEMICOLON
+              {: RESULT = new SymbolStatment(id, v1); :}
+	    | IF LPAREN Bool:v1 RPAREN LBRACKET Decls:v2 Statments:v3 RBRACKET Elsepart:v4
+              {: RESULT = new SymbolStatment(v1, v2, v3, v4); :}
+	    | WHILE LPAREN Bool:v1 RPAREN LBRACKET Decls:v2 Statments:v3 RBRACKET
+              {: RESULT = new SymbolStatment(v1, v2, v3); :};
 
-Elsepart ::= ELSE LBRACKET Block:v1 RBRACKET
-              {: RESULT = new SymbolElsepart(v1); :}
+Elsepart ::= ELSE LBRACKET Decls:v1 Statments:v2 RBRACKET
+              {: RESULT = new SymbolElsepart(v1, v2); :}
               | {: RESULT = new SymbolElsepart(); :};
 
 Bool ::= Bool:v1 Join:v2 Relation:v3
               {: RESULT = new SymbolBool(v1, v2, v3); :}
 	    | Relation:v1
-              | {: RESULT = new SymbolBool(v1); :};
+              {: RESULT = new SymbolBool(v1); :};
 
 Relation ::= Expr:v1 Oprel:v2 Expr:v3
               {: RESULT = new SymbolRelation(v1, v2, v3); :}
 	    | Expr:v1
-              | {: RESULT = new SymbolRelation(v1); :};
+              {: RESULT = new SymbolRelation(v1); :};
 
 Expr ::= Expr:v1 Add:v2 Term:v3
               {: RESULT = new SymbolExpr(v1, v2, v3); :}
 	    | Term:v1
-              | {: RESULT = new SymbolExpr(v1); :};
+              {: RESULT = new SymbolExpr(v1); :};
 
 Term ::= Term:v1 Mult:v2 Unary:v3
               {: RESULT = new SymbolTerm(v1, v2, v3); :}
 	    | Unary:v1
-              | {: RESULT = new SymbolTerm(v1); :};
+              {: RESULT = new SymbolTerm(v1); :};
 
 Unary ::= NOT Unary:v1
               {: RESULT = new SymbolUnary(ParserSym.NOT, v1); :}
 	    | Factor:v1
-              | {: RESULT = new SymbolUnary(v1); :};
+              {: RESULT = new SymbolUnary(v1); :};
 
 Add ::= PLUS
               {: RESULT = new SymbolPlus(ParserSym.PLUS); :}
 	    | MINUS
-              | {: RESULT = new SymbolPlus(ParserSym.MINUS); :};
+              {: RESULT = new SymbolPlus(ParserSym.MINUS); :};
 
 Mult ::= MULTI
               {: RESULT = new SymbolMult(ParserSym.MULTI); :}
 	    | DIV
-              | {: RESULT = new SymbolMult(ParserSym.DIV); :};
+              {: RESULT = new SymbolMult(ParserSym.DIV); :};
 
 Join ::= OR
               {: RESULT = new SymbolJoin(ParserSym.OR); :}
 	    | AND
-              | {: RESULT = new SymbolJoin(ParserSym.AND); :};
+              {: RESULT = new SymbolJoin(ParserSym.AND); :};
 
 Oprel ::= EQUALS
               {: RESULT = new SymbolOprel(ParserSym.EQUALS); :}
 	    | NOTEQUALS
-              | {: RESULT = new SymbolOprel(ParserSym.NOTEQUALS); :}
+              {: RESULT = new SymbolOprel(ParserSym.NOTEQUALS); :}
 	    | LESSTHAN
-              | {: RESULT = new SymbolOprel(ParserSym.LESSTHAN); :}
+              {: RESULT = new SymbolOprel(ParserSym.LESSTHAN); :}
 	    | LESSOREQUALS
-              | {: RESULT = new SymbolOprel(ParserSym.LESSOREQUALS); :}
+              {: RESULT = new SymbolOprel(ParserSym.LESSOREQUALS); :}
 	    | GREATERTHAN
-              | {: RESULT = new SymbolOprel(ParserSym.GREATERTHAN); :}
+              {: RESULT = new SymbolOprel(ParserSym.GREATERTHAN); :}
 	    | GREATEROREQUALS
-              | {: RESULT = new SymbolOprel(ParserSym.GREATEROREQUALS); :};
+              {: RESULT = new SymbolOprel(ParserSym.GREATEROREQUALS); :};
 
 Type ::= VAR
               {: RESULT = new SymbolType(ParserSym.VAR); :}
 	    | VAL
-              | {: RESULT = new SymbolType(ParserSym.VAL); :};
+              {: RESULT = new SymbolType(ParserSym.VAL); :};
 
 Basic ::= INT
               {: RESULT = new SymbolBasic(ParserSym.INT); :}
-	    | FLOAT
-              | {: RESULT = new SymbolBasic(ParserSym.FLOAT); :}
-	    | CHAR
-              | {: RESULT = new SymbolBasic(ParserSym.CHAR); :}
 	    | STRING
-              | {: RESULT = new SymbolBasic(ParserSym.STRING); :}
+              {: RESULT = new SymbolBasic(ParserSym.STRING); :}
 	    | BOOLEAN
-              | {: RESULT = new SymbolBasic(ParserSym.BOOLEAN); :}
+              {: RESULT = new SymbolBasic(ParserSym.BOOLEAN); :}
 	    | NONE
-              | {: RESULT = new SymbolBasic(ParserSym.NONE); :};
+              {: RESULT = new SymbolBasic(ParserSym.NONE); :};
 
 Factor ::= LPAREN Bool:v1 RPAREN
               {: RESULT = new SymbolFactor(v1); :}
-	    | ID
-              | {: RESULT = new SymbolFactor(ParserSym.ID); :}
+	    | Id:id
+              {: RESULT = new SymbolFactor(ParserSym.ID, id); :}
 	    | LITERAL
-              | {: RESULT = new SymbolFactor(ParserSym.LITERAL); :}
+              {: RESULT = new SymbolFactor(ParserSym.LITERAL); :}
 	    | NUM
-              | {: RESULT = new SymbolFactor(ParserSym.NUM); :}
+              {: RESULT = new SymbolFactor(ParserSym.NUM); :}
 	    | TRUE
-              | {: RESULT = new SymbolFactor(ParserSym.TRUE); :}
+              {: RESULT = new SymbolFactor(ParserSym.TRUE); :}
 	    | FALSE
-              | {: RESULT = new SymbolFactor(ParserSym.FALSE); :};
+              {: RESULT = new SymbolFactor(ParserSym.FALSE); :};
 
-Identifier ::= ID:id
+Id ::= ID:id
                  {: RESULT = new SymbolId(id, idleft); :};

@@ -1,5 +1,5 @@
 /**
-  Per poder compilar aquest fitxer s'ha d'haver instal·lat JFlex
+Per poder compilar aquest fitxer s'ha d'haver instal·lat JFlex
  **/
 
 /**
@@ -22,64 +22,52 @@ import java_cup.runtime.*;
  usa CUP (LALR)
  ****/
 %cup
-%public      // Para indicar si la clase es publica
+%public// Para indicar si la clase es publica
 %class Scanner // Nombre de la clase
 %unicode
 %line
 %column
 
 %eofval{
-  return symbol(ParserSym.EOF);
+    return symbol(ParserSym.EOF);
 %eofval}
 
 // El següent codi es copiarà també, dins de la classe. És a dir, si es posa res
 // ha de ser en el format adient: mètodes, atributs, etc.
 %{
-    /***
-       Mecanismes de gestió de símbols basat en ComplexSymbol. Tot i que en
-       aquest cas potser no és del tot necessari.
-     ***/
-    /**
-     Construcció d'un symbol sense atribut associat.
-     **/
-    private ComplexSymbol symbol(int type) {
-        return new ComplexSymbol(ParserSym.terminalNames[type], type);
-    }
+/***
+ Mecanismes de gestió de símbols basat en ComplexSymbol. Tot i que en
+ aquest cas potser no és del tot necessari.
+ ***/
+/**
+ Construcció d'un symbol sense atribut associat.
+ **/
+private ComplexSymbol symbol(int type) {
+return new ComplexSymbol(ParserSym.terminalNames[type], type);
+}
 
-    /**
-     Construcció d'un symbol amb un atribut associat.
-     **/
-    private Symbol symbol(int type, Object value) {
-        return new ComplexSymbol(ParserSym.terminalNames[type], type, value);
-    }
+/**
+ Construcció d'un symbol amb un atribut associat.
+ **/
+private Symbol symbol(int type, Object value) {
+return new ComplexSymbol(ParserSym.terminalNames[type], type, value);
+}
 %}
 
 
 
 // Definiciones
 
-digit           = [0-9]
-digits          = {digit}+
-letter          = [a-zA-Z]
-letterNums      = [a-zA-Z0-9_]*
-identificador   = {letter}{letterNums}
+digit       = [0-9]
+letter      = [a-zA-Z]
 
-white           = [ \t]+
-eol             = [\r\n]+
-input           = [^\r\n]
+white       = [ \t]+
+eol         = [\r\n]+
 
 %%
 
-{digits} { return symbol(ParserSym.NUM, this.yytext()); }
-"+"      { return symbol(ParserSym.ADD);                  }
-"-"      { return symbol(ParserSym.SUB);                  }
-"*"      { return symbol(ParserSym.MUL);                  }
-"/"      { return symbol(ParserSym.DIV);                  }
-"%"      { return symbol(ParserSym.MOD);                  }
-"("      { return symbol(ParserSym.LPAREN);               }
-")"      { return symbol(ParserSym.RPAREN);               }
 
-// Regles/accions
+/* Regles/accions */
 
 //Operadores
 "+" { return symbol(ParserSym.PLUS); }
@@ -115,11 +103,9 @@ input           = [^\r\n]
 
 //Tipos
 "Int" { return symbol(ParserSym.INT); }
-"Float" { return symbol(ParserSym.FLOAT); }
-"Char" { return symbol(ParserSym.CHAR); }
 "String" { return symbol(ParserSym.STRING); }
 "Boolean" { return symbol(ParserSym.BOOLEAN); }
-"None" { return symbol(ParserSym.None); }
+"None" { return symbol(ParserSym.NONE); }
 
 //Bucle y condicional
 "while" { return symbol(ParserSym.WHILE); }
@@ -134,15 +120,15 @@ input           = [^\r\n]
 "return" { return symbol(ParserSym.RETURN); }
 
 //Identificador
-{letter} ({letter}|{digit}|_)* { return symbol(ParserSym.ID, yytext()); }
+{letter}({letter}|{digit}|_)* { return symbol(ParserSym.ID, yytext()); }
 
 //Integer
-{digit}|{pos_digit}{digit}* { return symbol(ParserSym.INT, yytext()); }
+{digit}+ { return symbol(ParserSym.INT, yytext()); }
 
 
-{white}     { /* no fer res */ }
-{eol} { return symbol(ParserSym.EOF);                 }
+{white} { /* no fer res */ }
+{eol} { return symbol(ParserSym.EOF); }
 
 
 /* error fallback */
-[^]      { return symbol(ParserSym.ERROR);                }
+[^] { return symbol(ParserSym.ERROR);}
