@@ -1,0 +1,13 @@
+
+
+fun main () : None {
+    val a: Int;
+    var b: Int;
+    var c: Int;
+
+    a = 4;
+    b = 5;
+    c =
+
+
+}

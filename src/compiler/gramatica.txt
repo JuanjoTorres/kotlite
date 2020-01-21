@@ -1,6 +1,7 @@
 # http://mdaines.github.io/grammophone/
 
-# En la producción JOIN hay que sustituir el OR por otro símbolo:
+# Para comprobar la gramatica en Grammophone,
+# en la producción JOIN hay que sustituir el OR por otro símbolo:
 # Sustituir [ JOIN -> || ] por [ JOIN -> $$ ]
 
 PROGRAM -> DECLS FUNCTIONS .
@@ -11,7 +12,8 @@ RTNPART -> return FACTOR .
 RTNPART -> .
 DECLS -> DECLS DECL .
 DECLS -> .
-DECL -> TYPE id : BASIC ; .
+DECL -> var id : BASIC ; .
+DECL -> val id : BASIC = BOOL ; .
 ARGS -> ARGS ARG .
 ARGS -> .
 ARG -> id : BASIC; .
@@ -44,11 +46,7 @@ OPREL -> < .
 OPREL -> <= .
 OPREL -> > .
 OPREL -> >= .
-TYPE -> var .
-TYPE -> val .
 BASIC -> Int .
-BASIC -> Float .
-BASIC -> Char .
 BASIC -> String .
 BASIC -> Boolean .
 BASIC -> None .
