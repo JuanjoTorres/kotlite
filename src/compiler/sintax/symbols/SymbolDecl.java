@@ -9,8 +9,17 @@ import java.io.PrintWriter;
 
 public class SymbolDecl extends SymbolBase {
 
-    public SymbolDecl() {
+    private SymbolType type;
+    private SymbolId id;
+    private SymbolBasic basic;
+
+    // FORMA Decl ::= Type Id COLON Basic SEMICOLON
+    public SymbolDecl(SymbolType type, SymbolId id, SymbolBasic basic) {
+
         super("Decl", 0);
+        this.type = type;
+        this.id = id;
+        this.basic = basic;
     }
 
     @Override

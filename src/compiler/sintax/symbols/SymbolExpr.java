@@ -9,8 +9,24 @@ import java.io.PrintWriter;
 
 public class SymbolExpr extends SymbolBase {
 
-    public SymbolExpr() {
+    private SymbolExpr expr;
+    private SymbolAdd add;
+    private SymbolTerm term;
+
+    // [FORMA] Expr ::= Expr Add Term
+    public SymbolExpr(SymbolExpr expr, SymbolAdd add, SymbolTerm term) {
+
         super("Expr", 0);
+        this.expr = expr;
+        this.add = add;
+        this.term = term;
+    }
+
+    // [FORMA] Expr ::= Term
+    public SymbolExpr(SymbolTerm term) {
+
+        super("Expr",0);
+        this.term = term;
     }
 
     @Override

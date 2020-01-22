@@ -9,8 +9,28 @@ import java.io.PrintWriter;
 
 public class SymbolFactor extends SymbolBase {
 
-    public SymbolFactor() {
+    private SymbolBool bool;
+    private SymbolId id;
+    private int SYMBOL;
+
+    // [FORMA] Factor ::= LPAREN Bool RPAREN
+    public SymbolFactor(SymbolBool bool) {
+
         super("Break", 0);
+        this.bool = bool;
+    }
+
+    // [FORMA] Factor ::= Id
+    public SymbolFactor(int symbol, SymbolId id) {
+
+        super("Break", 0);
+        this.SYMBOL = symbol;
+        this.id = id;
+    }
+
+    public SymbolFactor(int symbol) {
+        super("Break", 0);
+        this.SYMBOL = symbol;
     }
 
     @Override

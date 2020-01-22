@@ -9,8 +9,25 @@ import java.io.PrintWriter;
 
 public class SymbolFunction extends SymbolBase {
 
-    public SymbolFunction() {
+    private SymbolId id;
+    private SymbolArgsdec argsdec;
+    private SymbolBasic basic;
+    private SymbolDecls decls;
+    private SymbolStatments statments;
+    private SymbolRtnpart rtnpart;
+
+    // [FORMA] Function ::= FUN Id:id LPAREN Argsdec:v1 RPAREN COLON Basic:v2 LBRACKET Decls:v3 Statments:v4
+    //         Rtnpart:v5 RBRACKET
+    public SymbolFunction(SymbolId id, SymbolArgsdec argsdec, SymbolBasic basic, SymbolDecls decls,
+                          SymbolStatments statments, SymbolRtnpart rtnpart) {
+
         super("Function", 0);
+        this.id = id;
+        this.argsdec = argsdec;
+        this.basic = basic;
+        this.decls = decls;
+        this.statments = statments;
+        this.rtnpart = rtnpart;
     }
 
     @Override

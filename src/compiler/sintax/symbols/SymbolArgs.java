@@ -9,8 +9,17 @@ import java.io.PrintWriter;
 
 public class SymbolArgs extends SymbolBase {
 
+    private SymbolLargs largs;
+
+    // FORMA Args ::= .
     public SymbolArgs() {
         super("Args", 0);
+    }
+
+    // FORMA Args ::= Largs
+    public SymbolArgs(SymbolLargs largs) {
+        super("Args", 0);
+        this.largs = largs;
     }
 
     @Override

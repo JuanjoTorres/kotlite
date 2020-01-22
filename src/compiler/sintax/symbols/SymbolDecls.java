@@ -9,8 +9,19 @@ import java.io.PrintWriter;
 
 public class SymbolDecls extends SymbolBase {
 
+    private SymbolDecls decls;
+    private SymbolDecl decl;
+
+    // FORMA Decls ::= .
     public SymbolDecls() {
         super("Decls", 0);
+    }
+
+    // FORMA Decls ::= Decls Decl
+    public SymbolDecls(SymbolDecls decls, SymbolDecl decl) {
+        super("Decls", 0);
+        this.decls = decls;
+        this.decl = decl;
     }
 
     @Override

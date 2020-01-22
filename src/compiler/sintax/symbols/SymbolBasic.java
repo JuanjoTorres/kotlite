@@ -9,9 +9,14 @@ import java.io.PrintWriter;
 
 public class SymbolBasic extends SymbolBase {
 
-    public SymbolBasic() {
+    private int SYMBOL;
+
+    public SymbolBasic(int symbol) {
+
         super("Basic", 0);
+        this.SYMBOL = symbol;
     }
+
 
     @Override
     public void toDot(PrintWriter out) {

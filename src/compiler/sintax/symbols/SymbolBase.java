@@ -12,7 +12,7 @@ import java.io.PrintWriter;
 
 /**
  * Classe que implementa la classe base a partir de la que s'implementen totes
- * les varaibles de la gramàtica.
+ * les variables de la gramàtica.
  *
  * Bàsicament conté un valor enter
  *
