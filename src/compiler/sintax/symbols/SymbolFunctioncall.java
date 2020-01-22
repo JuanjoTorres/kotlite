@@ -9,8 +9,15 @@ import java.io.PrintWriter;
 
 public class SymbolFunctioncall extends SymbolBase {
 
-    public SymbolFunctioncall() {
+    private SymbolId id;
+    private SymbolArgs args;
+
+    // [FORMA] Functioncall ::= Id LPAREN Args RPAREN
+    public SymbolFunctioncall(SymbolId id, SymbolArgs args) {
+
         super("Functioncall", 0);
+        this.id = id;
+        this.args = args;
     }
 
     @Override

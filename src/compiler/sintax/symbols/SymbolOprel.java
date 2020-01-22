@@ -9,8 +9,12 @@ import java.io.PrintWriter;
 
 public class SymbolOprel extends SymbolBase {
 
-    public SymbolOprel() {
+    private int SYMBOL;
+
+    public SymbolOprel(int symbol) {
+
         super("Oprel", 0);
+        this.SYMBOL = symbol;
     }
 
     @Override

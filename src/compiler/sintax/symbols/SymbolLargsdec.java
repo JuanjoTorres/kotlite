@@ -9,8 +9,25 @@ import java.io.PrintWriter;
 
 public class SymbolLargsdec extends SymbolBase {
 
-    public SymbolLargsdec() {
+    private SymbolLargsdec largsdec;
+    private SymbolId id;
+    private SymbolBasic basic;
+
+    // [FORMA] Largsdec ::= Largsdec SEMICOLON Id COLON Basic
+    public SymbolLargsdec(SymbolLargsdec largsdec, SymbolId id, SymbolBasic basic) {
+
         super("Largsdec", 0);
+        this.largsdec = largsdec;
+        this.id = id;
+        this.basic = basic;
+    }
+
+    // [FORMA] Largsdec ::= Largsdec SEMICOLON Id COLON Basic
+    public SymbolLargsdec(SymbolId id, SymbolBasic basic) {
+
+        super("Largsdec",0);
+        this.id = id;
+        this.basic = basic;
     }
 
     @Override

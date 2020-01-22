@@ -9,8 +9,12 @@ import java.io.PrintWriter;
 
 public class SymbolJoin extends SymbolBase {
 
-    public SymbolJoin() {
+    private int SYMBOL;
+
+    public SymbolJoin(int symbol) {
+
         super("Join", 0);
+        this.SYMBOL = symbol;
     }
 
     @Override

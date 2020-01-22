@@ -9,8 +9,12 @@ import java.io.PrintWriter;
 
 public class SymbolMult extends SymbolBase {
 
-    public SymbolMult() {
+    private int SYMBOL;
+
+    public SymbolMult(int symbol) {
+
         super("Mult", 0);
+        this.SYMBOL = symbol;
     }
 
     @Override

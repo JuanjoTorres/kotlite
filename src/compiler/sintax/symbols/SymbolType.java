@@ -9,8 +9,12 @@ import java.io.PrintWriter;
 
 public class SymbolType extends SymbolBase {
 
-    public SymbolType() {
+    private int SYMBOL;
+
+    public SymbolType(int symbol) {
+
         super("Type", 0);
+        this.SYMBOL = symbol;
     }
 
     @Override

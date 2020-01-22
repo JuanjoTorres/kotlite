@@ -9,8 +9,24 @@ import java.io.PrintWriter;
 
 public class SymbolTerm extends SymbolBase {
 
-    public SymbolTerm() {
+    private SymbolTerm term;
+    private SymbolMult mult;
+    private SymbolUnary unary;
+
+    // Term ::= Term Mult Unary
+    public SymbolTerm(SymbolTerm term, SymbolMult mult, SymbolUnary unary) {
+
         super("Term", 0);
+        this.term = term;
+        this.mult = mult;
+        this.unary = unary;
+    }
+
+    // Term ::= Unary
+    public SymbolTerm(SymbolUnary unary) {
+
+        super("Term", 0);
+        this.unary = unary;
     }
 
     @Override

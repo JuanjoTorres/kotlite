@@ -9,8 +9,19 @@ import java.io.PrintWriter;
 
 public class SymbolFunctions extends SymbolBase {
 
+    private SymbolFunctions functions;
+    private SymbolFunction function;
+
+    // [FORMA] Functions ::= .
     public SymbolFunctions() {
         super("Functions", 0);
+    }
+
+    // [FORMA] Functions ::= Functions Function
+    public SymbolFunctions(SymbolFunctions functions, SymbolFunction function) {
+        super("Functions", 0);
+        this.functions = functions;
+        this.function = function;
     }
 
     @Override

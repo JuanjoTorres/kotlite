@@ -9,8 +9,18 @@ import java.io.PrintWriter;
 
 public class SymbolStatments extends SymbolBase {
 
-    public SymbolStatments() {
+    private SymbolStatments statments;
+    private SymbolStatment statment;
+
+    // Statments ::= .
+    public SymbolStatments() { super("Statments", 0); }
+
+    // Statments ::= Statments Statment
+    public SymbolStatments(SymbolStatments statments, SymbolStatment statment) {
+
         super("Statments", 0);
+        this.statments = statments;
+        this.statment = statment;
     }
 
     @Override

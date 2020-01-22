@@ -9,8 +9,18 @@ import java.io.PrintWriter;
 
 public class SymbolRtnpart extends SymbolBase {
 
+    private SymbolFactor factor;
+
+    // [FORMA] Rtnpart ::= .
     public SymbolRtnpart() {
         super("Rtnpart", 0);
+    }
+
+    // [FORMA] Rtnpart ::= RETURN Factor
+    public SymbolRtnpart(SymbolFactor factor) {
+
+        super("Rtnpart",0);
+        this.factor = factor;
     }
 
     @Override

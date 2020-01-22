@@ -9,9 +9,24 @@ import java.io.PrintWriter;
 
 public class SymbolRelation extends SymbolBase {
 
-    public SymbolRelation() {
+    private SymbolExpr expr1;
+    private SymbolOprel oprel;
+    private SymbolExpr expr2;
+
+    // [FORMA] Relation ::= Expr Oprel Expr
+    public SymbolRelation(SymbolExpr expr1, SymbolOprel oprel, SymbolExpr expr2)
+    {
         super("Relation", 0);
+        this.expr1 = expr1;
+        this.expr2 = expr2;
     }
+
+    // [FORMA] Relation ::= Expr
+    public SymbolRelation(SymbolExpr expr1) {
+        super("Relation", 0);
+        this.expr1 = expr1;
+    }
+
 
     @Override
     public void toDot(PrintWriter out) {

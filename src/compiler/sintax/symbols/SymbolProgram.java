@@ -9,8 +9,15 @@ import java.io.PrintWriter;
 
 public class SymbolProgram extends SymbolBase {
 
-    public SymbolProgram() {
+    private SymbolDecls decls;
+    private SymbolFunctions functions;
+
+    // [FORMA] Program ::= Decls Functions
+    public SymbolProgram(SymbolDecls decls, SymbolFunctions functions) {
+
         super("Program", 0);
+        this.decls = decls;
+        this.functions = functions;
     }
 
     @Override

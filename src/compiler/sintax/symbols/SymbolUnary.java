@@ -9,8 +9,21 @@ import java.io.PrintWriter;
 
 public class SymbolUnary extends SymbolBase {
 
-    public SymbolUnary() {
+    private SymbolUnary unary;
+    private SymbolFactor factor;
+
+    // [FORMA] Unary ::= NOT Unary
+    public SymbolUnary(SymbolUnary unary) {
+
         super("Unary", 0);
+        this.unary = unary;
+    }
+
+    // [FORMA] Unary ::= Factor
+    public SymbolUnary(SymbolFactor factor) {
+
+        super("Unary", 0);
+        this.factor = factor;
     }
 
     @Override

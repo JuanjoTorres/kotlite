@@ -9,8 +9,21 @@ import java.io.PrintWriter;
 
 public class SymbolLargs extends SymbolBase {
 
-    public SymbolLargs() {
+    private SymbolLargs largs;
+    private SymbolFactor factor;
+
+    // [FORMA] Largs ::= Largs COMMA Factor
+    public SymbolLargs(SymbolLargs largs, SymbolFactor factor) {
+
         super("Largs", 0);
+        this.largs = largs;
+        this.factor = factor;
+    }
+
+    // [FORMA] Largs ::= Factor
+    public SymbolLargs(SymbolFactor factor) {
+        super("Largs",0);
+        this.factor = factor;
     }
 
     @Override

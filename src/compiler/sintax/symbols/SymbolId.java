@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 
 public class SymbolId extends SymbolBase {
 
+    // FALTA ACABAR
     public SymbolId() {
         super("Id", 0);
     }
