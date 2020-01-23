@@ -13,9 +13,9 @@ Per poder compilar aquest fitxer s'ha d'haver instal·lat JFlex
 // El codi que es copiarà tal qual al document. A l'inici
 package compiler.lexic;
 
-import compiler.sintax.ParserSym;
 import java_cup.runtime.*;
 import java_cup.runtime.ComplexSymbolFactory.ComplexSymbol;
+import compiler.sintax.*;
 
 
 %%
