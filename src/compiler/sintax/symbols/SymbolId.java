@@ -10,8 +10,8 @@ import java.io.PrintWriter;
 public class SymbolId extends SymbolBase {
 
     // FALTA ACABAR
-    public SymbolId() {
-        super("Id", 0);
+    public SymbolId(String id, int idleft) {
+        super(id, 0);
     }
 
     @Override

@@ -11,11 +11,12 @@ public class SymbolUnary extends SymbolBase {
 
     private SymbolUnary unary;
     private SymbolFactor factor;
+    private boolean negado;
 
     // [FORMA] Unary ::= NOT Unary
-    public SymbolUnary(SymbolUnary unary) {
-
+    public SymbolUnary(int not, SymbolUnary unary) {
         super("Unary", 0);
+        this.negado = !this.negado;
         this.unary = unary;
     }
 

@@ -104,7 +104,7 @@ Decls ::= Decls:v1 Decl:v2
               | {: RESULT = new SymbolDecls(); :};
 
 Decl ::= Type:v1 Id:id COLON Basic:v2 SEMICOLON
-              {: RESULT = new SymbolDecl(id, v1, v2); :};
+              {: RESULT = new SymbolDecl(v1, id, v2); :};
 
 Argsdec ::= Largsdec:v1
               {: RESULT = new SymbolArgsdec(v1); :}
@@ -169,9 +169,9 @@ Unary ::= NOT Unary:v1
               {: RESULT = new SymbolUnary(v1); :};
 
 Add ::= PLUS
-              {: RESULT = new SymbolPlus(ParserSym.PLUS); :}
+              {: RESULT = new SymbolAdd(ParserSym.PLUS); :}
 	    | MINUS
-              {: RESULT = new SymbolPlus(ParserSym.MINUS); :};
+              {: RESULT = new SymbolAdd(ParserSym.MINUS); :};
 
 Mult ::= MULTI
               {: RESULT = new SymbolMult(ParserSym.MULTI); :}
