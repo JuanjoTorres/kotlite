@@ -2,7 +2,7 @@
 
 echo "Ejecutando JFlex"
 
-if java -jar lib/jflex-full-1.7.0.jar compiler/lexic/Scanner.flex; then
+if java -jar lib/jflex-full-1.7.0.jar compiler/lexic/Lexer.flex; then
   echo "JFlex ejecutado correctamente."
 
   cd compiler/sintax
