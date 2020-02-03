@@ -110,7 +110,9 @@ Decls ::= Decls:v1 Decl:v2
               | {: RESULT = new SymbolDecls(); :};
 
 Decl ::= Type:v1 Id:id COLON Basic:v2 SEMICOLON
-              {: RESULT = new SymbolDecl(v1, id, v2); :};
+                {: RESULT = new SymbolDecl(v1, id, v2); :}
+              | Type:v1 Id:id COLON Basic:v2 ASSIGN Factor:v3 SEMICOLON
+                {: RESULT = new SymbolDecl(v1, id, v2, v3); :};
 
 Argsdec ::= Largsdec:v1
               {: RESULT = new SymbolArgsdec(v1); :}

@@ -12,6 +12,7 @@ public class SymbolDecl extends SymbolBase {
     private SymbolType type;
     private SymbolId id;
     private SymbolBasic basic;
+    private SymbolFactor factor;
 
     // FORMA Decl ::= Type Id COLON Basic SEMICOLON
     public SymbolDecl(SymbolType type, SymbolId id, SymbolBasic basic) {
@@ -20,6 +21,16 @@ public class SymbolDecl extends SymbolBase {
         this.type = type;
         this.id = id;
         this.basic = basic;
+    }
+
+    // FORMA Decl ::= Type Id COLON Basic ASSIGN Factor SEMICOLON
+    public SymbolDecl(SymbolType type, SymbolId id, SymbolBasic basic, SymbolFactor factor) {
+
+        super("Decl", 0);
+        this.type = type;
+        this.id = id;
+        this.basic = basic;
+        this.factor = factor;
     }
 
     @Override

@@ -55,7 +55,7 @@ public class Compiler {
 
         ComplexSymbolFactory factory = new ComplexSymbolFactory();
         Parser parser = new Parser(scan, factory);
-        parser.debug_parse();
+        parser.parse();
 
     }
 }

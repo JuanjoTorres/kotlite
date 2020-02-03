@@ -1,4 +1,4 @@
-var a: Int;
+var a: Int = 6;
 var b: Int;
 
 fun max(num1: Int; num2: Int): Int {
