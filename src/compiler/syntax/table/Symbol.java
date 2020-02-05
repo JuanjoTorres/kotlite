@@ -1,20 +1,20 @@
 package compiler.syntax.table;
 
+import java.util.ArrayList;
+
 public class Symbol {
 
     // Attributes
     private String id;
     private Type type;
     private Subtype subtype;
-    private int deep;
+    private ArrayList<Symbol> args = new ArrayList<>();
 
     // Constructor
-    public Symbol(String id, Type type, Subtype subtype, int deep) {
-
+    public Symbol(String id, Type type, Subtype subtype) {
         this.id = id;
         this.type = type;
         this.subtype = subtype;
-        this.deep = deep;
     }
 
     // Methods
@@ -42,20 +42,7 @@ public class Symbol {
         this.subtype = subtype;
     }
 
-    public int getDeep() {
-        return deep;
-    }
-
-    public void setDeep(int deep) {
-        this.deep = deep;
-    }
-
-    // Enums Type & Subtype
-    public enum Type {
-        VAR, CONST, PROC, ARG, NONE;
-    }
-
-    public enum Subtype {
-        BOOLEAN, STRING, INT, NULL;
+    public ArrayList<Symbol> getArgs() {
+        return args;
     }
 }

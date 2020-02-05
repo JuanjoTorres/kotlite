@@ -5,6 +5,7 @@
  */
 package compiler.syntax.symbols;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 
 public class SymbolProgram extends SymbolBase {
@@ -13,11 +14,15 @@ public class SymbolProgram extends SymbolBase {
     private SymbolFunctions functions;
 
     // [FORMA] Program ::= Decls Functions
-    public SymbolProgram(SymbolDecls decls, SymbolFunctions functions) {
+    public SymbolProgram(SymbolDecls decls, SymbolFunctions functions) throws IOException {
 
         super("Program", 0);
         this.decls = decls;
         this.functions = functions;
+
+        //Cerrar tabla y fichero HTML
+        symbolTable.buffer.write("</table></body></html>");
+        symbolTable.buffer.close();
     }
 
     @Override

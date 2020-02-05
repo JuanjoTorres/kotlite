@@ -5,6 +5,9 @@
  */
 package compiler.syntax.symbols;
 
+import compiler.KotliteException;
+import compiler.syntax.table.*;
+
 import java.io.PrintWriter;
 
 public class SymbolFunction extends SymbolBase {
@@ -19,7 +22,7 @@ public class SymbolFunction extends SymbolBase {
     // [FORMA] Function ::= FUN Id:id LPAREN Argsdec:v1 RPAREN COLON Basic:v2 LBRACKET Decls:v3 Statments:v4
     //         Rtnpart:v5 RBRACKET
     public SymbolFunction(SymbolId id, SymbolArgsdec argsdec, SymbolBasic basic, SymbolDecls decls,
-                          SymbolStatments statments, SymbolRtnpart rtnpart) {
+                          SymbolStatments statments, SymbolRtnpart rtnpart) throws KotliteException.SymbolTableException {
 
         super("Function", 0);
         this.id = id;
@@ -28,6 +31,15 @@ public class SymbolFunction extends SymbolBase {
         this.decls = decls;
         this.statments = statments;
         this.rtnpart = rtnpart;
+
+        //Crear símbolo de la funcion
+        Symbol function = new Symbol(id.getName(), Type.PROC, basic.getSubtype());
+
+        //Añadir argumentos
+        function.getArgs().addAll(argsdec.getArgs());
+
+        //Añadir función a la tabla de simbolos
+        symbolTable.add(function);
     }
 
     @Override

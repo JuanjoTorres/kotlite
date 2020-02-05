@@ -80,6 +80,8 @@ nonterminal SymbolType Type;
 nonterminal SymbolBasic Basic;
 nonterminal SymbolFactor Factor;
 nonterminal SymbolId Id;
+nonterminal SymbolAup Aup;
+nonterminal SymbolAdown Adown;
 
 
 /* Precedence declarations */
@@ -95,7 +97,7 @@ Functions ::= Functions:v1 Function:v2
               {: RESULT = new SymbolFunctions(v1, v2); :}
               | {: RESULT = new SymbolFunctions(); :};
 
-Function ::= FUN Id:id LPAREN Argsdec:v1 RPAREN COLON Basic:v2 LBRACKET Decls:v3 Statments:v4 Rtnpart:v5 RBRACKET
+Function ::= FUN Id:id LPAREN Argsdec:v1 RPAREN COLON Basic:v2 LBRACKET Aup Decls:v3 Statments:v4 Rtnpart:v5 Adown RBRACKET
               {: RESULT = new SymbolFunction(id, v1, v2, v3, v4, v5); :};
 
 Functioncall ::= Id:id LPAREN Args:v1 RPAREN
@@ -138,16 +140,16 @@ Statments ::= Statments:v1 Statment:v2
 
 Statment ::= Id:id ASSIGN Bool:v1 SEMICOLON
               {: RESULT = new SymbolStatment(id, v1); :}
-	    | IF LPAREN Bool:v1 RPAREN LBRACKET Decls:v2 Statments:v3 RBRACKET Elsepart:v4
+	    | IF LPAREN Bool:v1 RPAREN LBRACKET Aup Decls:v2 Statments:v3 Adown RBRACKET Elsepart:v4
               {: RESULT = new SymbolStatment(v1, v2, v3, v4); :}
-	    | WHILE LPAREN Bool:v1 RPAREN LBRACKET Decls:v2 Statments:v3 RBRACKET
+	    | WHILE LPAREN Bool:v1 RPAREN LBRACKET Aup Decls:v2 Statments:v3 Adown RBRACKET
               {: RESULT = new SymbolStatment(v1, v2, v3); :}
 	    | Id:id ASSIGN Functioncall:v1 SEMICOLON
               {: RESULT = new SymbolStatment(id ,v1); :}
 	    | Functioncall:v1 SEMICOLON
               {: RESULT = new SymbolStatment(v1); :};
 
-Elsepart ::= ELSE LBRACKET Decls:v1 Statments:v2 RBRACKET
+Elsepart ::= ELSE LBRACKET Aup Decls:v1 Statments:v2 Adown RBRACKET
               {: RESULT = new SymbolElsepart(v1, v2); :}
               | {: RESULT = new SymbolElsepart(); :};
 
@@ -232,4 +234,8 @@ Factor ::= LPAREN Bool:v1 RPAREN
               {: RESULT = new SymbolFactor(ParserSym.FALSE); :};
 
 Id ::= ID:id
-                 {: RESULT = new SymbolId(id, idleft); :};
+                 {: RESULT = new SymbolId(id.toString()); :};
+
+Aup ::=         {: RESULT = new SymbolAup(); :};
+Adown ::=         {: RESULT = new SymbolAdown(); :};
+

@@ -5,7 +5,11 @@
  */
 package compiler.syntax.symbols;
 
+import com.sun.codemodel.internal.JForEach;
+import compiler.syntax.table.Symbol;
+
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 public class SymbolArgsdec extends SymbolBase {
 
@@ -20,6 +24,10 @@ public class SymbolArgsdec extends SymbolBase {
     public SymbolArgsdec(SymbolLargsdec largsdec) {
         super("Argsdec", 0);
         this.largsdec = largsdec;
+    }
+
+    public ArrayList<Symbol> getArgs() {
+        return largsdec.getArgs();
     }
 
     @Override

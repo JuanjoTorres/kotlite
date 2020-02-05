@@ -7,15 +7,17 @@ package compiler.syntax.symbols;
 
 import java.io.PrintWriter;
 
-public class SymbolId extends SymbolBase {
+public class SymbolAdown extends SymbolBase {
 
-    public SymbolId(String id) {
-        super(id, 0);
+    // FORMA Adown ::= .
+    public SymbolAdown() {
+        super("Adown", 0);
+        symbolTable.endBlock();
     }
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label=\"" + name + "\"];\n" + index + "->\"" + name + "\"\n");
+
     }
 
 }

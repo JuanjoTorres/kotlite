@@ -22,7 +22,7 @@ public class Compiler {
         Symbol s;
         int numTokens = 0;
 
-        if(args[0].isEmpty())
+        if (args[0].isEmpty())
             System.out.println("ERROR: Introduce fichero");
         else {
             fileName = args[0];
@@ -47,7 +47,7 @@ public class Compiler {
         fr.close();
         scan.yyclose();
 
-        System.out.println("Numero de tokens identificados: " + numTokens);
+        System.out.println("Número de tokens identificados: " + numTokens);
         System.out.println("FASE LEXICA terminada.");
 
         fr = new FileReader(args[0]);
@@ -55,7 +55,6 @@ public class Compiler {
 
         ComplexSymbolFactory factory = new ComplexSymbolFactory();
         Parser parser = new Parser(scan, factory);
-        parser.parse();
-
+        parser.debug_parse();
     }
 }

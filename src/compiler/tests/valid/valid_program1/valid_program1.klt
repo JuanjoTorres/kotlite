@@ -18,13 +18,13 @@ fun max(num1: Int; num2: Int): Int {
 }
 
 fun main (a: Int; b: Boolean) : None {
-    var a: Int;
-    var b: Int;
     var c: Int;
+    var d: Int;
+    var e: Int;
 
-    a = 30 + 2 * 3;
-    b = a / 3;
-    c = max(a, b);
+    c = 30 + 2 * 3;
+    d = a / 3;
+    e = max(a, b);
 
     print("El numero mas grande es...");
     print(c);

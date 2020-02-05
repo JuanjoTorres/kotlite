@@ -1,97 +1,95 @@
 package compiler.syntax.table;
 
+import com.sun.deploy.net.socket.UnixDomainSocket;
 import compiler.KotliteException;
+import compiler.syntax.symbols.SymbolBase;
+import compiler.syntax.symbols.SymbolId;
 
 import java.io.*;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Stack;
 
 public class SymbolTable {
 
-    final int MAX_DIM_EXP = 64;  // Capacidad maxima de la tabla de expansion
-    final int MAX_DEEP = 16;     // Profundidad maxima de ambito
+    public BufferedWriter buffer;
 
-    Hashtable tableDes; // Tabla de descripcion
-    Symbol[] tableExp;  // Tabla de expansion
+    Stack<HashMap> hashMapStack = new Stack<>();
+
     int[] tableSco;     // Tabla de ambito
     int level;
 
-    private static Writer writer;
-    private static BufferedWriter buffer;
-    private static OutputStreamWriter stream;
-    private static FileOutputStream file;
-
-    public SymbolTable () {
+    public SymbolTable() {
 
         reset();
 
         try {
 
-            file = new FileOutputStream("symbols_table.html");
-            stream = new OutputStreamWriter(file, "UTF-8");
+            FileOutputStream file = new FileOutputStream("symbols_table.html");
+            OutputStreamWriter stream = new OutputStreamWriter(file, "UTF-8");
             buffer = new BufferedWriter(stream);
-            writer = buffer;
 
-            // HACER VOLCADO DE MEMORIA QUE PIDE EL PROFE
-            // FORMATO PDF
+            //TODO Crear fichero html y inicializar tabla
+
+            buffer.write("<!DOCTYPE html><html><head>");
+            buffer.write("<title>Tabla de símbolos</title>");
+            buffer.write("<meta charset=\"UTF-8\">");
+            buffer.write("<style>table {width:100%;padding:0 100px;border-collapse:collapse;}table,th,td{border:1px solid #000}tr:nth-child(odd){background: #ddd}th, td {padding: 10px}</style>");
+            buffer.write("</head><body>");
+            buffer.write("<h1>Práctica Compiladores 1 - UIB</h1>");
+            buffer.write("<h2>Tabla de simbolos</h2>");
+            buffer.write("<table><tr><th>Context</th><th>ID</th><th>Type</th><th>SubType</th><th>Args</th></tr>");
+
+            // HACER VOLCADO DE MEMORIA QUE PIDE EL PROFE, FORMATO PDF
         } catch (IOException e) {
 
-            System.err.println("[SYNTAX ERROR] Write Error in Symbol Table: "
-                    + e.getMessage());
+            System.err.println("[SYNTAX ERROR] Write Error in Symbol Table: " + e.getMessage());
         }
-
-        tableDes  = new Hashtable<String, Symbol>();
-        tableExp = new Symbol[MAX_DIM_EXP];
-
     }
 
     public void reset() {
-        level = 0;
-        tableDes.clear();
-        tableSco[level] = 0;
-        level++;
-        tableSco[level] = 0;
+        //Vaciar pila e inicializar nivel 0
+        hashMapStack.empty();
+        hashMapStack.push(new HashMap());
     }
 
     public void startBlock() {
-        level++;
-        tableSco[level] = tableSco[level -1];
+        //Aumentar nivel insertando un nuevo hashmap en la pila
+        hashMapStack.push(new HashMap());
     }
 
-    public void endBlock() throws KotliteException.SymbolTableException {
-
-        if (level == 0) {
-            throw new KotliteException.SymbolTableException("[SYNTAX ERROR] " +
-                    "Scope Table index (TA) OutOfBoundsException() in Symbol Table");
-        }
-
-        int iniLength, finLength;
-        iniLength = tableSco[level];
-        level--;
-        finLength = tableSco[level];
-
-        for (int length = iniLength; length < finLength; iniLength--) {
-            String id = tableExp[length].d.id;
-            tableDes.replace(id, tableExp[length].d);
-            // FALTA AÑADIR EL ATRIBUTO NP
-        }
+    public void endBlock() {
+        //Reducir nivel eliminando un hashmap de la pila
+        hashMapStack.pop();
     }
 
-    public void add(String id, String d) {
+    public void add(Symbol symbol) throws KotliteException.SymbolTableException {
 
-        if (isSameLevel(key)) {
+        if (hashMapStack.peek().containsKey(symbol.getId()))
+            throw new KotliteException.SymbolTableException("Duplicated ID");
 
-            boolean err = false; // COMPARAR TD[ID].NP == N
-            if (!err) {
-                int idxe = tableSco[level];
-                // si tableScop[n] indica el ultimo lugar ocupado
-                idxe++;
-                tableSco[level] = idxe;
-                // tableExp[idxe].d = tableDes.get(id);  // D ES IGUAL EN TD COMO EN TE
-                // tableExp[idxe].np = tableDes.get(id); // FALTA AÑADIR NP
+        hashMapStack.peek().put(symbol.getId(), symbol);
+
+        //TODO Añadir entrada a la tabla html
+        try {
+            if (symbol.getType() == Type.PROC) {
+                buffer.write("<tr><td>Nivel : " + hashMapStack.size() + "</td><td>Id : " + symbol.getId() + "</td><td>Type : " + symbol.getType() + "</td><td>Subtype : " + symbol.getSubtype() + "</td><td>");
+                if (symbol.getArgs() != null) {
+                    buffer.write("<table>");
+                    for (int i = 0; i < symbol.getArgs().size(); i++) {
+                        buffer.write("<tr><td>Id : " + symbol.getArgs().get(i).getId() + "</td><td>Type : " + symbol.getArgs().get(i).getType() + "</td><td>Subtype : " + symbol.getArgs().get(i).getSubtype() + "</td></tr>");
+                    }
+                    buffer.write("</table>");
+                }
+
+                buffer.write("</td></tr>");
+
+            } else {
+                buffer.write("<tr><td>Nivel : " + hashMapStack.size() + "</td><td>Id : " + symbol.getId() + "</td><td>Type : " + symbol.getType() + "</td><td>Subtype : " + symbol.getSubtype() + "</td><td style='text-align:center'>-</td></tr>");
             }
+        } catch (IOException e) {
+            System.err.println("[SYNTAX ERROR] Write Error in Symbol Table: " + e.getMessage());
         }
 
-        tableDes.put(id , d);
-        // FALTA AÑADIR EL ATRIBUTO NP
+        //TODO FALTA AÑADIR EL ATRIBUTO NP
     }
 }
