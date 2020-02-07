@@ -17,10 +17,10 @@ public class SymbolDecl extends SymbolBase {
     private SymbolType type;
     private SymbolId id;
     private SymbolBasic basic;
-    private SymbolFactor factor;
+    private SymbolBool bool;
 
     // FORMA Decl ::= Type Id COLON Basic SEMICOLON
-    public SymbolDecl(SymbolType type, SymbolId id, SymbolBasic basic) throws KotliteException.SymbolTableException {
+    public SymbolDecl(SymbolType type, SymbolId id, SymbolBasic basic) throws KotliteException.DuplicatedIdentifierException {
 
         super("Decl", 0);
         this.type = type;
@@ -28,20 +28,23 @@ public class SymbolDecl extends SymbolBase {
         this.basic = basic;
 
         //Añadir id de la funcion a la table de simbolos
-        symbolTable.add(new Symbol(id.getName(), Type.VAR, basic.getSubtype()));
+        symbolTable.add(new Symbol(id.getName(), type.getType(), basic.getSubtype()));
     }
 
-    // FORMA Decl ::= Type Id COLON Basic ASSIGN Factor SEMICOLON
-    public SymbolDecl(SymbolType type, SymbolId id, SymbolBasic basic, SymbolFactor factor) throws KotliteException.SymbolTableException {
+    // FORMA Decl ::= Type Id COLON Basic ASSIGN Bool SEMICOLON
+    public SymbolDecl(SymbolType type, SymbolId id, SymbolBasic basic, SymbolBool bool) throws KotliteException.DuplicatedIdentifierException, KotliteException.IncompatibleSubtypeException {
 
         super("Decl", 0);
         this.type = type;
         this.id = id;
         this.basic = basic;
-        this.factor = factor;
+        this.bool = bool;
+
+        if (basic.getSubtype() != bool.getSubtype())
+            throw new KotliteException.IncompatibleSubtypeException("Incompatible Subtype");
 
         //Añadir id de la funcion a la table de simbolos
-        symbolTable.add(new Symbol(id.getName(), Type.CONST, basic.getSubtype()));
+        symbolTable.add(new Symbol(id.getName(), type.getType(), basic.getSubtype()));
     }
 
     @Override

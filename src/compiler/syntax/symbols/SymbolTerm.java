@@ -5,6 +5,9 @@
  */
 package compiler.syntax.symbols;
 
+import compiler.KotliteException;
+import compiler.syntax.table.Subtype;
+
 import java.io.PrintWriter;
 
 public class SymbolTerm extends SymbolBase {
@@ -13,20 +16,29 @@ public class SymbolTerm extends SymbolBase {
     private SymbolMult mult;
     private SymbolUnary unary;
 
-    // Term ::= Term Mult Unary
-    public SymbolTerm(SymbolTerm term, SymbolMult mult, SymbolUnary unary) {
+    private Subtype subtype;
 
+    // Term ::= Term Mult Unary
+    public SymbolTerm(SymbolTerm term, SymbolMult mult, SymbolUnary unary) throws KotliteException.IncompatibleSubtypeException {
         super("Term", 0);
         this.term = term;
         this.mult = mult;
         this.unary = unary;
+
+        if (term.getSubtype() != Subtype.INT || unary.getSubtype() != Subtype.INT)
+            throw new KotliteException.IncompatibleSubtypeException("Mult/Div requires INT SubtypeT");
     }
 
     // Term ::= Unary
     public SymbolTerm(SymbolUnary unary) {
-
         super("Term", 0);
         this.unary = unary;
+
+        this.subtype = unary.getSubtype();
+    }
+
+    public Subtype getSubtype() {
+        return subtype;
     }
 
     @Override

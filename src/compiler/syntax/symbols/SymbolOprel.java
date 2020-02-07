@@ -9,12 +9,17 @@ import java.io.PrintWriter;
 
 public class SymbolOprel extends SymbolBase {
 
-    private int SYMBOL;
+    private int relationType;
 
-    public SymbolOprel(int symbol) {
+    public SymbolOprel(int relationType) {
 
         super("Oprel", 0);
-        this.SYMBOL = symbol;
+
+        this.relationType = relationType;
+    }
+
+    public int getRelationType() {
+        return relationType;
     }
 
     @Override

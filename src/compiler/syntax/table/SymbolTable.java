@@ -1,9 +1,6 @@
 package compiler.syntax.table;
 
-import com.sun.deploy.net.socket.UnixDomainSocket;
 import compiler.KotliteException;
-import compiler.syntax.symbols.SymbolBase;
-import compiler.syntax.symbols.SymbolId;
 
 import java.io.*;
 import java.util.HashMap;
@@ -14,9 +11,6 @@ public class SymbolTable {
     public BufferedWriter buffer;
 
     Stack<HashMap> hashMapStack = new Stack<>();
-
-    int[] tableSco;     // Tabla de ambito
-    int level;
 
     public SymbolTable() {
 
@@ -62,17 +56,20 @@ public class SymbolTable {
         hashMapStack.pop();
     }
 
-    public void add(Symbol symbol) throws KotliteException.SymbolTableException {
+    public void add(Symbol symbol) throws KotliteException.DuplicatedIdentifierException {
 
+        //Comprobar si ya existe el identificador
         if (hashMapStack.peek().containsKey(symbol.getId()))
-            throw new KotliteException.SymbolTableException("Duplicated ID");
+            throw new KotliteException.DuplicatedIdentifierException("Duplicated ID");
 
+        //Insertar identificador en la tabla de símbolos
         hashMapStack.peek().put(symbol.getId(), symbol);
 
-        //TODO Añadir entrada a la tabla html
+        //Añadir entrada a la tabla html
         try {
             if (symbol.getType() == Type.PROC) {
                 buffer.write("<tr><td>Nivel : " + hashMapStack.size() + "</td><td>Id : " + symbol.getId() + "</td><td>Type : " + symbol.getType() + "</td><td>Subtype : " + symbol.getSubtype() + "</td><td>");
+
                 if (symbol.getArgs() != null) {
                     buffer.write("<table>");
                     for (int i = 0; i < symbol.getArgs().size(); i++) {
@@ -91,5 +88,19 @@ public class SymbolTable {
         }
 
         //TODO FALTA AÑADIR EL ATRIBUTO NP
+    }
+
+    public Symbol getId(String id) throws KotliteException.IdentifierNotExistException {
+
+        //Recorrer la tabla de símbolos desde el nivel superior hacia el inferior
+        for (int i = hashMapStack.size() - 1; i >= 0; i--) {
+            //Comprobar si existe el identificador en el nivel actual
+            if (hashMapStack.get(i).containsKey(id))
+                //Devolver identificador
+                return (Symbol) hashMapStack.get(i).get(id);
+        }
+
+        //No existe el identificador, lanzar excepción
+        throw new KotliteException.IdentifierNotExistException("No existe el ID");
     }
 }

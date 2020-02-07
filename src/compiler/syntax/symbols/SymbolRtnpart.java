@@ -5,11 +5,15 @@
  */
 package compiler.syntax.symbols;
 
+import compiler.syntax.table.Subtype;
+
 import java.io.PrintWriter;
 
 public class SymbolRtnpart extends SymbolBase {
 
     private SymbolFactor factor;
+
+    private Subtype subtype;
 
     // [FORMA] Rtnpart ::= .
     public SymbolRtnpart() {
@@ -21,6 +25,12 @@ public class SymbolRtnpart extends SymbolBase {
 
         super("Rtnpart",0);
         this.factor = factor;
+
+        this.subtype = factor.getSubtype();
+    }
+
+    public Subtype getSubtype() {
+        return subtype;
     }
 
     @Override

@@ -5,32 +5,55 @@
  */
 package compiler.syntax.symbols;
 
+import compiler.KotliteException;
+import compiler.syntax.ParserSym;
+import compiler.syntax.table.Subtype;
+
 import java.io.PrintWriter;
 
 public class SymbolFactor extends SymbolBase {
 
     private SymbolBool bool;
     private SymbolId id;
-    private int SYMBOL;
+
+    private Subtype subtype;
 
     // [FORMA] Factor ::= LPAREN Bool RPAREN
     public SymbolFactor(SymbolBool bool) {
 
-        super("Break", 0);
+        super("Factor", 0);
         this.bool = bool;
     }
 
     // [FORMA] Factor ::= Id
-    public SymbolFactor(int symbol, SymbolId id) {
+    public SymbolFactor(int symbol, SymbolId id) throws KotliteException.IdentifierNotExistException {
 
-        super("Break", 0);
-        this.SYMBOL = symbol;
+        super("Factor", 0);
         this.id = id;
+        this.subtype = id.getSubtype();
     }
 
     public SymbolFactor(int symbol) {
-        super("Break", 0);
-        this.SYMBOL = symbol;
+        super("Factor", 0);
+        switch (symbol) {
+            case ParserSym.LITERAL:
+                subtype = Subtype.STRING;
+                break;
+            case ParserSym.NUM:
+                subtype = Subtype.INT;
+                break;
+            case ParserSym.TRUE:
+            case ParserSym.FALSE:
+                subtype = Subtype.BOOLEAN;
+                break;
+            case ParserSym.NONE:
+                subtype = Subtype.NULL;
+                break;
+        }
+    }
+
+    public Subtype getSubtype() {
+        return subtype;
     }
 
     @Override

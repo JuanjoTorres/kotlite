@@ -5,16 +5,28 @@
  */
 package compiler.syntax.symbols;
 
+import compiler.syntax.ParserSym;
+import compiler.syntax.table.Type;
+
 import java.io.PrintWriter;
 
 public class SymbolType extends SymbolBase {
 
-    private int SYMBOL;
+    private Type type;
 
-    public SymbolType(int symbol) {
+    public SymbolType(int type) {
 
         super("Type", 0);
-        this.SYMBOL = symbol;
+
+        if (type == ParserSym.VAR)
+            this.type = Type.VAR;
+        else if (type == ParserSym.VAL)
+            this.type = Type.CONST;
+
+    }
+
+    public Type getType() {
+        return type;
     }
 
     @Override

@@ -5,6 +5,9 @@
  */
 package compiler.syntax.symbols;
 
+import compiler.KotliteException;
+import compiler.syntax.table.Subtype;
+
 import java.io.PrintWriter;
 
 public class SymbolExpr extends SymbolBase {
@@ -13,13 +16,17 @@ public class SymbolExpr extends SymbolBase {
     private SymbolAdd add;
     private SymbolTerm term;
 
-    // [FORMA] Expr ::= Expr Add Term
-    public SymbolExpr(SymbolExpr expr, SymbolAdd add, SymbolTerm term) {
+    private Subtype subtype;
 
+    // [FORMA] Expr ::= Expr Add Term
+    public SymbolExpr(SymbolExpr expr, SymbolAdd add, SymbolTerm term) throws KotliteException.IncompatibleSubtypeException {
         super("Expr", 0);
         this.expr = expr;
         this.add = add;
         this.term = term;
+
+        if (expr.getSubtype() != Subtype.INT || term.getSubtype() != Subtype.INT)
+            throw new KotliteException.IncompatibleSubtypeException("Add/Sub requires INT Subtype");
     }
 
     // [FORMA] Expr ::= Term
@@ -27,6 +34,12 @@ public class SymbolExpr extends SymbolBase {
 
         super("Expr",0);
         this.term = term;
+
+        this.subtype = term.getSubtype();
+    }
+
+    public Subtype getSubtype() {
+        return subtype;
     }
 
     @Override

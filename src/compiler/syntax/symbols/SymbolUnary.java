@@ -5,26 +5,43 @@
  */
 package compiler.syntax.symbols;
 
+import compiler.KotliteException;
+import compiler.syntax.table.Subtype;
+
 import java.io.PrintWriter;
 
 public class SymbolUnary extends SymbolBase {
 
     private SymbolUnary unary;
     private SymbolFactor factor;
+
+    private Subtype subtype;
+
     private boolean negado;
 
     // [FORMA] Unary ::= NOT Unary
-    public SymbolUnary(int not, SymbolUnary unary) {
+    public SymbolUnary(int not, SymbolUnary unary) throws KotliteException.IncompatibleSubtypeException {
         super("Unary", 0);
+
+        this.subtype = unary.getSubtype();
+
+        if (subtype != Subtype.BOOLEAN)
+            throw new KotliteException.IncompatibleSubtypeException("Subtype != BOOLEAN");
+
         this.negado = !this.negado;
         this.unary = unary;
     }
 
     // [FORMA] Unary ::= Factor
     public SymbolUnary(SymbolFactor factor) {
-
         super("Unary", 0);
         this.factor = factor;
+
+        this.subtype = factor.getSubtype();
+    }
+
+    public Subtype getSubtype() {
+        return subtype;
     }
 
     @Override

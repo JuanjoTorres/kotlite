@@ -7,13 +7,19 @@ PROGRAM -> DECLS FUNCTIONS .
 FUNCTIONS -> FUNCTIONS FUNCTION .
 FUNCTIONS -> .
 FUNCTION  -> fun id ( ARGSDEC ) : BASIC { AUP DECLS STATMENTS RTNPART ADOWN } .
+#TODO Comprobar argumentos igual a declarados
 FUNCTIONCALL -> id ( ARGS ) .
+#TODO Comprobar tipo de return con tipo de function
 RTNPART -> return FACTOR .
 RTNPART -> .
 DECLS -> DECLS DECL .
 DECLS -> .
-DECL -> var id : BASIC ; .
-DECL -> val id : BASIC = BOOL ; .
+DECL -> TYPE id : BASIC ; .
+#TODO Comprobar tipo de variable/constante y valor
+DECL -> TYPE id : BASIC = BOOL ; .
+
+TYPE -> var .
+TYPE -> val .
 
 # Lista de argumentos con tipo para declarar una función
 ARGSDEC -> LARGSDEC .
@@ -29,24 +35,33 @@ LARGS -> FACTOR .
 
 STATMENTS -> STATMENTS STATMENT .
 STATMENTS -> .
+#TODO Comprobar tipos de variable y expresion
 STATMENT -> id = BOOL ; .
+#TODO Comprobar expresion booleana
 STATMENT -> if ( BOOL ) { AUP DECLS STATMENTS ADOWN } ELSEPART .
+#TODO Comprobar expresion booleana
 STATMENT -> while ( BOOL ) { AUP DECLS STATMENTS ADOWN } .
 # Llamada a funcion recogiendo el retorno
+#TODO Comprobar tipos de variable y retorno de funcion
 STATMENT -> id = FUNCTIONCALL ; .
 # Llamada a funcion sin recoger el retorno
 STATMENT -> FUNCTIONCALL ; .
 
 ELSEPART -> else { AUP DECLS STATMENTS ADOWN } .
 ELSEPART -> .
+#TODO Comprobacion de tipos
 BOOL -> BOOL JOIN RELATION .
 BOOL -> RELATION .
+#TODO Comprobacion de tipos comparables
 RELATION -> EXPR OPREL EXPR .
 RELATION -> EXPR .
+#TODO Comprobacion de tipos
 EXPR -> EXPR ADD TERM .
 EXPR -> TERM .
+#TODO Comprobacion de tipo INT
 TERM -> TERM MULT UNARY .
 TERM -> UNARY .
+#TODO Comprobar tipo booleano
 UNARY -> ! UNARY .
 UNARY -> FACTOR .
 ADD	-> + .

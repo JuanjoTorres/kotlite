@@ -22,7 +22,7 @@ public class SymbolFunction extends SymbolBase {
     // [FORMA] Function ::= FUN Id:id LPAREN Argsdec:v1 RPAREN COLON Basic:v2 LBRACKET Decls:v3 Statments:v4
     //         Rtnpart:v5 RBRACKET
     public SymbolFunction(SymbolId id, SymbolArgsdec argsdec, SymbolBasic basic, SymbolDecls decls,
-                          SymbolStatments statments, SymbolRtnpart rtnpart) throws KotliteException.SymbolTableException {
+                          SymbolStatments statments, SymbolRtnpart rtnpart) throws KotliteException.DuplicatedIdentifierException, KotliteException.IncompatibleSubtypeException {
 
         super("Function", 0);
         this.id = id;
@@ -31,6 +31,9 @@ public class SymbolFunction extends SymbolBase {
         this.decls = decls;
         this.statments = statments;
         this.rtnpart = rtnpart;
+
+        if (basic.getSubtype() != rtnpart.getSubtype())
+            throw new KotliteException.IncompatibleSubtypeException("Incompatible Subtype");
 
         //Crear símbolo de la funcion
         Symbol function = new Symbol(id.getName(), Type.PROC, basic.getSubtype());

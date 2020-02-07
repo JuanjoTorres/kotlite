@@ -5,12 +5,23 @@
  */
 package compiler.syntax.symbols;
 
+import compiler.KotliteException;
+import compiler.syntax.table.Subtype;
+
 import java.io.PrintWriter;
 
 public class SymbolId extends SymbolBase {
 
+    private String id;
+    private Subtype subtype;
+
     public SymbolId(String id) {
         super(id, 0);
+        this.id = id;
+    }
+
+    public Subtype getSubtype() throws KotliteException.IdentifierNotExistException {
+        return symbolTable.getId(id).getSubtype();
     }
 
     @Override
