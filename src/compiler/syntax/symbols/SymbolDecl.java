@@ -6,9 +6,7 @@
 package compiler.syntax.symbols;
 
 import compiler.KotliteException;
-import compiler.syntax.table.Subtype;
 import compiler.syntax.table.Symbol;
-import compiler.syntax.table.Type;
 
 import java.io.PrintWriter;
 
@@ -49,7 +47,19 @@ public class SymbolDecl extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label=\"" + name + "\"];\n" + index + "->\"" + name + "\"\n");
+
+        out.print(index + "\t[label='" + name + "'];\n");
+
+        if (bool == null) {
+            out.print(index + "->" + type.getIndex() + "\n");
+            out.print(index + "->" + id.getIndex() + "\n");
+            out.print(index + "->" + basic.getIndex() + "\n");
+        } else {
+            out.print(index + "->" + type.getIndex() + "\n");
+            out.print(index + "->" + id.getIndex() + "\n");
+            out.print(index + "->" + basic.getIndex() + "\n");
+            out.print(index + "->" + bool.getIndex() + "\n");
+        }
     }
 
 }

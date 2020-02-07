@@ -26,7 +26,12 @@ public class SymbolDecls extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label=\"" + name + "\"];\n" + index + "->\"" + name + "\"\n");
+        out.print(index + "\t[label='" + name + "'];\n");
+
+        if (decls != null) {
+            out.print(index + "->" + decls.getIndex() + "\n");
+            out.print(index + "->" + decl.getIndex() + "\n");
+        }
     }
 
 }

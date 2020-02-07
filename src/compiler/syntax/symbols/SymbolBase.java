@@ -29,5 +29,9 @@ public abstract class SymbolBase extends ComplexSymbol {
         index = idAutoIncrement;
     }
 
+    public int getIndex() {
+        return index;
+    }
+
     public abstract void toDot(PrintWriter out);
 }

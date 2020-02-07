@@ -23,11 +23,20 @@ public class SymbolProgram extends SymbolBase {
         //Cerrar tabla y fichero HTML
         symbolTable.buffer.write("</table></body></html>");
         symbolTable.buffer.close();
+
+        //Crear árbol sintáctico
+        PrintWriter out = new PrintWriter("ArbolSintactico.dot");
+        out.println("strict digraph {");
+        toDot(out);
+        out.println("}");
+        out.close();
     }
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label=\"" + name + "\"];\n" + index + "->\"" + name + "\"\n");
+        out.print(index + "\t[label='" + name + "'];\n");
+        out.print(index + "->" + decls.getIndex() + "\n");
+        out.print(index + "->" + functions.getIndex() + "\n");
     }
 
 }
