@@ -3,11 +3,33 @@ package compiler.syntax;
 import java_cup.runtime.*;
 import compiler.syntax.symbols.*;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
 class Parser;
 
 parser code {:
 
+    /**
+     * Mètode que s'encarrega de la generació de la imatge .dot de l'arbre
+     * sintàctic generat.
+     * @param outFile el fitxer on s'ha d'escriure la informació
+     */
+    public void toDot(String outFile) {
+        PrintWriter out = null;
+        try {
+            out = new PrintWriter(outFile);
 
+            out.println("strict digraph {");
+            root.toDot(out);
+            out.println("}");
+
+        } catch (FileNotFoundException ex) {
+            System.err.println("ERROR. No es pot escriure a \""+outFile+"\"");
+        } finally {
+            out.close();
+        }
+    }
 
  :}
 
@@ -85,7 +107,8 @@ nonterminal SymbolAdown Adown;
 
 
 /* Precedence declarations */
-// ¿Hace falta?
+precedence left  PLUS, MINUS;
+precedence left  MULTI, DIV;
 
 /* Productions */
 
@@ -113,7 +136,7 @@ Decls ::= Decls:v1 Decl:v2
 
 Decl ::= Type:v1 Id:id COLON Basic:v2 SEMICOLON
                 {: RESULT = new SymbolDecl(v1, id, v2); :}
-              | Type:v1 Id:id COLON Basic:v2 ASSIGN Factor:v3 SEMICOLON
+              | Type:v1 Id:id COLON Basic:v2 ASSIGN Bool:v3 SEMICOLON
                 {: RESULT = new SymbolDecl(v1, id, v2, v3); :};
 
 Argsdec ::= Largsdec:v1
