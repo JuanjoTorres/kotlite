@@ -20,6 +20,7 @@ public class SymbolDecls extends SymbolBase {
     // FORMA Decls ::= Decls Decl
     public SymbolDecls(SymbolDecls decls, SymbolDecl decl) {
         super("Decls", 0);
+
         this.decls = decls;
         this.decl = decl;
     }
@@ -31,6 +32,9 @@ public class SymbolDecls extends SymbolBase {
         if (decls != null) {
             out.print(index + "->" + decls.getIndex() + "\n");
             out.print(index + "->" + decl.getIndex() + "\n");
+
+            decls.toDot(out);
+            decl.toDot(out);
         }
     }
 

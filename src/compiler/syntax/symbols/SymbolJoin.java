@@ -9,17 +9,17 @@ import java.io.PrintWriter;
 
 public class SymbolJoin extends SymbolBase {
 
-    private int SYMBOL;
+    private int symbol;
 
     public SymbolJoin(int symbol) {
-
         super("Join", 0);
-        this.SYMBOL = symbol;
+
+        this.symbol = symbol;
     }
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label=\"" + name + "\"];\n" + index + "->\"" + name + "\"\n");
+        out.print(index + "\t[label='" + name + "'];\n");
     }
 
 }

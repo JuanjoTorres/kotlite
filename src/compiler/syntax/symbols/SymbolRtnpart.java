@@ -22,10 +22,9 @@ public class SymbolRtnpart extends SymbolBase {
 
     // [FORMA] Rtnpart ::= RETURN Factor
     public SymbolRtnpart(SymbolFactor factor) {
+        super("Rtnpart", 0);
 
-        super("Rtnpart",0);
         this.factor = factor;
-
         this.subtype = factor.getSubtype();
     }
 
@@ -35,7 +34,12 @@ public class SymbolRtnpart extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label=\"" + name + "\"];\n" + index + "->\"" + name + "\"\n");
+        out.print(index + "\t[label='" + name + "'];\n");
+
+        if (factor != null) {
+            out.print(index + "->" + factor.getIndex() + "\n");
+            factor.toDot(out);
+        }
     }
 
 }

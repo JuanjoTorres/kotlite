@@ -22,7 +22,9 @@ public class SymbolRelation extends SymbolBase {
     // [FORMA] Relation ::= Expr Oprel Expr
     public SymbolRelation(SymbolExpr expr1, SymbolOprel oprel, SymbolExpr expr2) throws KotliteException.IncompatibleSubtypeException {
         super("Relation", 0);
+
         this.expr1 = expr1;
+        this.oprel = oprel;
         this.expr2 = expr2;
 
         if (expr1.getSubtype() != expr2.getSubtype())
@@ -43,8 +45,8 @@ public class SymbolRelation extends SymbolBase {
     // [FORMA] Relation ::= Expr
     public SymbolRelation(SymbolExpr expr1) {
         super("Relation", 0);
-        this.expr1 = expr1;
 
+        this.expr1 = expr1;
         subtype = expr1.getSubtype();
     }
 
@@ -54,7 +56,21 @@ public class SymbolRelation extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label=\"" + name + "\"];\n" + index + "->\"" + name + "\"\n");
+        out.print(index + "\t[label='" + name + "'];\n");
+
+        if (oprel != null) {
+            out.print(index + "->" + expr1.getIndex() + "\n");
+            out.print(index + "->" + oprel.getIndex() + "\n");
+            out.print(index + "->" + expr2.getIndex() + "\n");
+
+            expr1.toDot(out);
+            oprel.toDot(out);
+            expr2.toDot(out);
+        } else {
+            out.print(index + "->" + expr1.getIndex() + "\n");
+
+            expr1.toDot(out);
+        }
     }
 
 }

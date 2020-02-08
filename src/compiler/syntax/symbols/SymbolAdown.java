@@ -17,7 +17,6 @@ public class SymbolAdown extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-
     }
 
 }

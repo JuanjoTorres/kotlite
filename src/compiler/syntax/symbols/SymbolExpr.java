@@ -21,6 +21,7 @@ public class SymbolExpr extends SymbolBase {
     // [FORMA] Expr ::= Expr Add Term
     public SymbolExpr(SymbolExpr expr, SymbolAdd add, SymbolTerm term) throws KotliteException.IncompatibleSubtypeException {
         super("Expr", 0);
+
         this.expr = expr;
         this.add = add;
         this.term = term;
@@ -31,10 +32,9 @@ public class SymbolExpr extends SymbolBase {
 
     // [FORMA] Expr ::= Term
     public SymbolExpr(SymbolTerm term) {
+        super("Expr", 0);
 
-        super("Expr",0);
         this.term = term;
-
         this.subtype = term.getSubtype();
     }
 
@@ -44,7 +44,21 @@ public class SymbolExpr extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label=\"" + name + "\"];\n" + index + "->\"" + name + "\"\n");
+        out.print(index + "\t[label='" + name + "'];\n");
+
+        if (expr != null) {
+            out.print(index + "->" + expr.getIndex() + "\n");
+            out.print(index + "->" + add.getIndex() + "\n");
+            out.print(index + "->" + term.getIndex() + "\n");
+
+            expr.toDot(out);
+            add.toDot(out);
+            term.toDot(out);
+        } else {
+            out.print(index + "->" + term.getIndex() + "\n");
+
+            term.toDot(out);
+        }
     }
 
 }

@@ -20,13 +20,22 @@ public class SymbolFunctions extends SymbolBase {
     // [FORMA] Functions ::= Functions Function
     public SymbolFunctions(SymbolFunctions functions, SymbolFunction function) {
         super("Functions", 0);
+
         this.functions = functions;
         this.function = function;
     }
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label=\"" + name + "\"];\n" + index + "->\"" + name + "\"\n");
+        out.print(index + "\t[label='" + name + "'];\n");
+
+        if (functions != null) {
+            out.print(index + "->" + functions.getIndex() + "\n");
+            out.print(index + "->" + function.getIndex() + "\n");
+
+            functions.toDot(out);
+            function.toDot(out);
+        }
     }
 
 }

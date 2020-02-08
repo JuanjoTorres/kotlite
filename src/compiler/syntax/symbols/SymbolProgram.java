@@ -15,8 +15,8 @@ public class SymbolProgram extends SymbolBase {
 
     // [FORMA] Program ::= Decls Functions
     public SymbolProgram(SymbolDecls decls, SymbolFunctions functions) throws IOException {
-
         super("Program", 0);
+
         this.decls = decls;
         this.functions = functions;
 
@@ -35,8 +35,13 @@ public class SymbolProgram extends SymbolBase {
     @Override
     public void toDot(PrintWriter out) {
         out.print(index + "\t[label='" + name + "'];\n");
+
         out.print(index + "->" + decls.getIndex() + "\n");
         out.print(index + "->" + functions.getIndex() + "\n");
+
+        decls.toDot(out);
+        functions.toDot(out);
+
     }
 
 }

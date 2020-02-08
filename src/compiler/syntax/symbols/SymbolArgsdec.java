@@ -5,7 +5,6 @@
  */
 package compiler.syntax.symbols;
 
-import com.sun.codemodel.internal.JForEach;
 import compiler.syntax.table.Symbol;
 
 import java.io.PrintWriter;
@@ -32,7 +31,12 @@ public class SymbolArgsdec extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label=\"" + name + "\"];\n" + index + "->\"" + name + "\"\n");
+        out.print(index + "\t[label='" + name + "'];\n");
+
+        if (largsdec != null) {
+            out.print(index + "->" + largsdec.getIndex() + "\n");
+            largsdec.toDot(out);
+        }
     }
 
 }

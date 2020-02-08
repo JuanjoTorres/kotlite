@@ -15,7 +15,6 @@ public class SymbolBasic extends SymbolBase {
     private Subtype tipo;
 
     public SymbolBasic(int symbol) {
-
         super("Basic", 0);
 
         if (symbol == ParserSym.INT)
@@ -34,7 +33,7 @@ public class SymbolBasic extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label=\"" + name + "\"];\n" + index + "->\"" + name + "\"\n");
+        out.print(index + "\t[label='" + name + "'];\n");
     }
 
 }

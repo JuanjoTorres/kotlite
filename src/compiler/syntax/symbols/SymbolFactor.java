@@ -20,15 +20,15 @@ public class SymbolFactor extends SymbolBase {
 
     // [FORMA] Factor ::= LPAREN Bool RPAREN
     public SymbolFactor(SymbolBool bool) {
-
         super("Factor", 0);
+
         this.bool = bool;
     }
 
     // [FORMA] Factor ::= Id
-    public SymbolFactor(int symbol, SymbolId id) throws KotliteException.IdentifierNotExistException {
-
+    public SymbolFactor(SymbolId id) throws KotliteException.IdentifierNotExistException {
         super("Factor", 0);
+
         this.id = id;
         this.subtype = id.getSubtype();
     }
@@ -58,7 +58,15 @@ public class SymbolFactor extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label=\"" + name + "\"];\n" + index + "->\"" + name + "\"\n");
+        out.print(index + "\t[label='" + name + "'];\n");
+
+        if (bool != null) {
+            out.print(index + "->" + bool.getIndex() + "\n");
+            bool.toDot(out);
+        } else if (id != null) {
+            out.print(index + "->" + id.getIndex() + "\n");
+            id.toDot(out);
+        }
     }
 
 }

@@ -19,8 +19,8 @@ public class SymbolDecl extends SymbolBase {
 
     // FORMA Decl ::= Type Id COLON Basic SEMICOLON
     public SymbolDecl(SymbolType type, SymbolId id, SymbolBasic basic) throws KotliteException.DuplicatedIdentifierException {
-
         super("Decl", 0);
+
         this.type = type;
         this.id = id;
         this.basic = basic;
@@ -31,8 +31,8 @@ public class SymbolDecl extends SymbolBase {
 
     // FORMA Decl ::= Type Id COLON Basic ASSIGN Bool SEMICOLON
     public SymbolDecl(SymbolType type, SymbolId id, SymbolBasic basic, SymbolBool bool) throws KotliteException.DuplicatedIdentifierException, KotliteException.IncompatibleSubtypeException {
-
         super("Decl", 0);
+
         this.type = type;
         this.id = id;
         this.basic = basic;
@@ -54,11 +54,20 @@ public class SymbolDecl extends SymbolBase {
             out.print(index + "->" + type.getIndex() + "\n");
             out.print(index + "->" + id.getIndex() + "\n");
             out.print(index + "->" + basic.getIndex() + "\n");
+
+            type.toDot(out);
+            id.toDot(out);
+            basic.toDot(out);
         } else {
             out.print(index + "->" + type.getIndex() + "\n");
             out.print(index + "->" + id.getIndex() + "\n");
             out.print(index + "->" + basic.getIndex() + "\n");
             out.print(index + "->" + bool.getIndex() + "\n");
+
+            type.toDot(out);
+            id.toDot(out);
+            basic.toDot(out);
+            bool.toDot(out);
         }
     }
 

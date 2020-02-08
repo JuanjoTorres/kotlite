@@ -17,7 +17,6 @@ public class SymbolAup extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-
     }
 
 }

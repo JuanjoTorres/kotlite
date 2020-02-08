@@ -12,7 +12,6 @@ public class SymbolOprel extends SymbolBase {
     private int relationType;
 
     public SymbolOprel(int relationType) {
-
         super("Oprel", 0);
 
         this.relationType = relationType;
@@ -24,7 +23,7 @@ public class SymbolOprel extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label=\"" + name + "\"];\n" + index + "->\"" + name + "\"\n");
+        out.print(index + "\t[label='" + name + "'];\n");
     }
 
 }

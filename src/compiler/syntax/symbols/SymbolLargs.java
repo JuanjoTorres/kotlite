@@ -14,21 +14,34 @@ public class SymbolLargs extends SymbolBase {
 
     // [FORMA] Largs ::= Largs COMMA Factor
     public SymbolLargs(SymbolLargs largs, SymbolFactor factor) {
-
         super("Largs", 0);
+
         this.largs = largs;
         this.factor = factor;
     }
 
     // [FORMA] Largs ::= Factor
     public SymbolLargs(SymbolFactor factor) {
-        super("Largs",0);
+        super("Largs", 0);
+
         this.factor = factor;
     }
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label=\"" + name + "\"];\n" + index + "->\"" + name + "\"\n");
+        out.print(index + "\t[label='" + name + "'];\n");
+
+        if (largs != null) {
+            out.print(index + "->" + largs.getIndex() + "\n");
+            out.print(index + "->" + factor.getIndex() + "\n");
+
+            largs.toDot(out);
+            factor.toDot(out);
+        } else {
+            out.print(index + "->" + factor.getIndex() + "\n");
+
+            factor.toDot(out);
+        }
     }
 
 }

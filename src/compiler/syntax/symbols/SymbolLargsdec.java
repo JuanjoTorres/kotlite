@@ -21,8 +21,8 @@ public class SymbolLargsdec extends SymbolBase {
 
     // [FORMA] Largsdec ::= Largsdec SEMICOLON Id COLON Basic
     public SymbolLargsdec(SymbolLargsdec largsdec, SymbolId id, SymbolBasic basic) {
-
         super("Largsdec", 0);
+
         this.largsdec = largsdec;
         this.id = id;
         this.basic = basic;
@@ -34,8 +34,8 @@ public class SymbolLargsdec extends SymbolBase {
 
     // [FORMA] Largsdec ::= Largsdec SEMICOLON Id COLON Basic
     public SymbolLargsdec(SymbolId id, SymbolBasic basic) {
+        super("Largsdec", 0);
 
-        super("Largsdec",0);
         this.id = id;
         this.basic = basic;
 
@@ -53,7 +53,23 @@ public class SymbolLargsdec extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label=\"" + name + "\"];\n" + index + "->\"" + name + "\"\n");
+        out.print(index + "\t[label='" + name + "'];\n");
+
+        if (largsdec != null) {
+            out.print(index + "->" + largsdec.getIndex() + "\n");
+            out.print(index + "->" + id.getIndex() + "\n");
+            out.print(index + "->" + basic.getIndex() + "\n");
+
+            largsdec.toDot(out);
+            id.toDot(out);
+            basic.toDot(out);
+        } else {
+            out.print(index + "->" + id.getIndex() + "\n");
+            out.print(index + "->" + basic.getIndex() + "\n");
+
+            id.toDot(out);
+            basic.toDot(out);
+        }
     }
 
 }

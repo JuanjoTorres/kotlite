@@ -20,22 +20,21 @@ public class SymbolBool extends SymbolBase {
 
     // FORMA Bool ::= Bool Join Relation
     public SymbolBool(SymbolBool bool, SymbolJoin join, SymbolRelation relation) throws KotliteException.IncompatibleSubtypeException {
-
         super("Bool", 0);
+
         this.bool = bool;
         this.join = join;
         this.relation = relation;
 
         if (bool.getSubtype() != Subtype.BOOLEAN || relation.getSubtype() != Subtype.BOOLEAN)
             throw new KotliteException.IncompatibleSubtypeException("Join requires BOOLEAN Subtype");
-
     }
 
     // FORMA Bool ::= Relation
     public SymbolBool(SymbolRelation relation) {
         super("Bool", 0);
-        this.relation = relation;
 
+        this.relation = relation;
         subtype = relation.getSubtype();
     }
 
@@ -45,7 +44,21 @@ public class SymbolBool extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label=\"" + name + "\"];\n" + index + "->\"" + name + "\"\n");
+        out.print(index + "\t[label='" + name + "'];\n");
+
+        if (bool != null) {
+            out.print(index + "->" + bool.getIndex() + "\n");
+            out.print(index + "->" + join.getIndex() + "\n");
+            out.print(index + "->" + relation.getIndex() + "\n");
+
+            bool.toDot(out);
+            join.toDot(out);
+            relation.toDot(out);
+        } else {
+            out.print(index + "->" + relation.getIndex() + "\n");
+
+            relation.toDot(out);
+        }
     }
 
 }

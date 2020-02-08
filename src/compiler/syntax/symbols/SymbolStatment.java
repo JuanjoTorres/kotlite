@@ -23,8 +23,8 @@ public class SymbolStatment extends SymbolBase {
 
     // [FORMA] Statment ::= Id ASSIGN Bool SEMICOLON
     public SymbolStatment(SymbolId id, SymbolBool bool) throws KotliteException.IdentifierNotExistException, KotliteException.IncompatibleSubtypeException {
-
         super("Statment", 0);
+
         this.id = id;
         this.bool = bool;
 
@@ -35,8 +35,8 @@ public class SymbolStatment extends SymbolBase {
     // [FORMA] Statment ::= IF LPAREN Bool RPAREN LBRACKET Decls Statments
     //         RBRACKET Elsepart
     public SymbolStatment(SymbolBool bool, SymbolDecls decls, SymbolStatments statments, SymbolElsepart elsepart) throws KotliteException.IncompatibleSubtypeException {
-
         super("Statment", 0);
+
         this.bool = bool;
         this.decls = decls;
         this.statments = statments;
@@ -49,8 +49,8 @@ public class SymbolStatment extends SymbolBase {
     // [FORMA] Statment ::= WHILE LPAREN Bool RPAREN LBRACKET Decls
     //         Statments RBRACKET
     public SymbolStatment(SymbolBool bool, SymbolDecls decls, SymbolStatments statments) throws KotliteException.IncompatibleSubtypeException {
-
         super("Statment", 0);
+
         this.bool = bool;
         this.decls = decls;
         this.statments = statments;
@@ -62,6 +62,7 @@ public class SymbolStatment extends SymbolBase {
     // [FORMA] Statment ::= Id ASSIGN Functioncall SEMICOLON
     public SymbolStatment(SymbolId id, SymbolFunctioncall functioncall) throws KotliteException.IdentifierNotExistException, KotliteException.IncompatibleSubtypeException {
         super("Statment", 0);
+
         this.id = id;
         this.functioncall = functioncall;
 
@@ -83,7 +84,49 @@ public class SymbolStatment extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label=\"" + name + "\"];\n" + index + "->\"" + name + "\"\n");
+        out.print(index + "\t[label='" + name + "'];\n");
+
+        if (bool != null) {
+
+            if (id != null) {
+                out.print(index + "->" + id.getIndex() + "\n");
+                out.print(index + "->" + bool.getIndex() + "\n");
+
+                id.toDot(out);
+                bool.toDot(out);
+            } else if (elsepart != null) {
+                out.print(index + "->" + bool.getIndex() + "\n");
+                out.print(index + "->" + decls.getIndex() + "\n");
+                out.print(index + "->" + statments.getIndex() + "\n");
+                out.print(index + "->" + elsepart.getIndex() + "\n");
+
+                bool.toDot(out);
+                decls.toDot(out);
+                statments.toDot(out);
+                elsepart.toDot(out);
+            } else {
+                out.print(index + "->" + bool.getIndex() + "\n");
+                out.print(index + "->" + decls.getIndex() + "\n");
+                out.print(index + "->" + statments.getIndex() + "\n");
+
+                bool.toDot(out);
+                decls.toDot(out);
+                statments.toDot(out);
+            }
+        } else if (functioncall != null) {
+
+            if (id != null) {
+                out.print(index + "->" + id.getIndex() + "\n");
+                out.print(index + "->" + functioncall.getIndex() + "\n");
+
+                id.toDot(out);
+                functioncall.toDot(out);
+            } else {
+                out.print(index + "->" + functioncall.getIndex() + "\n");
+
+                functioncall.toDot(out);
+            }
+        }
     }
 
 }

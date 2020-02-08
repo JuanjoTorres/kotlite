@@ -20,7 +20,7 @@ public class SymbolUnary extends SymbolBase {
     private boolean negado;
 
     // [FORMA] Unary ::= NOT Unary
-    public SymbolUnary(int not, SymbolUnary unary) throws KotliteException.IncompatibleSubtypeException {
+    public SymbolUnary(SymbolUnary unary) throws KotliteException.IncompatibleSubtypeException {
         super("Unary", 0);
 
         this.subtype = unary.getSubtype();
@@ -35,8 +35,8 @@ public class SymbolUnary extends SymbolBase {
     // [FORMA] Unary ::= Factor
     public SymbolUnary(SymbolFactor factor) {
         super("Unary", 0);
-        this.factor = factor;
 
+        this.factor = factor;
         this.subtype = factor.getSubtype();
     }
 
@@ -46,7 +46,17 @@ public class SymbolUnary extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label=\"" + name + "\"];\n" + index + "->\"" + name + "\"\n");
+        out.print(index + "\t[label='" + name + "'];\n");
+
+        if (unary != null) {
+            out.print(index + "->" + unary.getIndex() + "\n");
+
+            unary.toDot(out);
+        } else {
+            out.print(index + "->" + factor.getIndex() + "\n");
+
+            factor.toDot(out);
+        }
     }
 
 }

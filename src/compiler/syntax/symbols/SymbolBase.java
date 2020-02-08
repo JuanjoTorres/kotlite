@@ -10,15 +10,6 @@ import java_cup.runtime.ComplexSymbolFactory.ComplexSymbol;
 
 import java.io.PrintWriter;
 
-
-/**
- * Classe que implementa la classe base a partir de la que s'implementen totes
- * les variables de la gramàtica.
- *
- * Bàsicament conté un valor enter
- *
- * @author svice
- */
 public abstract class SymbolBase extends ComplexSymbol {
     private static int idAutoIncrement = 0;
     static SymbolTable symbolTable = new SymbolTable();

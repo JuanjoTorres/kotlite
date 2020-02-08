@@ -9,17 +9,17 @@ import java.io.PrintWriter;
 
 public class SymbolMult extends SymbolBase {
 
-    private int SYMBOL;
+    private int symbol;
 
     public SymbolMult(int symbol) {
-
         super("Mult", 0);
-        this.SYMBOL = symbol;
+
+        this.symbol = symbol;
     }
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label=\"" + name + "\"];\n" + index + "->\"" + name + "\"\n");
+        out.print(index + "\t[label='" + name + "'];\n");
     }
 
 }

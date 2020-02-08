@@ -23,8 +23,8 @@ public class SymbolFunction extends SymbolBase {
     //         Rtnpart:v5 RBRACKET
     public SymbolFunction(SymbolId id, SymbolArgsdec argsdec, SymbolBasic basic, SymbolDecls decls,
                           SymbolStatments statments, SymbolRtnpart rtnpart) throws KotliteException.DuplicatedIdentifierException, KotliteException.IncompatibleSubtypeException {
-
         super("Function", 0);
+
         this.id = id;
         this.argsdec = argsdec;
         this.basic = basic;
@@ -47,7 +47,21 @@ public class SymbolFunction extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label=\"" + name + "\"];\n" + index + "->\"" + name + "\"\n");
+        out.print(index + "\t[label='" + name + "'];\n");
+
+        out.print(index + "->" + id.getIndex() + "\n");
+        out.print(index + "->" + argsdec.getIndex() + "\n");
+        out.print(index + "->" + basic.getIndex() + "\n");
+        out.print(index + "->" + decls.getIndex() + "\n");
+        out.print(index + "->" + statments.getIndex() + "\n");
+        out.print(index + "->" + rtnpart.getIndex() + "\n");
+
+        id.toDot(out);
+        argsdec.toDot(out);
+        basic.toDot(out);
+        decls.toDot(out);
+        statments.toDot(out);
+        rtnpart.toDot(out);
     }
 
 }

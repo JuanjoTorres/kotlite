@@ -9,16 +9,16 @@ import java.io.PrintWriter;
 
 public class SymbolAdd extends SymbolBase {
 
-    private int SYMBOL;
+    private int symbol;
 
     public SymbolAdd(int symbol) {
         super("Add", 0);
-        this.SYMBOL = symbol;
+        this.symbol = symbol;
     }
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label=\"" + name + "\"];\n" + index + "->\"" + name + "\"\n");
+        out.print(index + "\t[label='" + name + "'];\n");
     }
 
 }

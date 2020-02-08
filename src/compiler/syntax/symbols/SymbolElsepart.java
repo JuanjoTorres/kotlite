@@ -13,18 +13,29 @@ public class SymbolElsepart extends SymbolBase {
     private SymbolStatments statments;
 
     // [FORMA] Elsepart ::= .
-    public SymbolElsepart() { super("Elsepart", 0); }
+    public SymbolElsepart() {
+        super("Elsepart", 0);
+    }
 
     // [FORMA] Elsepart ::= ELSE LBRACKET Decls Statments RBRACKET
     public SymbolElsepart(SymbolDecls decls, SymbolStatments statments) {
         super("Elsepart", 0);
+
         this.decls = decls;
         this.statments = statments;
     }
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label=\"" + name + "\"];\n" + index + "->\"" + name + "\"\n");
+        out.print(index + "\t[label='" + name + "'];\n");
+
+        if (decls != null) {
+            out.print(index + "->" + decls.getIndex() + "\n");
+            out.print(index + "->" + statments.getIndex() + "\n");
+
+            decls.toDot(out);
+            statments.toDot(out);
+        }
     }
 
 }

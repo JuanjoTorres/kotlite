@@ -21,6 +21,7 @@ public class SymbolTerm extends SymbolBase {
     // Term ::= Term Mult Unary
     public SymbolTerm(SymbolTerm term, SymbolMult mult, SymbolUnary unary) throws KotliteException.IncompatibleSubtypeException {
         super("Term", 0);
+
         this.term = term;
         this.mult = mult;
         this.unary = unary;
@@ -32,8 +33,8 @@ public class SymbolTerm extends SymbolBase {
     // Term ::= Unary
     public SymbolTerm(SymbolUnary unary) {
         super("Term", 0);
-        this.unary = unary;
 
+        this.unary = unary;
         this.subtype = unary.getSubtype();
     }
 
@@ -43,7 +44,21 @@ public class SymbolTerm extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label=\"" + name + "\"];\n" + index + "->\"" + name + "\"\n");
+        out.print(index + "\t[label='" + name + "'];\n");
+
+        if (mult != null) {
+            out.print(index + "->" + term.getIndex() + "\n");
+            out.print(index + "->" + mult.getIndex() + "\n");
+            out.print(index + "->" + unary.getIndex() + "\n");
+
+            term.toDot(out);
+            mult.toDot(out);
+            unary.toDot(out);
+        } else {
+            out.print(index + "->" + unary.getIndex() + "\n");
+
+            unary.toDot(out);
+        }
     }
 
 }
