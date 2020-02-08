@@ -28,6 +28,9 @@ public class SymbolTerm extends SymbolBase {
 
         if (term.getSubtype() != Subtype.INT || unary.getSubtype() != Subtype.INT)
             throw new KotliteException.IncompatibleSubtypeException("Mult/Div requires INT SubtypeT");
+
+        //Resultado de multiplicacion es INT
+        this.subtype = Subtype.INT;
     }
 
     // Term ::= Unary

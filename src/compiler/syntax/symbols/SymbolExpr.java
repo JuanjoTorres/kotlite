@@ -28,6 +28,9 @@ public class SymbolExpr extends SymbolBase {
 
         if (expr.getSubtype() != Subtype.INT || term.getSubtype() != Subtype.INT)
             throw new KotliteException.IncompatibleSubtypeException("Add/Sub requires INT Subtype");
+
+        //Resultado de + o - es INT
+        subtype = Subtype.INT;
     }
 
     // [FORMA] Expr ::= Term

@@ -99,7 +99,7 @@ Functions ::= Functions:v1 Function:v2
               {: RESULT = new SymbolFunctions(v1, v2); :}
               | {: RESULT = new SymbolFunctions(); :};
 
-Function ::= FUN Id:id LPAREN Argsdec:v1 RPAREN COLON Basic:v2 LBRACKET Aup Decls:v3 Statments:v4 Rtnpart:v5 Adown RBRACKET
+Function ::= FUN Id:id Aup LPAREN Argsdec:v1 RPAREN COLON Basic:v2 LBRACKET Decls:v3 Statments:v4 Rtnpart:v5 Adown RBRACKET
               {: RESULT = new SymbolFunction(id, v1, v2, v3, v4, v5); :};
 
 Functioncall ::= Id:id LPAREN Args:v1 RPAREN

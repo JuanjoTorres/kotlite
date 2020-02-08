@@ -28,6 +28,9 @@ public class SymbolBool extends SymbolBase {
 
         if (bool.getSubtype() != Subtype.BOOLEAN || relation.getSubtype() != Subtype.BOOLEAN)
             throw new KotliteException.IncompatibleSubtypeException("Join requires BOOLEAN Subtype");
+
+        //Subtype de AND o OR es BOOL
+        subtype = Subtype.BOOLEAN;
     }
 
     // FORMA Bool ::= Relation

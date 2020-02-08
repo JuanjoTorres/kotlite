@@ -38,6 +38,15 @@ public class SymbolTable {
 
             System.err.println("[SYNTAX ERROR] Write Error in Symbol Table: " + e.getMessage());
         }
+
+
+        //Añadir funciont print() a la tabla de simbolos
+        try {
+            add(new Symbol("print", Type.PROC, Subtype.NULL));
+        } catch (KotliteException.DuplicatedIdentifierException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void reset() {
@@ -57,6 +66,8 @@ public class SymbolTable {
     }
 
     public void add(Symbol symbol) throws KotliteException.DuplicatedIdentifierException {
+
+        System.out.println("Insertando ID:" + symbol.getId());
 
         //Comprobar si ya existe el identificador
         if (hashMapStack.peek().containsKey(symbol.getId()))
@@ -103,6 +114,7 @@ public class SymbolTable {
             if (hashMapStack.get(i).containsKey(id))
                 //Devolver identificador
                 return (Symbol) hashMapStack.get(i).get(id);
+
         }
 
         //No existe el identificador, lanzar excepción

@@ -6,7 +6,7 @@
 PROGRAM -> DECLS FUNCTIONS .
 FUNCTIONS -> FUNCTIONS FUNCTION .
 FUNCTIONS -> .
-FUNCTION  -> fun id ( ARGSDEC ) : BASIC { AUP DECLS STATMENTS RTNPART ADOWN } .
+FUNCTION  -> fun id AUP ( ARGSDEC ) : BASIC { DECLS STATMENTS RTNPART ADOWN } .
 #TODO Comprobar argumentos igual a declarados
 FUNCTIONCALL -> id ( ARGS ) .
 #TODO Comprobar tipo de return con tipo de function

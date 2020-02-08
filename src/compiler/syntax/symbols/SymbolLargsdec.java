@@ -5,6 +5,7 @@
  */
 package compiler.syntax.symbols;
 
+import compiler.KotliteException;
 import compiler.syntax.table.Symbol;
 import compiler.syntax.table.Type;
 
@@ -20,27 +21,39 @@ public class SymbolLargsdec extends SymbolBase {
     private ArrayList<Symbol> args = new ArrayList<>();
 
     // [FORMA] Largsdec ::= Largsdec SEMICOLON Id COLON Basic
-    public SymbolLargsdec(SymbolLargsdec largsdec, SymbolId id, SymbolBasic basic) {
+    public SymbolLargsdec(SymbolLargsdec largsdec, SymbolId id, SymbolBasic basic) throws KotliteException.DuplicatedIdentifierException {
         super("Largsdec", 0);
 
         this.largsdec = largsdec;
         this.id = id;
         this.basic = basic;
 
+        //Crear simbolo
+        Symbol symbol = new Symbol(id.getName(), Type.ARG, basic.getSubtype());
+
         //Añadir argumentos de lista de argumentos y el argumento actual
         args.addAll(largsdec.getArgs());
-        args.add(new Symbol(id.getName(), Type.ARG, basic.getSubtype()));
+        args.add(symbol);
+
+        //Añadir a la tabla de simbolos
+        symbolTable.add(symbol);
     }
 
     // [FORMA] Largsdec ::= Largsdec SEMICOLON Id COLON Basic
-    public SymbolLargsdec(SymbolId id, SymbolBasic basic) {
+    public SymbolLargsdec(SymbolId id, SymbolBasic basic) throws KotliteException.DuplicatedIdentifierException {
         super("Largsdec", 0);
 
         this.id = id;
         this.basic = basic;
 
+        //Crear simbolo
+        Symbol symbol = new Symbol(id.getName(), Type.ARG, basic.getSubtype());
+
         //Añadir el argumento actual
         args.add(new Symbol(id.getName(), Type.ARG, basic.getSubtype()));
+
+        //Añadir a la tabla de simbolos
+        symbolTable.add(symbol);
     }
 
     public void setArgs(ArrayList<Symbol> args) {

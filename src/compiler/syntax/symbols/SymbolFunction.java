@@ -32,6 +32,8 @@ public class SymbolFunction extends SymbolBase {
         this.statments = statments;
         this.rtnpart = rtnpart;
 
+        //TODO Rtnpart == null ¿?
+
         if (basic.getSubtype() != rtnpart.getSubtype())
             throw new KotliteException.IncompatibleSubtypeException("Incompatible Subtype");
 

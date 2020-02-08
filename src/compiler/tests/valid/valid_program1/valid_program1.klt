@@ -14,7 +14,7 @@ fun max(num1: Int; num2: Int): Int {
         res = num1;
     }
 
-    return result;
+    return res;
 }
 
 fun main (a: Int; b: Boolean) : None {
