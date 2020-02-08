@@ -92,8 +92,13 @@ public class SymbolTable {
 
     public Symbol getId(String id) throws KotliteException.IdentifierNotExistException {
 
+        System.out.println("Buscando id: " + id);
+
         //Recorrer la tabla de símbolos desde el nivel superior hacia el inferior
         for (int i = hashMapStack.size() - 1; i >= 0; i--) {
+
+            //TODO Buscar en array list de argumentos
+
             //Comprobar si existe el identificador en el nivel actual
             if (hashMapStack.get(i).containsKey(id))
                 //Devolver identificador
