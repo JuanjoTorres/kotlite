@@ -8,7 +8,8 @@ fun max(num1: Int; num2: Int): Int {
     a = 10;
     b = 10;
 
-    if (num1 < num2) {
+    // TODO no funciona el or ||
+    if (num1 < num2 && true) {
         res = num2;
     } else {
         res = num1;

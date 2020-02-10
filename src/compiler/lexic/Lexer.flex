@@ -27,14 +27,11 @@ letter = [a-zA-Z]
 whites = [' ' | '\t']+
 eol    = ['\r' | '\n' | '\r\n']
 strings = \"(\\.|[^\"])*\"
+input = [^\r\n]
 
 // El següent codi es copiarà també, dins de la classe. És a dir, si es posa res
 // ha de ser en el format adient: mètodes, atributs, etc.
 %{
-    /***
-     Mecanismes de gestió de símbols basat en ComplexSymbol. Tot i que en
-     aquest cas potser no és del tot necessari.
-     ***/
     /**
      Construcció d'un symbol sense atribut associat.
      **/
@@ -84,6 +81,9 @@ strings = \"(\\.|[^\"])*\"
 %%
 
 /* Reglas y acciones */
+
+//Comentario de una linea
+"//" {input}*{eol}? { /* Ignorar comentarios */ }
 
 // Operadores
 "+" { return symbol(ParserSym.PLUS, this.yytext()); }
