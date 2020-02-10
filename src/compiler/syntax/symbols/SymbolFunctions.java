@@ -27,15 +27,17 @@ public class SymbolFunctions extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label='" + name + "'];\n");
+        out.print(index + " [label=\"" + name + "\"];\n");
 
-        if (functions != null) {
+        if (functions != null)
             out.print(index + "->" + functions.getIndex() + "\n");
+        if (function != null)
             out.print(index + "->" + function.getIndex() + "\n");
 
+        if (functions != null)
             functions.toDot(out);
+        if (function != null)
             function.toDot(out);
-        }
     }
 
 }

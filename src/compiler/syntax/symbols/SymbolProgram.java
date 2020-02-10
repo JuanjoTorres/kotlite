@@ -34,13 +34,17 @@ public class SymbolProgram extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label='" + name + "'];\n");
+        out.print(index + " [label=\"" + name + "\"];\n");
 
-        out.print(index + "->" + decls.getIndex() + "\n");
-        out.print(index + "->" + functions.getIndex() + "\n");
+        if (decls != null)
+            out.print(index + "->" + decls.getIndex() + "\n");
+        if (functions != null)
+            out.print(index + "->" + functions.getIndex() + "\n");
 
-        decls.toDot(out);
-        functions.toDot(out);
+        if (decls != null)
+            decls.toDot(out);
+        if (functions != null)
+            functions.toDot(out);
 
     }
 

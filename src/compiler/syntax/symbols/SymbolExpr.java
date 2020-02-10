@@ -47,21 +47,19 @@ public class SymbolExpr extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label='" + name + "'];\n");
+        out.print(index + " [label=\"" + name + "\"];\n");
 
-        if (expr != null) {
+        if (expr != null)
             out.print(index + "->" + expr.getIndex() + "\n");
+        if (add != null)
             out.print(index + "->" + add.getIndex() + "\n");
-            out.print(index + "->" + term.getIndex() + "\n");
+        out.print(index + "->" + term.getIndex() + "\n");
 
+        if (expr != null)
             expr.toDot(out);
+        if (add != null)
             add.toDot(out);
-            term.toDot(out);
-        } else {
-            out.print(index + "->" + term.getIndex() + "\n");
-
-            term.toDot(out);
-        }
+        term.toDot(out);
     }
 
 }

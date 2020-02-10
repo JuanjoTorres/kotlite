@@ -56,21 +56,19 @@ public class SymbolRelation extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label='" + name + "'];\n");
+        out.print(index + " [label=\"" + name + "\"];\n");
 
-        if (oprel != null) {
-            out.print(index + "->" + expr1.getIndex() + "\n");
+        out.print(index + "->" + expr1.getIndex() + "\n");
+        if (oprel != null)
             out.print(index + "->" + oprel.getIndex() + "\n");
+        if (expr2 != null)
             out.print(index + "->" + expr2.getIndex() + "\n");
 
-            expr1.toDot(out);
+        expr1.toDot(out);
+        if (oprel != null)
             oprel.toDot(out);
+        if (expr2 != null)
             expr2.toDot(out);
-        } else {
-            out.print(index + "->" + expr1.getIndex() + "\n");
-
-            expr1.toDot(out);
-        }
     }
 
 }

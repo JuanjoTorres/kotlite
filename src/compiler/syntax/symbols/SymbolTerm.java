@@ -47,21 +47,19 @@ public class SymbolTerm extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label='" + name + "'];\n");
+        out.print(index + " [label=\"" + name + "\"];\n");
 
-        if (mult != null) {
+        if (term != null)
             out.print(index + "->" + term.getIndex() + "\n");
+        if (mult != null)
             out.print(index + "->" + mult.getIndex() + "\n");
-            out.print(index + "->" + unary.getIndex() + "\n");
+        out.print(index + "->" + unary.getIndex() + "\n");
 
+        if (term != null)
             term.toDot(out);
+        if (mult != null)
             mult.toDot(out);
-            unary.toDot(out);
-        } else {
-            out.print(index + "->" + unary.getIndex() + "\n");
-
-            unary.toDot(out);
-        }
+        unary.toDot(out);
     }
 
 }

@@ -5,6 +5,8 @@
  */
 package compiler.syntax.symbols;
 
+import compiler.syntax.ParserSym;
+
 import java.io.PrintWriter;
 
 public class SymbolJoin extends SymbolBase {
@@ -19,7 +21,10 @@ public class SymbolJoin extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label='" + name + "'];\n");
+        if (symbol == ParserSym.AND)
+            out.print(index + " [label=\"" + name + " AND\"];\n");
+        else
+            out.print(index + " [label=\"" + name + " OR\"];\n");
     }
 
 }

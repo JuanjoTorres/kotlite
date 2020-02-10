@@ -27,15 +27,17 @@ public class SymbolStatments extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label='" + name + "'];\n");
+        out.print(index + " [label=\"" + name + "\"];\n");
 
-        if (statments != null) {
+        if (statments != null)
             out.print(index + "->" + statments.getIndex() + "\n");
+        if (statment != null)
             out.print(index + "->" + statment.getIndex() + "\n");
 
+        if (statments != null)
             statments.toDot(out);
+        if (statment != null)
             statment.toDot(out);
-        }
     }
 
 }

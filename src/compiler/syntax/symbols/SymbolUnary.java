@@ -46,15 +46,13 @@ public class SymbolUnary extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label='" + name + "'];\n");
+        out.print(index + " [label=\"" + name + "\"];\n");
 
         if (unary != null) {
             out.print(index + "->" + unary.getIndex() + "\n");
-
             unary.toDot(out);
-        } else {
+        } else if (factor != null) {
             out.print(index + "->" + factor.getIndex() + "\n");
-
             factor.toDot(out);
         }
     }

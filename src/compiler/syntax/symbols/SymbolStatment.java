@@ -84,49 +84,33 @@ public class SymbolStatment extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label='" + name + "'];\n");
+        out.print(index + " [label=\"" + name + "\"];\n");
 
-        if (bool != null) {
+        if (id != null)
+            out.print(index + "->" + id.getIndex() + "\n");
+        if (bool != null)
+            out.print(index + "->" + bool.getIndex() + "\n");
+        if (decls != null)
+            out.print(index + "->" + decls.getIndex() + "\n");
+        if (statments != null)
+            out.print(index + "->" + statments.getIndex() + "\n");
+        if (elsepart != null)
+            out.print(index + "->" + elsepart.getIndex() + "\n");
+        if (functioncall != null)
+            out.print(index + "->" + functioncall.getIndex() + "\n");
 
-            if (id != null) {
-                out.print(index + "->" + id.getIndex() + "\n");
-                out.print(index + "->" + bool.getIndex() + "\n");
-
-                id.toDot(out);
-                bool.toDot(out);
-            } else if (elsepart != null) {
-                out.print(index + "->" + bool.getIndex() + "\n");
-                out.print(index + "->" + decls.getIndex() + "\n");
-                out.print(index + "->" + statments.getIndex() + "\n");
-                out.print(index + "->" + elsepart.getIndex() + "\n");
-
-                bool.toDot(out);
-                decls.toDot(out);
-                statments.toDot(out);
-                elsepart.toDot(out);
-            } else {
-                out.print(index + "->" + bool.getIndex() + "\n");
-                out.print(index + "->" + decls.getIndex() + "\n");
-                out.print(index + "->" + statments.getIndex() + "\n");
-
-                bool.toDot(out);
-                decls.toDot(out);
-                statments.toDot(out);
-            }
-        } else if (functioncall != null) {
-
-            if (id != null) {
-                out.print(index + "->" + id.getIndex() + "\n");
-                out.print(index + "->" + functioncall.getIndex() + "\n");
-
-                id.toDot(out);
-                functioncall.toDot(out);
-            } else {
-                out.print(index + "->" + functioncall.getIndex() + "\n");
-
-                functioncall.toDot(out);
-            }
-        }
+        if (id != null)
+            id.toDot(out);
+        if (bool != null)
+            bool.toDot(out);
+        if (decls != null)
+            decls.toDot(out);
+        if (statments != null)
+            statments.toDot(out);
+        if (elsepart != null)
+            elsepart.toDot(out);
+        if (functioncall != null)
+            functioncall.toDot(out);
     }
 
 }

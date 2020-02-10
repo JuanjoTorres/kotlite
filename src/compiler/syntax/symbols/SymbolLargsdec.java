@@ -66,23 +66,17 @@ public class SymbolLargsdec extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label='" + name + "'];\n");
+        out.print(index + " [label=\"" + name + "\"];\n");
 
-        if (largsdec != null) {
+        if (largsdec != null)
             out.print(index + "->" + largsdec.getIndex() + "\n");
-            out.print(index + "->" + id.getIndex() + "\n");
-            out.print(index + "->" + basic.getIndex() + "\n");
+        out.print(index + "->" + id.getIndex() + "\n");
+        out.print(index + "->" + basic.getIndex() + "\n");
 
+        if (largsdec != null)
             largsdec.toDot(out);
-            id.toDot(out);
-            basic.toDot(out);
-        } else {
-            out.print(index + "->" + id.getIndex() + "\n");
-            out.print(index + "->" + basic.getIndex() + "\n");
-
-            id.toDot(out);
-            basic.toDot(out);
-        }
+        id.toDot(out);
+        basic.toDot(out);
     }
 
 }

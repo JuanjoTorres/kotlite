@@ -29,19 +29,15 @@ public class SymbolLargs extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label='" + name + "'];\n");
+        out.print(index + " [label=\"" + name + "\"];\n");
 
-        if (largs != null) {
+        if (largs != null)
             out.print(index + "->" + largs.getIndex() + "\n");
-            out.print(index + "->" + factor.getIndex() + "\n");
+        out.print(index + "->" + factor.getIndex() + "\n");
 
+        if (largs != null)
             largs.toDot(out);
-            factor.toDot(out);
-        } else {
-            out.print(index + "->" + factor.getIndex() + "\n");
-
-            factor.toDot(out);
-        }
+        factor.toDot(out);
     }
 
 }

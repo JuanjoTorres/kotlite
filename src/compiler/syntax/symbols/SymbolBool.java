@@ -47,21 +47,19 @@ public class SymbolBool extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label='" + name + "'];\n");
+        out.print(index + " [label=\"" + name + "\"];\n");
 
-        if (bool != null) {
+        if (bool != null)
             out.print(index + "->" + bool.getIndex() + "\n");
+        if (join != null)
             out.print(index + "->" + join.getIndex() + "\n");
-            out.print(index + "->" + relation.getIndex() + "\n");
+        out.print(index + "->" + relation.getIndex() + "\n");
 
+        if (bool != null)
             bool.toDot(out);
+        if (join != null)
             join.toDot(out);
-            relation.toDot(out);
-        } else {
-            out.print(index + "->" + relation.getIndex() + "\n");
-
-            relation.toDot(out);
-        }
+        relation.toDot(out);
     }
 
 }

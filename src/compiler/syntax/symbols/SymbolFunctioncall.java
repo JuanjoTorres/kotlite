@@ -44,13 +44,15 @@ public class SymbolFunctioncall extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label='" + name + "'];\n");
+        out.print(index + " [label=\"" + name + "\"];\n");
 
         out.print(index + "->" + id.getIndex() + "\n");
-        out.print(index + "->" + args.getIndex() + "\n");
+        if (args != null)
+            out.print(index + "->" + args.getIndex() + "\n");
 
         id.toDot(out);
-        args.toDot(out);
+        if (args != null)
+            args.toDot(out);
     }
 
 }

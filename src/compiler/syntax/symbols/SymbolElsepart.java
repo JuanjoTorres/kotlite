@@ -27,15 +27,17 @@ public class SymbolElsepart extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label='" + name + "'];\n");
+        out.print(index + " [label=\"" + name + "\"];\n");
 
-        if (decls != null) {
+        if (decls != null)
             out.print(index + "->" + decls.getIndex() + "\n");
+        if (statments != null)
             out.print(index + "->" + statments.getIndex() + "\n");
 
+        if (decls != null)
             decls.toDot(out);
+        if (statments != null)
             statments.toDot(out);
-        }
     }
 
 }

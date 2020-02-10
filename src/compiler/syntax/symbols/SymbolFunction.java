@@ -32,16 +32,24 @@ public class SymbolFunction extends SymbolBase {
         this.statments = statments;
         this.rtnpart = rtnpart;
 
-        //TODO Rtnpart == null ¿?
-
-        if (basic.getSubtype() != rtnpart.getSubtype())
-            throw new KotliteException.IncompatibleSubtypeException("Incompatible Subtype");
+        //Comprobar si la función tiene return
+        if (rtnpart == null) {
+            //Si no tiene return, la función tiene que ser de tipo subyacente None
+            if (basic.getSubtype() != Subtype.NULL)
+                throw new KotliteException.IncompatibleSubtypeException("No return, " + basic.getSubtype() + " subtype return expected");
+        } else {
+            //Si tiene return, tiene que ser del mismo tipo subyacente que la funcion
+            if (basic.getSubtype() != rtnpart.getSubtype())
+                throw new KotliteException.IncompatibleSubtypeException("Incompatible Subtype");
+        }
 
         //Crear símbolo de la funcion
         Symbol function = new Symbol(id.getName(), Type.PROC, basic.getSubtype());
 
-        //Añadir argumentos
-        function.getArgs().addAll(argsdec.getArgs());
+        if (argsdec != null) {
+            //Añadir argumentos
+            function.getArgs().addAll(argsdec.getArgs());
+        }
 
         //Añadir función a la tabla de simbolos
         symbolTable.add(function);
@@ -49,21 +57,29 @@ public class SymbolFunction extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label='" + name + "'];\n");
+        out.print(index + " [label=\"" + name + "\"];\n");
 
         out.print(index + "->" + id.getIndex() + "\n");
-        out.print(index + "->" + argsdec.getIndex() + "\n");
+        if (argsdec != null)
+            out.print(index + "->" + argsdec.getIndex() + "\n");
         out.print(index + "->" + basic.getIndex() + "\n");
-        out.print(index + "->" + decls.getIndex() + "\n");
-        out.print(index + "->" + statments.getIndex() + "\n");
-        out.print(index + "->" + rtnpart.getIndex() + "\n");
+        if (decls != null)
+            out.print(index + "->" + decls.getIndex() + "\n");
+        if (statments != null)
+            out.print(index + "->" + statments.getIndex() + "\n");
+        if (rtnpart != null)
+            out.print(index + "->" + rtnpart.getIndex() + "\n");
 
         id.toDot(out);
-        argsdec.toDot(out);
+        if (argsdec != null)
+            argsdec.toDot(out);
         basic.toDot(out);
-        decls.toDot(out);
-        statments.toDot(out);
-        rtnpart.toDot(out);
+        if (decls != null)
+            decls.toDot(out);
+        if (statments != null)
+            statments.toDot(out);
+        if (rtnpart != null)
+            rtnpart.toDot(out);
     }
 
 }

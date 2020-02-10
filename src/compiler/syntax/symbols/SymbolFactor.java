@@ -58,7 +58,7 @@ public class SymbolFactor extends SymbolBase {
 
     @Override
     public void toDot(PrintWriter out) {
-        out.print(index + "\t[label='" + name + "'];\n");
+        out.print(index + " [label=\"" + name + " " + subtype + "\"];\n");
 
         if (bool != null) {
             out.print(index + "->" + bool.getIndex() + "\n");

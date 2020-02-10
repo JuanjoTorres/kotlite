@@ -48,27 +48,19 @@ public class SymbolDecl extends SymbolBase {
     @Override
     public void toDot(PrintWriter out) {
 
-        out.print(index + "\t[label='" + name + "'];\n");
+        out.print(index + " [label=\"" + name + "\"];\n");
 
-        if (bool == null) {
-            out.print(index + "->" + type.getIndex() + "\n");
-            out.print(index + "->" + id.getIndex() + "\n");
-            out.print(index + "->" + basic.getIndex() + "\n");
-
-            type.toDot(out);
-            id.toDot(out);
-            basic.toDot(out);
-        } else {
-            out.print(index + "->" + type.getIndex() + "\n");
-            out.print(index + "->" + id.getIndex() + "\n");
-            out.print(index + "->" + basic.getIndex() + "\n");
+        out.print(index + "->" + type.getIndex() + "\n");
+        out.print(index + "->" + id.getIndex() + "\n");
+        out.print(index + "->" + basic.getIndex() + "\n");
+        if (bool != null)
             out.print(index + "->" + bool.getIndex() + "\n");
 
-            type.toDot(out);
-            id.toDot(out);
-            basic.toDot(out);
+        type.toDot(out);
+        id.toDot(out);
+        basic.toDot(out);
+        if (bool != null)
             bool.toDot(out);
-        }
     }
 
 }
