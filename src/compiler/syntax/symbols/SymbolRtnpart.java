@@ -28,6 +28,13 @@ public class SymbolRtnpart extends SymbolBase {
         this.subtype = factor.getSubtype();
     }
 
+    // [FORMA] Rtnpart ::= RETURN ;
+    public SymbolRtnpart(int none) {
+        super("Rtnpart", 0);
+
+        this.subtype = Subtype.NULL;
+    }
+
     public Subtype getSubtype() {
         return subtype;
     }

@@ -107,6 +107,8 @@ Functioncall ::= Id:id LPAREN Args:v1 RPAREN
 
 Rtnpart ::= RETURN Factor:v1 SEMICOLON
               {: RESULT = new SymbolRtnpart(v1); :}
+              | RETURN SEMICOLON
+              {: RESULT = new SymbolRtnpart(ParserSym.NONE); :}
               | {: RESULT = new SymbolRtnpart(); :};
 
 Decls ::= Decls:v1 Decl:v2

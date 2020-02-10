@@ -11,6 +11,7 @@ FUNCTION  -> fun id AUP ( ARGSDEC ) : BASIC { DECLS STATMENTS RTNPART ADOWN } .
 FUNCTIONCALL -> id ( ARGS ) .
 #TODO Comprobar tipo de return con tipo de function
 RTNPART -> return FACTOR .
+RTNPART -> return ; .
 RTNPART -> .
 DECLS -> DECLS DECL .
 DECLS -> .
@@ -77,6 +78,8 @@ OPREL -> < .
 OPREL -> <= .
 OPREL -> > .
 OPREL -> >= .
+TYPE -> var .
+TYPE -> val .
 BASIC -> Int .
 BASIC -> String .
 BASIC -> Boolean .
@@ -87,6 +90,7 @@ FACTOR -> literal .
 FACTOR -> num .
 FACTOR -> true .
 FACTOR -> false .
+ID -> id .
 
 AUP -> .
 ADOWN -> .
