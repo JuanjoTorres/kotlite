@@ -1,6 +1,5 @@
 package compiler;
 
-
 import compiler.lexic.Lexer;
 import compiler.syntax.*;
 
@@ -11,7 +10,7 @@ import java.io.*;
 
 public class Compiler {
 
-    private final static String DIR = "tokens.txt";
+    private final static String TOKENS_FILE = "tokens.txt";
 
     public static void main(String[] args) throws Exception {
 
@@ -21,39 +20,39 @@ public class Compiler {
             System.exit(-1);
         }
 
-        String fileName = args[0];
-        FileReader fileReader = new FileReader(fileName);
-        FileWriter fileWriter = new FileWriter(DIR);
+        String sourceCode = args[0];
+        FileReader fileReader = new FileReader(sourceCode);
+        FileWriter fileWriter = new FileWriter(TOKENS_FILE);
 
         int numTokens = 0;
-        Lexer scan = new Lexer(fileReader);
-        Symbol symbol = scan.next_token();
+        Lexer scanner = new Lexer(fileReader);
+        Symbol symbol = scanner.next_token();
 
         System.out.println("FASE LEXICA iniciada.");
         System.out.println("Generando fichero de tokens...");
 
         while (symbol.sym != ParserSym.EOF) {
 
-            fileWriter.write(scan.getRow() + ":" + scan.getCol()    // Posicion donde se ha encontrado el token
+            fileWriter.write(scanner.getRow() + ":" + scanner.getCol()    // Posicion donde se ha encontrado el token
                     + " TKN_" + ParserSym.terminalNames[symbol.sym]     // Tipo de token encontrado
                     + " [" + symbol.value + "]\n");                     // Valor del token
 
-            symbol = scan.next_token();
+            symbol = scanner.next_token();
             numTokens++;
         }
 
         fileReader.close();
         fileWriter.close();
-        scan.yyclose();
+        scanner.yyclose();
 
         System.out.println("Número de tokens identificados: " + numTokens);
         System.out.println("FASE LEXICA terminada.");
 
-        fileReader = new FileReader(args[0]);
-        scan.yyreset(fileReader);
+        fileReader = new FileReader(sourceCode);
+        scanner.yyreset(fileReader);
 
         ComplexSymbolFactory factory = new ComplexSymbolFactory();
-        Parser parser = new Parser(scan, factory);
+        Parser parser = new Parser(scanner, factory);
         parser.debug_parse();
     }
 }
