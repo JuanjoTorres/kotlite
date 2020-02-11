@@ -97,8 +97,6 @@ public class SymbolTable {
         } catch (IOException e) {
             System.err.println("[SYNTAX ERROR] Write Error in Symbol Table: " + e.getMessage());
         }
-
-        //TODO FALTA AÑADIR EL ATRIBUTO NP
     }
 
     public Symbol getId(String id) throws KotliteException.IdentifierNotExistException {
@@ -107,8 +105,6 @@ public class SymbolTable {
 
         //Recorrer la tabla de símbolos desde el nivel superior hacia el inferior
         for (int i = hashMapStack.size() - 1; i >= 0; i--) {
-
-            //TODO Buscar en array list de argumentos
 
             //Comprobar si existe el identificador en el nivel actual
             if (hashMapStack.get(i).containsKey(id))

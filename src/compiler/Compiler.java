@@ -34,8 +34,8 @@ public class Compiler {
         while (symbol.sym != ParserSym.EOF) {
 
             fileWriter.write(scanner.getRow() + ":" + scanner.getCol()    // Posicion donde se ha encontrado el token
-                    + " TKN_" + ParserSym.terminalNames[symbol.sym]     // Tipo de token encontrado
-                    + " [" + symbol.value + "]\n");                     // Valor del token
+                    + " TKN_" + ParserSym.terminalNames[symbol.sym]           // Tipo de token encontrado
+                    + " [" + symbol.value + "]\n");                           // Valor del token
 
             symbol = scanner.next_token();
             numTokens++;
@@ -51,8 +51,7 @@ public class Compiler {
         fileReader = new FileReader(sourceCode);
         scanner.yyreset(fileReader);
 
-        ComplexSymbolFactory factory = new ComplexSymbolFactory();
-        Parser parser = new Parser(scanner, factory);
+        Parser parser = new Parser(scanner, new ComplexSymbolFactory());
         parser.debug_parse();
     }
 }

@@ -8,10 +8,9 @@ FUNCTIONS -> FUNCTIONS FUNCTION .
 FUNCTIONS -> .
 FUNCTION  -> fun id AUP ( ARGSDEC ) : BASIC { DECLS STATMENTS RTNPART ADOWN } .
 #TODO Comprobar argumentos igual a declarados
-FUNCTIONCALL -> id ( ARGS ) ; .
+FUNCTIONCALL -> id ( ARGS ) .
 #TODO Comprobar tipo de return con tipo de function
 RTNPART -> return FACTOR .
-RTNPART -> return ; .
 RTNPART -> .
 DECLS -> DECLS DECL .
 DECLS -> .
