@@ -11,47 +11,46 @@ import java.io.*;
 
 public class Compiler {
 
+    private final static String DIR = "tokens.txt";
+
     public static void main(String[] args) throws Exception {
 
-        final String DIR = "tokens.txt";
-        final int EOF = ParserSym.EOF;
-
-        FileWriter fw = new FileWriter(DIR);
-        FileReader fr = null;
-        String fileName;
-        Symbol s;
-        int numTokens = 0;
-
-        if (args[0].isEmpty())
+        //Comprobar que se pasa el fichero de código fuente como parámetro
+        if (args[0].isEmpty()) {
             System.out.println("ERROR: Introduce fichero");
-        else {
-            fileName = args[0];
-            fr = new FileReader(fileName);
+            System.exit(-1);
         }
 
+        String fileName = args[0];
+        FileReader fileReader = new FileReader(fileName);
+        FileWriter fileWriter = new FileWriter(DIR);
+
+        int numTokens = 0;
+        Lexer scan = new Lexer(fileReader);
+        Symbol symbol = scan.next_token();
+
         System.out.println("FASE LEXICA iniciada.");
-        Lexer scan = new Lexer(fr);
-        s = scan.next_token();
         System.out.println("Generando fichero de tokens...");
 
-        while (s.sym != EOF) {
+        while (symbol.sym != ParserSym.EOF) {
 
-            fw.write(scan.getRow() + ":" + scan.getCol()            // Posicion donde se ha encontrado el token
-                    + " TKN_" + ParserSym.terminalNames[s.sym]      // Tipo de token encontrado
-                    + " [" + s.value + "]\n");                      // Valor del token
-            s = scan.next_token();
+            fileWriter.write(scan.getRow() + ":" + scan.getCol()    // Posicion donde se ha encontrado el token
+                    + " TKN_" + ParserSym.terminalNames[symbol.sym]     // Tipo de token encontrado
+                    + " [" + symbol.value + "]\n");                     // Valor del token
+
+            symbol = scan.next_token();
             numTokens++;
         }
 
-        fw.close();
-        fr.close();
+        fileReader.close();
+        fileWriter.close();
         scan.yyclose();
 
         System.out.println("Número de tokens identificados: " + numTokens);
         System.out.println("FASE LEXICA terminada.");
 
-        fr = new FileReader(args[0]);
-        scan.yyreset(fr);
+        fileReader = new FileReader(args[0]);
+        scan.yyreset(fileReader);
 
         ComplexSymbolFactory factory = new ComplexSymbolFactory();
         Parser parser = new Parser(scan, factory);
