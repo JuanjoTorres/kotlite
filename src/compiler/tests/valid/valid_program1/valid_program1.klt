@@ -12,7 +12,7 @@ fun max(num1: Int; num2: Int): Int {
     if (num1 < num2 && true) {
         res = num2;
     } else {
-        res = num1;
+        res = ;
     }
 
     return res;
