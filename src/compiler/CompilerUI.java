@@ -22,7 +22,7 @@ public class CompilerUI extends JFrame {
 
     private final static String TOKENS_FILE = "tokens.txt";
 
-    private final static String DEFAULT_SOURCE_CODE = "./src/compiler/tests/valid/valid_program1/valid_program1.klt";
+    private final static String DEFAULT_SOURCE_CODE = "./src/compiler/tests/valid/valid_program3/valid_program3.klt";
 
     /**
      * UI fields

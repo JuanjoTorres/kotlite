@@ -1,10 +1,10 @@
 val llueve: Boolean = false;
 val haceSol: Boolean = true;
 
-fun comprobarTemperatura(temp: Int) : String {
+fun comprobarTemperatura(temp: Int) : None {
     var mensaje: String = "";
 
-    if(temp < 10) {
+    if(temp < true) { // ERROR DE COMPARACION
         mensaje = "Hace mucho frío";
     } else {
         if(temp < 15) {
@@ -30,17 +30,19 @@ fun calcularKel (temp: Int) : Int {
     return temp;
 }
 
+//ERROR_LEXICO
+
 fun main(): None {
 
-    val piernaRota: Boolean = false;
+    val piernaRota: String = false; // ERROR DE TIPO
     val tengoCoche: Boolean = true;
     var conductor: String = "";
     var jugadores: Int = 5;
 
     if (!piernaRota) {
-        conductor = "Yo";
+        conductor = 3; // ERROR DE TIPO
 
-        if (llueve and  haceSol and !piernaRota) {
+        if (llueve and  haceSol and conductor) { // ERROR DE EXPRESION
             print("Voy a jugar el partido de futbol");
         }
 
@@ -62,6 +64,9 @@ fun main(): None {
     if (conductor == "Mi madre") {
         print("Mi madre me cuida mucho");
     }
-    comprobarTemperatura(40);
+
+    comprobarTemperatura(); // FALTA PARAMETROS
     print("El conductor es", conductor);
+
+    calcularFahr(10); // ERROR FALTA DECLARAR FUNCION
 }

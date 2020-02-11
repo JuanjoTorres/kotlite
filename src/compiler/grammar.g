@@ -68,9 +68,8 @@ ADD	-> + .
 ADD -> - .
 MULT -> * .
 MULT -> / .
-# Sustituir [ JOIN -> || ] por [ JOIN -> $$ ]
-JOIN -> $$ .
-JOIN -> && .
+JOIN -> or .
+JOIN -> and .
 OPREL -> == .
 OPREL -> != .
 OPREL -> < .

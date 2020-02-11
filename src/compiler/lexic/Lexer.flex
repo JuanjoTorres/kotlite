@@ -102,9 +102,9 @@ input = [^\r\n]
 "," { return symbol(ParserSym.COMMA); }
 
 // Operadores binarios
-"&&" { return symbol(ParserSym.AND); }
-"||" { return symbol(ParserSym.OR); }
-"!"  { return symbol(ParserSym.NOT); }
+"and" { return symbol(ParserSym.AND); }
+"or"  { return symbol(ParserSym.OR); }
+"!"   { return symbol(ParserSym.NOT); }
 
 // Operadores relacionales
 "==" { return symbol(ParserSym.EQU); }

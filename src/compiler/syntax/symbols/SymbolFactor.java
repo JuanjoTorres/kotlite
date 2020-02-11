@@ -23,6 +23,7 @@ public class SymbolFactor extends SymbolBase {
         super("Factor", 0);
 
         this.bool = bool;
+        subtype = bool.getSubtype();
     }
 
     // [FORMA] Factor ::= Id

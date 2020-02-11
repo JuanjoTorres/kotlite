@@ -1,30 +1,30 @@
-var a: Int;
-var b: Int = 10;
-var c: Int;
-
-a = 10;
-c = "hola";
+var a: Int = 6;
+var b: Int;
 
 fun max(num1: Int; num2: Int): Int {
+
     var res: Int;
-    if (num1 < "num2") {
+
+    a = false; // TIPO ERRONEO
+    b = 10;
+
+    if (num1 < num2 and true) {
         res = num2;
     } else {
-        res = num1;
+        res; // ERROR GRAMATICAL
     }
-
-    return result;
+    // FALTA RETURN
 }
 
-fun main () : None {
-    var a: Int;
-    var b: String;
+fun main (a: Int; b: Boolean) : None {
     var c: Int;
+    var d: String = "Hola mundo!";
+    var e: Int;
 
-    a = 30 + 2 * 3;
-    b = "a / 3";
-    c = max(a, b);
+    c = 30 + 2 * 3;
+    d = a / d; // OPERACION CON INT Y STRING
+    e = max(a, b);
 
-    print("El numero mas grande es...")
+    print("El numero mas grande es...");
     print(c);
 }

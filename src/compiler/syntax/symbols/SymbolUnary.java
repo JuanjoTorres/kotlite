@@ -24,7 +24,6 @@ public class SymbolUnary extends SymbolBase {
         super("Unary", 0);
 
         this.subtype = unary.getSubtype();
-
         if (subtype != Subtype.BOOLEAN)
             throw new KotliteException.IncompatibleSubtypeException("Subtype != BOOLEAN");
 
