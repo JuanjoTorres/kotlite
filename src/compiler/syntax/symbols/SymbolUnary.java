@@ -20,7 +20,7 @@ public class SymbolUnary extends SymbolBase {
 
         this.subtype = unary.getSubtype();
         if (subtype != Subtype.BOOLEAN)
-            Output.writeError("Error in position: " + line + ":" + column + " - Subtype != BOOLEAN");
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - Subtype != BOOLEAN");
 
         this.negado = !this.negado;
         this.unary = unary;

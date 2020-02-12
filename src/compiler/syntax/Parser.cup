@@ -110,7 +110,7 @@ Function ::= FUN Id:id Aup LPAREN Argsdec:v1 RPAREN COLON Basic:v2 LBRACKET Decl
               {: RESULT = new SymbolFunction(id, v1, v2, v3, v4, v5, lexer.getRow(), lexer.getCol()); :};
 
 Functioncall ::= Id:id LPAREN Args:v1 RPAREN
-              {: RESULT = new SymbolFunctioncall(id, v1); :};
+              {: RESULT = new SymbolFunctioncall(id, v1, lexer.getRow(), lexer.getCol()); :};
 
 Rtnpart ::= RETURN Factor:v1 SEMICOLON
               {: RESULT = new SymbolRtnpart(v1); :}

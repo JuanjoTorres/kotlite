@@ -1,15 +1,14 @@
 package compiler;
 
 import compiler.lexic.Lexer;
+import compiler.output.Output;
 import compiler.syntax.Parser;
 import compiler.syntax.ParserSym;
+import compiler.syntax.symbols.SymbolBase;
 import java_cup.runtime.ComplexSymbolFactory;
 import java_cup.runtime.Symbol;
 
 import javax.swing.*;
-import javax.swing.text.Document;
-import javax.swing.text.html.HTMLEditorKit;
-import javax.swing.text.html.StyleSheet;
 import java.awt.*;
 import java.io.*;
 import java.nio.file.Files;
@@ -76,38 +75,39 @@ public class CompilerUI extends JFrame {
 
     private void parseSourceCode() throws Exception {
 
+        //Reiniciar tabla de símbolos
+        SymbolBase.symbolTable.init();
+
         Reader sourceCodeReader = new StringReader(sourceCodeEditor.getText());
-        FileWriter fileWriter = new FileWriter(TOKENS_FILE);
 
         int numTokens = 0;
-        Lexer lexer = new Lexer(sourceCodeReader);
-        Symbol symbol = lexer.next_token();
 
-        System.out.println("FASE LEXICA iniciada.");
+        System.out.println("ANÁLISIS LÉXICO iniciado.");
+
+        Lexer scanner = new Lexer(sourceCodeReader);
+        Symbol symbol = scanner.next_token();
 
         while (symbol.sym != ParserSym.EOF) {
-
-            fileWriter.write(lexer.getRow() + ":" + lexer.getCol()    // Posicion donde se ha encontrado el token
-                    + " TKN_" + ParserSym.terminalNames[symbol.sym]     // Tipo de token encontrado
-                    + " [" + symbol.value + "]\n");                     // Valor del token
-
-            symbol = lexer.next_token();
+            Output.writeToken(scanner.getRow() + ":" + scanner.getCol() + " TKN_" + ParserSym.terminalNames[symbol.sym] + " [" + symbol.value + "]");
+            symbol = scanner.next_token();
             numTokens++;
         }
 
-        sourceCodeReader.close();
-        fileWriter.close();
-        lexer.yyclose();
-
         System.out.println("Número de tokens identificados: " + numTokens);
-        System.out.println("FASE LEXICA terminada.");
+        System.out.println("ANÁLISIS LÉXICO terminado.");
 
+        sourceCodeReader.close();
         sourceCodeReader = new StringReader(sourceCodeEditor.getText());
-        lexer.yyreset(sourceCodeReader);
+        scanner.yyreset(sourceCodeReader);
 
-        ComplexSymbolFactory factory = new ComplexSymbolFactory();
-        Parser parser = new Parser(lexer, factory);
+        System.out.println("ANÁLISIS SINTÁCTICO iniciado.");
+
+        Parser parser = new Parser(scanner, new ComplexSymbolFactory());
         parser.parse();
+
+        System.out.println("ANÁLISIS SINTÁCTICO terminado.");
+
+        System.out.println("Leyendo ficheros de salida.");
 
         //Leer fichero de tokens
         tokenEditor.setText(new String(Files.readAllBytes(Paths.get("tokens.txt"))));

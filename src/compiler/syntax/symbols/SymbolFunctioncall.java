@@ -1,7 +1,9 @@
 package compiler.syntax.symbols;
 
+import compiler.output.Output;
 import compiler.syntax.table.Subtype;
 import compiler.syntax.table.Symbol;
+import jflex.Out;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -14,7 +16,7 @@ public class SymbolFunctioncall extends SymbolBase {
     private Subtype subtype;
 
     // [FORMA] Functioncall ::= Id LPAREN Args RPAREN
-    public SymbolFunctioncall(SymbolId id, SymbolArgs args) {
+    public SymbolFunctioncall(SymbolId id, SymbolArgs args, int line, int column) {
         super("Functioncall", 0);
 
         this.id = id;
@@ -23,13 +25,20 @@ public class SymbolFunctioncall extends SymbolBase {
         subtype = id.getSubtype();
 
         ArrayList<Symbol> functionArgs = symbolTable.getId(id.getName()).getArgs();
-        //TODO Hacer comprobacion del numero de argumentos
-        //if (args.size() < functionArgs.size())
-        //MissingArgumentException
 
-        for (int i = 0; i < functionArgs.size(); i++) {
+        //Comprobar el número de argumentos
+        if (args.getArgs().size() != functionArgs.size())
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - La función " + id.getName() + " espera " + functionArgs.size() +
+                    " argumento(s) y se han recibido " + args.getArgs().size() + " argumento(s)");
 
+        //Comprobar el tipo subyacente de los argumentos
+        for (int i = 0; i < args.getArgs().size(); i++) {
+            if (args.getArgs().get(i).getSubtype() != functionArgs.get(i).getSubtype())
+                Output.writeError("Error semántico en posición " + line + ":" + column + " - El argumento en posición " + (i + 1) +
+                        " de la función " + id.getName() + "() es del tipo " + functionArgs.get(i).getSubtype() +
+                        " y se ha recibido un parámetro del tipo " + args.getArgs().get(i).getSubtype());
         }
+
     }
 
     public Subtype getSubtype() {

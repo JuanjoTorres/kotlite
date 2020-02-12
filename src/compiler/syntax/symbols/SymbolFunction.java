@@ -31,11 +31,11 @@ public class SymbolFunction extends SymbolBase {
         if (rtnpart == null) {
             //Si no tiene return, la función tiene que ser de tipo subyacente None
             if (basic.getSubtype() != Subtype.NULL)
-                Output.writeError("Error in position: " + line + ":" + column + " - No return, " + basic.getSubtype() + " subtype return expected");
+                Output.writeError("Error semántico en posición " + line + ":" + column + " - No return, " + basic.getSubtype() + " subtype return expected");
         } else {
             //Si tiene return, tiene que ser del mismo tipo subyacente que la funcion
             if (basic.getSubtype() != rtnpart.getSubtype())
-                Output.writeError("Error in position: " + line + ":" + column + " - Incompatible Subtype");
+                Output.writeError("Error semántico en posición " + line + ":" + column + " - Incompatible Subtype");
         }
 
         //Crear símbolo de la funcion

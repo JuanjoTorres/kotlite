@@ -34,7 +34,7 @@ public class SymbolDecl extends SymbolBase {
         this.bool = bool;
 
         if (basic.getSubtype() != bool.getSubtype())
-            Output.writeError("Error in position: " + line + ":" + column + " - Incompatible Subtype");
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - Incompatible Subtype");
 
         //Añadir id de la funcion a la table de simbolos
         symbolTable.add(new Symbol(id.getName(), type.getType(), basic.getSubtype()));

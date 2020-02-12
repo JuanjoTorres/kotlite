@@ -22,7 +22,7 @@ public class SymbolExpr extends SymbolBase {
         this.term = term;
 
         if (expr.getSubtype() != Subtype.INT || term.getSubtype() != Subtype.INT)
-            Output.writeError("Error in position: " + line + ":" + column + " - Add/Sub requires INT Subtype");
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - Add/Sub requires INT Subtype");
 
         //Resultado de + o - es INT
         subtype = Subtype.INT;

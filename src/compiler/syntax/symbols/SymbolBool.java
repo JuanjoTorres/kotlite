@@ -22,7 +22,7 @@ public class SymbolBool extends SymbolBase {
         this.relation = relation;
 
         if (bool.getSubtype() != Subtype.BOOLEAN || relation.getSubtype() != Subtype.BOOLEAN)
-            Output.writeError("Error in position: " + line + ":" + column + " - Join requires BOOLEAN Subtype");
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - Join requires BOOLEAN Subtype");
 
         //Subtype de AND o OR es BOOL
         subtype = Subtype.BOOLEAN;

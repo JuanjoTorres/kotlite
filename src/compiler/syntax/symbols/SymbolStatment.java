@@ -24,7 +24,7 @@ public class SymbolStatment extends SymbolBase {
         this.bool = bool;
 
         if (id.getSubtype() != bool.getSubtype())
-            Output.writeError("Error in position: " + line + ":" + column + " - Incompatible Subtype");
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - Incompatible Subtype");
     }
 
     // [FORMA] Statment ::= IF LPAREN Bool RPAREN LBRACKET Decls Statments
@@ -38,7 +38,7 @@ public class SymbolStatment extends SymbolBase {
         this.elsepart = elsepart;
 
         if (bool.getSubtype() != Subtype.BOOLEAN)
-            Output.writeError("Error in position: " + line + ":" + column + " - Condition Subtype must be BOOLEAN");
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - Condition Subtype must be BOOLEAN");
     }
 
     // [FORMA] Statment ::= WHILE LPAREN Bool RPAREN LBRACKET Decls
@@ -51,7 +51,7 @@ public class SymbolStatment extends SymbolBase {
         this.statments = statments;
 
         if (bool.getSubtype() != Subtype.BOOLEAN)
-            Output.writeError("Error in position: " + line + ":" + column + " - Condition Subtype must be BOOLEAN");
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - Condition Subtype must be BOOLEAN");
     }
 
     // [FORMA] Statment ::= Id ASSIGN Functioncall SEMICOLON
@@ -67,7 +67,7 @@ public class SymbolStatment extends SymbolBase {
         }
 
         if (id.getSubtype() != functioncall.getSubtype())
-            Output.writeError("Error in position: " + line + ":" + column + " - Incompatible Subtype");
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - Incompatible Subtype");
     }
 
     // [FORMA] Statment ::= Functioncall SEMICOLON

@@ -22,7 +22,7 @@ public class SymbolTerm extends SymbolBase {
         this.unary = unary;
 
         if (term.getSubtype() != Subtype.INT || unary.getSubtype() != Subtype.INT)
-            Output.writeError("Error in position: " + line + ":" + column + " - Mult/Div requires INT Subtype");
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - Mult/Div requires INT Subtype");
 
         //Resultado de multiplicacion es INT
         this.subtype = Subtype.INT;

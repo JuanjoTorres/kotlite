@@ -59,12 +59,12 @@ input = [^\r\n]
     /**
      * Metodo que devuelve el numero de lineas que lleva leidas desde el inicio
      */
-    public int getRow() { return this.yyline; }
+    public int getRow() { return this.yyline + 1; }
 
     /**
      * Metodo que devuelve la posicion en la linea del token
      */
-    public int getCol() { return this.yycolumn; }
+    public int getCol() { return this.yycolumn + 1; }
 %}
 
 %eofval{
@@ -138,7 +138,6 @@ input = [^\r\n]
 
 // Strings
 \"(\\.|[^\"])*\" { return symbol(ParserSym.LITERAL, this.yytext()); }
-\".              { /* emit_warning ("Uncompleted string '" + yytext() + "' -- ignored"); */ }
 
 // Reglas especiales
 {whites} { /* no hacer nada */ }

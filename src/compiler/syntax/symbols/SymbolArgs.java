@@ -1,6 +1,9 @@
 package compiler.syntax.symbols;
 
+import compiler.syntax.table.Symbol;
+
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 public class SymbolArgs extends SymbolBase {
 
@@ -16,6 +19,11 @@ public class SymbolArgs extends SymbolBase {
         super("Args", 0);
         this.largs = largs;
     }
+
+    public ArrayList<Symbol> getArgs() {
+        return largs.getArgs();
+    }
+
 
     @Override
     public void toDot(PrintWriter out) {

@@ -45,4 +45,14 @@ public class Symbol {
     public ArrayList<Symbol> getArgs() {
         return args;
     }
+
+    @Override
+    public String toString() {
+        return "Symbol{" +
+                "id='" + id + '\'' +
+                ", type=" + type +
+                ", subtype=" + subtype +
+                ", args=" + args +
+                '}';
+    }
 }

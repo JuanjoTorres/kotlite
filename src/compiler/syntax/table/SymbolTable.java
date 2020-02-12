@@ -7,23 +7,12 @@ import java.util.Stack;
 
 public class SymbolTable {
 
-    Stack<HashMap> hashMapStack = new Stack<>();
+    private Stack<HashMap> hashMapStack = new Stack<>();
 
     public SymbolTable() {
 
-        //Vaciar pila e inicializar nivel 0
-        hashMapStack.empty();
-        hashMapStack.push(new HashMap());
-
-        //Vaciar contenido de fichero de errores
-        Output.truncateErrors();
-
-        //Inicializar fichero de tabla de simbolos
-        Output.initSymbolTable();
-
-        //Añadir funciont print() a la tabla de simbolos
-        add(new Symbol("print", Type.PROC, Subtype.NULL));
-
+        //Iniciar tabla de símbolos
+        init();
     }
 
     public void startBlock() {
@@ -39,7 +28,7 @@ public class SymbolTable {
     public boolean add(Symbol symbol) {
         //System.out.println("Insertando ID:" + symbol.getId());
 
-        //Comprobar que no exista el identificador en la tabla de simbolos
+        //Comprobar que no exista el identificador en el ámbito actual de la tabla de simbolos
         if (!hashMapStack.peek().containsKey(symbol.getId())) {
             //Insertar identificador en la tabla de símbolos
             hashMapStack.peek().put(symbol.getId(), symbol);
@@ -52,6 +41,32 @@ public class SymbolTable {
         }
 
         return true;
+    }
+
+    /**
+     * Vaciar la tabla de símbolo
+     */
+    public void init() {
+
+        System.out.println("Reiniciando tabla de símbolos");
+
+        //Vaciar pila e inicializar nivel 0
+        hashMapStack = new Stack<>();
+        hashMapStack.push(new HashMap());
+
+        //Vaciar contenido de fichero de errores
+        Output.truncateErrors();
+
+        //Vaciar contenido de fichero de errores
+        Output.truncateTokens();
+
+        //Inicializar fichero de tabla de simbolos
+        Output.initSymbolTable();
+
+        //Añadir función print() a la tabla de simbolos
+        Symbol print = new Symbol("print", Type.PROC, Subtype.NULL);
+        print.getArgs().add(new Symbol("text", Type.ARG, Subtype.STRING));
+        add(print);
     }
 
     public Symbol getId(String id) {

@@ -23,7 +23,7 @@ public class SymbolRelation extends SymbolBase {
         this.expr2 = expr2;
 
         if (expr1.getSubtype() != expr2.getSubtype())
-            Output.writeError("Error in position: " + line + ":" + column + " - Oprel requires same Subtype");
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - Oprel requires same Subtype");
 
         switch (oprel.getRelationType()) {
             case ParserSym.LESS:
@@ -31,7 +31,7 @@ public class SymbolRelation extends SymbolBase {
             case ParserSym.GREATEREQU:
             case ParserSym.GREATER:
                 if (expr1.getSubtype() != Subtype.INT || expr2.getSubtype() != Subtype.INT)
-                    Output.writeError("Error in position: " + line + ":" + column + " - Oprel Less/Greater requires INT Subtype");
+                    Output.writeError("Error semántico en posición " + line + ":" + column + " - Oprel Less/Greater requires INT Subtype");
         }
 
         this.subtype = Subtype.BOOLEAN;

@@ -1,6 +1,7 @@
 package compiler;
 
 import compiler.lexic.Lexer;
+import compiler.output.Output;
 import compiler.syntax.*;
 
 import java_cup.runtime.ComplexSymbolFactory;
@@ -9,8 +10,6 @@ import java_cup.runtime.Symbol;
 import java.io.*;
 
 public class Compiler {
-
-    private final static String TOKENS_FILE = "tokens.txt";
 
     public static void main(String[] args) throws Exception {
 
@@ -22,36 +21,32 @@ public class Compiler {
 
         String sourceCode = args[0];
         FileReader fileReader = new FileReader(sourceCode);
-        FileWriter fileWriter = new FileWriter(TOKENS_FILE);
 
         int numTokens = 0;
         Lexer scanner = new Lexer(fileReader);
+        scanner.yyreset(fileReader);
         Symbol symbol = scanner.next_token();
 
-        System.out.println("FASE LEXICA iniciada.");
-        System.out.println("Generando fichero de tokens...");
+        System.out.println("ANÁLISIS LÉXICO iniciado.");
 
         while (symbol.sym != ParserSym.EOF) {
-
-            fileWriter.write(scanner.getRow() + ":" + scanner.getCol()    // Posicion donde se ha encontrado el token
-                    + " TKN_" + ParserSym.terminalNames[symbol.sym]           // Tipo de token encontrado
-                    + " [" + symbol.value + "]\n");                           // Valor del token
-
+            Output.writeToken(scanner.getRow() + ":" + scanner.getCol() + " TKN_" + ParserSym.terminalNames[symbol.sym] + " [" + symbol.value + "]");
             symbol = scanner.next_token();
             numTokens++;
         }
 
-        fileReader.close();
-        fileWriter.close();
-        scanner.yyclose();
-
         System.out.println("Número de tokens identificados: " + numTokens);
-        System.out.println("FASE LEXICA terminada.");
+        System.out.println("ANÁLISIS LÉXICO terminado.");
 
+        scanner.yyclose();
         fileReader = new FileReader(sourceCode);
         scanner.yyreset(fileReader);
 
+        System.out.println("ANÁLISIS SINTÁCTICO iniciado.");
+
         Parser parser = new Parser(scanner, new ComplexSymbolFactory());
         parser.debug_parse();
+
+        System.out.println("ANÁLISIS SINTÁCTICO terminado.");
     }
 }

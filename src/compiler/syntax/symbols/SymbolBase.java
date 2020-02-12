@@ -9,7 +9,7 @@ public abstract class SymbolBase extends ComplexSymbol {
 
     private static int idAutoIncrement = 0;
 
-    protected static SymbolTable symbolTable = new SymbolTable();
+    public static SymbolTable symbolTable = new SymbolTable();
 
     protected int index;
 

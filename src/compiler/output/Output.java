@@ -9,6 +9,11 @@ import java.util.Stack;
 
 public class Output {
 
+
+    private final static String TOKENS_FILE = "tokens.txt";
+    private final static String ERRORS_FILE = "errors.txt";
+    private final static String SYMBOLS_FILE = "symbols_table.html";
+
     /**
      * Crear fichero html y inicializar tabla de simbolos
      */
@@ -16,7 +21,7 @@ public class Output {
 
         try {
 
-            FileWriter fileWriter = new FileWriter("symbols_table.html");
+            FileWriter fileWriter = new FileWriter(SYMBOLS_FILE);
             BufferedWriter buffer = new BufferedWriter(fileWriter);
 
             buffer.write("<!DOCTYPE html><html><head>");
@@ -32,7 +37,7 @@ public class Output {
 
             // HACER VOLCADO DE MEMORIA QUE PIDE EL PROFE, FORMATO PDF
         } catch (IOException e) {
-            System.err.println("[IOException] Write Error in symbols_table.html: " + e.getMessage());
+            System.err.println("[IOException] Write Error in " + SYMBOLS_FILE + ": " + e.getMessage());
         }
 
     }
@@ -43,7 +48,7 @@ public class Output {
     public static void writeTable(Symbol symbol, Stack<HashMap> hashMapStack) {
 
         try {
-            FileWriter fileWriter = new FileWriter("symbols_table.html", true);
+            FileWriter fileWriter = new FileWriter(SYMBOLS_FILE, true);
             BufferedWriter buffer = new BufferedWriter(fileWriter);
 
             //Añadir entrada a la tabla html
@@ -67,7 +72,7 @@ public class Output {
             buffer.close();
 
         } catch (IOException e) {
-            System.err.println("[IOException] Write Error in symbols_table.html: " + e.getMessage());
+            System.err.println("[IOException] Write Error in " + SYMBOLS_FILE + ": " + e.getMessage());
         }
     }
 
@@ -76,13 +81,13 @@ public class Output {
      */
     public static void closeSymbolTable() {
         try {
-            FileWriter fileWriter = new FileWriter("symbols_table.html", true);
+            FileWriter fileWriter = new FileWriter(SYMBOLS_FILE, true);
             BufferedWriter buffer = new BufferedWriter(fileWriter);
 
             buffer.write("</table></body></html>");
             buffer.close();
         } catch (IOException e) {
-            System.err.println("[IOException] Write Error in symbols_table.html: " + e.getMessage());
+            System.err.println("[IOException] Write Error in " + SYMBOLS_FILE + ": " + e.getMessage());
         }
     }
 
@@ -93,21 +98,46 @@ public class Output {
      */
     public static void truncateErrors() {
         try {
-            FileWriter fileWriter = new FileWriter("errors.txt");
+            FileWriter fileWriter = new FileWriter(ERRORS_FILE);
             fileWriter.write("");
             fileWriter.close();
         } catch (IOException e) {
-            System.err.println("[IOException] Write Error in errors.txt: " + e.getMessage());
+            System.err.println("[IOException] Write Error in " + ERRORS_FILE + ": " + e.getMessage());
         }
     }
 
     public static void writeError(String error) {
         try {
-            FileWriter fileWriter = new FileWriter("errors.txt", true);
+            FileWriter fileWriter = new FileWriter(ERRORS_FILE, true);
             fileWriter.write(error + "\n");
             fileWriter.close();
         } catch (IOException e) {
-            System.err.println("[IOException] Write Error in errors.txt: " + e.getMessage());
+            System.err.println("[IOException] Write Error in " + ERRORS_FILE + ": " + e.getMessage());
+        }
+    }
+
+    /**
+     * Vaciar fichero de tokens
+     *
+     * @return result
+     */
+    public static void truncateTokens() {
+        try {
+            FileWriter fileWriter = new FileWriter(TOKENS_FILE);
+            fileWriter.write("");
+            fileWriter.close();
+        } catch (IOException e) {
+            System.err.println("[IOException] Write Error in " + TOKENS_FILE + ": " + e.getMessage());
+        }
+    }
+
+    public static void writeToken(String token) {
+        try {
+            FileWriter fileWriter = new FileWriter(TOKENS_FILE, true);
+            fileWriter.write(token + "\n");
+            fileWriter.close();
+        } catch (IOException e) {
+            System.err.println("[IOException] Write Error in " + TOKENS_FILE + ": " + e.getMessage());
         }
     }
 }
