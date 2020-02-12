@@ -2,15 +2,22 @@ package compiler.syntax;
 
 import compiler.syntax.symbols.*;
 
+import compiler.lexic.Lexer;
+import java_cup.runtime.ComplexSymbolFactory;
+
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 class Parser;
 
 parser code {:
+    Lexer lexer;
 
-
- :}
+    public Parser(Lexer lex, ComplexSymbolFactory sf) {
+        super(lex,sf);
+        lexer = lex;
+    }
+:};
 
 /* Terminals (tokens returned by the scanner) */
 
@@ -100,7 +107,7 @@ Functions ::= Functions:v1 Function:v2
               | {: RESULT = new SymbolFunctions(); :};
 
 Function ::= FUN Id:id Aup LPAREN Argsdec:v1 RPAREN COLON Basic:v2 LBRACKET Decls:v3 Statments:v4 Rtnpart:v5 Adown RBRACKET
-              {: RESULT = new SymbolFunction(id, v1, v2, v3, v4, v5); :};
+              {: RESULT = new SymbolFunction(id, v1, v2, v3, v4, v5, lexer.getRow(), lexer.getCol()); :};
 
 Functioncall ::= Id:id LPAREN Args:v1 RPAREN
               {: RESULT = new SymbolFunctioncall(id, v1); :};
@@ -116,7 +123,7 @@ Decls ::= Decls:v1 Decl:v2
 Decl ::= Type:v1 Id:id COLON Basic:v2 SEMICOLON
                 {: RESULT = new SymbolDecl(v1, id, v2); :}
               | Type:v1 Id:id COLON Basic:v2 ASSIGN Bool:v3 SEMICOLON
-                {: RESULT = new SymbolDecl(v1, id, v2, v3); :};
+                {: RESULT = new SymbolDecl(v1, id, v2, v3, lexer.getRow(), lexer.getCol()); :};
 
 Argsdec ::= Largsdec:v1
               {: RESULT = new SymbolArgsdec(v1); :}
@@ -141,13 +148,13 @@ Statments ::= Statments:v1 Statment:v2
 	        | {: RESULT = new SymbolStatments(); :};
 
 Statment ::= Id:id ASSIGN Bool:v1 SEMICOLON
-              {: RESULT = new SymbolStatment(id, v1); :}
+              {: RESULT = new SymbolStatment(id, v1, lexer.getRow(), lexer.getCol()); :}
 	    | IF LPAREN Bool:v1 RPAREN LBRACKET Aup Decls:v2 Statments:v3 Adown RBRACKET Elsepart:v4
-              {: RESULT = new SymbolStatment(v1, v2, v3, v4); :}
+              {: RESULT = new SymbolStatment(v1, v2, v3, v4, lexer.getRow(), lexer.getCol()); :}
 	    | WHILE LPAREN Bool:v1 RPAREN LBRACKET Aup Decls:v2 Statments:v3 Adown RBRACKET
-              {: RESULT = new SymbolStatment(v1, v2, v3); :}
+              {: RESULT = new SymbolStatment(v1, v2, v3, lexer.getRow(), lexer.getCol()); :}
 	    | Id:id ASSIGN Functioncall:v1 SEMICOLON
-              {: RESULT = new SymbolStatment(id ,v1); :}
+              {: RESULT = new SymbolStatment(id ,v1, lexer.getRow(), lexer.getCol()); :}
 	    | Functioncall:v1 SEMICOLON
               {: RESULT = new SymbolStatment(v1); :};
 
@@ -156,27 +163,27 @@ Elsepart ::= ELSE LBRACKET Aup Decls:v1 Statments:v2 Adown RBRACKET
               | {: RESULT = new SymbolElsepart(); :};
 
 Bool ::= Bool:v1 Join:v2 Relation:v3
-              {: RESULT = new SymbolBool(v1, v2, v3); :}
+              {: RESULT = new SymbolBool(v1, v2, v3, lexer.getRow(), lexer.getCol()); :}
 	    | Relation:v1
               {: RESULT = new SymbolBool(v1); :};
 
 Relation ::= Expr:v1 Oprel:v2 Expr:v3
-              {: RESULT = new SymbolRelation(v1, v2, v3); :}
+              {: RESULT = new SymbolRelation(v1, v2, v3, lexer.getRow(), lexer.getCol()); :}
 	    | Expr:v1
               {: RESULT = new SymbolRelation(v1); :};
 
 Expr ::= Expr:v1 Add:v2 Term:v3
-              {: RESULT = new SymbolExpr(v1, v2, v3); :}
+              {: RESULT = new SymbolExpr(v1, v2, v3, lexer.getRow(), lexer.getCol()); :}
 	    | Term:v1
               {: RESULT = new SymbolExpr(v1); :};
 
 Term ::= Term:v1 Mult:v2 Unary:v3
-              {: RESULT = new SymbolTerm(v1, v2, v3); :}
+              {: RESULT = new SymbolTerm(v1, v2, v3, lexer.getRow(), lexer.getCol()); :}
 	    | Unary:v1
               {: RESULT = new SymbolTerm(v1); :};
 
 Unary ::= NOT Unary:v1
-              {: RESULT = new SymbolUnary(v1); :}
+              {: RESULT = new SymbolUnary(v1, lexer.getRow(), lexer.getCol()); :}
 	    | Factor:v1
               {: RESULT = new SymbolUnary(v1); :};
 
@@ -236,7 +243,7 @@ Factor ::= LPAREN Bool:v1 RPAREN
               {: RESULT = new SymbolFactor(ParserSym.FALSE); :};
 
 Id ::= ID:id
-                 {: RESULT = new SymbolId(id.toString()); :};
+                 {: RESULT = new SymbolId(id); :};
 
 Aup ::=         {: RESULT = new SymbolAup(); :};
 Adown ::=         {: RESULT = new SymbolAdown(); :};

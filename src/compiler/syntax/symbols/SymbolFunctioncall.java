@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package compiler.syntax.symbols;
 
-import compiler.KotliteException;
 import compiler.syntax.table.Subtype;
 import compiler.syntax.table.Symbol;
 
@@ -20,7 +14,7 @@ public class SymbolFunctioncall extends SymbolBase {
     private Subtype subtype;
 
     // [FORMA] Functioncall ::= Id LPAREN Args RPAREN
-    public SymbolFunctioncall(SymbolId id, SymbolArgs args) throws KotliteException.IdentifierNotExistException {
+    public SymbolFunctioncall(SymbolId id, SymbolArgs args) {
         super("Functioncall", 0);
 
         this.id = id;

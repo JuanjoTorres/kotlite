@@ -16,7 +16,7 @@ public class Compiler {
 
         //Comprobar que se pasa el fichero de código fuente como parámetro
         if (args[0].isEmpty()) {
-            System.out.println("ERROR: Introduce fichero");
+            System.out.println("Error: No se ha introducido fichero de código fuente como argumento");
             System.exit(-1);
         }
 

@@ -7,6 +7,9 @@ import java_cup.runtime.ComplexSymbolFactory;
 import java_cup.runtime.Symbol;
 
 import javax.swing.*;
+import javax.swing.text.Document;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
 import java.awt.*;
 import java.io.*;
 import java.nio.file.Files;
@@ -31,17 +34,21 @@ public class CompilerUI extends JFrame {
     private JPanel panelCodigo;
     private JPanel panelInformacion;
     private JPanel panelArbol;
+    private JPanel panelToken;
+    private JPanel panelTabla;
     private JPanel panelErrores;
 
-    JEditorPane sourceCodeEditor = new JEditorPane();
-    JEditorPane infoEditor = new JEditorPane();
-    JEditorPane arbolEditor = new JEditorPane();
-    JEditorPane errorEditor = new JEditorPane();
+    private JEditorPane sourceCodeEditor = new JEditorPane();
+    private JEditorPane infoEditor = new JEditorPane();
+    private JEditorPane tokenEditor = new JEditorPane();
+    private JEditorPane arbolEditor = new JEditorPane();
+    private JEditorPane tablaEditor = new JEditorPane();
+    private JEditorPane errorEditor = new JEditorPane();
 
     /**
      * UI Menu fields
      */
-    JFileChooser fileChooser = new JFileChooser();
+    private JFileChooser fileChooser = new JFileChooser();
     private JButton chooseFile = new JButton();
     private JButton resolver = new JButton();
     private JLabel labelMenu = new JLabel();
@@ -59,54 +66,60 @@ public class CompilerUI extends JFrame {
         }
     }
 
-    private CompilerUI() throws Exception {
+    private CompilerUI() throws IOException {
 
         initUI();
 
         //Cargar código del test válido 1
-        loadSourceCodeFile(DEFAULT_SOURCE_CODE);
-    }
-
-    private void loadSourceCodeFile(String path) throws IOException {
-        sourceCodeEditor.setText(new String(Files.readAllBytes(Paths.get(path))));
+        sourceCodeEditor.setText(new String(Files.readAllBytes(Paths.get(DEFAULT_SOURCE_CODE))));
     }
 
     private void parseSourceCode() throws Exception {
 
         Reader sourceCodeReader = new StringReader(sourceCodeEditor.getText());
-
         FileWriter fileWriter = new FileWriter(TOKENS_FILE);
 
         int numTokens = 0;
-        Lexer scanner = new Lexer(sourceCodeReader);
-        Symbol symbol = scanner.next_token();
+        Lexer lexer = new Lexer(sourceCodeReader);
+        Symbol symbol = lexer.next_token();
 
         System.out.println("FASE LEXICA iniciada.");
-        System.out.println("Generando fichero de tokens...");
 
         while (symbol.sym != ParserSym.EOF) {
 
-            fileWriter.write(scanner.getRow() + ":" + scanner.getCol()    // Posicion donde se ha encontrado el token
+            fileWriter.write(lexer.getRow() + ":" + lexer.getCol()    // Posicion donde se ha encontrado el token
                     + " TKN_" + ParserSym.terminalNames[symbol.sym]     // Tipo de token encontrado
                     + " [" + symbol.value + "]\n");                     // Valor del token
 
-            symbol = scanner.next_token();
+            symbol = lexer.next_token();
             numTokens++;
         }
 
         sourceCodeReader.close();
         fileWriter.close();
-        scanner.yyclose();
+        lexer.yyclose();
 
         System.out.println("Número de tokens identificados: " + numTokens);
         System.out.println("FASE LEXICA terminada.");
 
         sourceCodeReader = new StringReader(sourceCodeEditor.getText());
-        scanner.yyreset(sourceCodeReader);
+        lexer.yyreset(sourceCodeReader);
 
         ComplexSymbolFactory factory = new ComplexSymbolFactory();
-        Parser parser = new Parser(scanner, factory);
-        parser.debug_parse();
+        Parser parser = new Parser(lexer, factory);
+        parser.parse();
+
+        //Leer fichero de tokens
+        tokenEditor.setText(new String(Files.readAllBytes(Paths.get("tokens.txt"))));
+
+        //Leer fichero del árbol sintáctico
+        arbolEditor.setText(new String(Files.readAllBytes(Paths.get("ArbolSintactico.dot"))));
+
+        //Leer fichero del árbol sintáctico
+        tablaEditor.setText(new String(Files.readAllBytes(Paths.get("symbols_table.html"))));
+
+        //Leer fichero de errores
+        errorEditor.setText(new String(Files.readAllBytes(Paths.get("errors.txt"))));
     }
 
     private void initUI() {
@@ -132,7 +145,7 @@ public class CompilerUI extends JFrame {
         pack();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setTitle("Kotlite IDE");
+        setTitle("Kotlite Analyzer");
         setVisible(true);
     }
 
@@ -159,6 +172,18 @@ public class CompilerUI extends JFrame {
         panelArbol.setLayout(new BorderLayout());
         panelArbol.add(new JScrollPane(arbolEditor));
 
+        //Panel de tokens
+        panelToken = new JPanel();
+        panelToken.setLayout(new BorderLayout());
+        panelToken.add(new JScrollPane(tokenEditor));
+
+        //Panel de tokens
+        panelTabla = new JPanel();
+        panelTabla.setLayout(new BorderLayout());
+        panelTabla.add(new JScrollPane(tablaEditor));
+        tablaEditor.setContentType("text/html");
+        tablaEditor.setEditable(false);
+
         //Panel de errores
         panelErrores = new JPanel();
         panelErrores.setLayout(new BorderLayout());
@@ -166,7 +191,9 @@ public class CompilerUI extends JFrame {
 
         tabbedPane.addTab("  Código Fuente ", panelCodigo);
         tabbedPane.addTab("   Información  ", panelInformacion);
+        tabbedPane.addTab(" Tabla símbolos ", panelTabla);
         tabbedPane.addTab("Árbol Sintáctico", panelArbol);
+        tabbedPane.addTab("     Tokens     ", panelToken);
         tabbedPane.addTab("     Errores    ", panelErrores);
 
         //Add the tabbed pane to this panel.
@@ -214,7 +241,8 @@ public class CompilerUI extends JFrame {
 
             if (fileChooser.showOpenDialog(panelPrincipal) == JFileChooser.APPROVE_OPTION) {
                 try {
-                    loadSourceCodeFile(fileChooser.getSelectedFile().getAbsolutePath());
+                    String path = fileChooser.getSelectedFile().getAbsolutePath();
+                    sourceCodeEditor.setText(new String(Files.readAllBytes(Paths.get(path))));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }

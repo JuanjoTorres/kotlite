@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package compiler.syntax.symbols;
 
-import compiler.KotliteException;
 import compiler.syntax.table.Symbol;
 import compiler.syntax.table.Type;
 
@@ -21,7 +15,7 @@ public class SymbolLargsdec extends SymbolBase {
     private ArrayList<Symbol> args = new ArrayList<>();
 
     // [FORMA] Largsdec ::= Largsdec SEMICOLON Id COLON Basic
-    public SymbolLargsdec(SymbolLargsdec largsdec, SymbolId id, SymbolBasic basic) throws KotliteException.DuplicatedIdentifierException {
+    public SymbolLargsdec(SymbolLargsdec largsdec, SymbolId id, SymbolBasic basic) {
         super("Largsdec", 0);
 
         this.largsdec = largsdec;
@@ -40,7 +34,7 @@ public class SymbolLargsdec extends SymbolBase {
     }
 
     // [FORMA] Largsdec ::= Largsdec SEMICOLON Id COLON Basic
-    public SymbolLargsdec(SymbolId id, SymbolBasic basic) throws KotliteException.DuplicatedIdentifierException {
+    public SymbolLargsdec(SymbolId id, SymbolBasic basic) {
         super("Largsdec", 0);
 
         this.id = id;

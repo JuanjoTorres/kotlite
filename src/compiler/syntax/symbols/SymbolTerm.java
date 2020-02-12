@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package compiler.syntax.symbols;
 
-import compiler.KotliteException;
+import compiler.output.Output;
 import compiler.syntax.table.Subtype;
 
 import java.io.PrintWriter;
@@ -19,7 +14,7 @@ public class SymbolTerm extends SymbolBase {
     private Subtype subtype;
 
     // Term ::= Term Mult Unary
-    public SymbolTerm(SymbolTerm term, SymbolMult mult, SymbolUnary unary) throws KotliteException.IncompatibleSubtypeException {
+    public SymbolTerm(SymbolTerm term, SymbolMult mult, SymbolUnary unary, int line, int column) {
         super("Term", 0);
 
         this.term = term;
@@ -27,7 +22,7 @@ public class SymbolTerm extends SymbolBase {
         this.unary = unary;
 
         if (term.getSubtype() != Subtype.INT || unary.getSubtype() != Subtype.INT)
-            throw new KotliteException.IncompatibleSubtypeException("Mult/Div requires INT SubtypeT");
+            Output.writeError("Error in position: " + line + ":" + column + " - Mult/Div requires INT Subtype");
 
         //Resultado de multiplicacion es INT
         this.subtype = Subtype.INT;

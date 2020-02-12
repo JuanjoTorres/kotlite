@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package compiler.syntax.symbols;
 
-import compiler.KotliteException;
 import compiler.syntax.ParserSym;
 import compiler.syntax.table.Subtype;
 
@@ -27,7 +21,7 @@ public class SymbolFactor extends SymbolBase {
     }
 
     // [FORMA] Factor ::= Id
-    public SymbolFactor(SymbolId id) throws KotliteException.IdentifierNotExistException {
+    public SymbolFactor(SymbolId id) {
         super("Factor", 0);
 
         this.id = id;

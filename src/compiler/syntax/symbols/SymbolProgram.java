@@ -1,9 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package compiler.syntax.symbols;
+
+import compiler.output.Output;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,9 +17,8 @@ public class SymbolProgram extends SymbolBase {
         this.decls = decls;
         this.functions = functions;
 
-        //Cerrar tabla y fichero HTML
-        symbolTable.buffer.write("</table></body></html>");
-        symbolTable.buffer.close();
+        //Cerrar fichero de tabla de símbolos
+        Output.closeSymbolTable();
 
         //Crear árbol sintáctico
         PrintWriter out = new PrintWriter("ArbolSintactico.dot");

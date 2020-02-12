@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package compiler.syntax.symbols;
 
-import compiler.KotliteException;
+import compiler.output.Output;
 import compiler.syntax.table.Subtype;
 
 import java.io.PrintWriter;
@@ -19,7 +14,7 @@ public class SymbolBool extends SymbolBase {
     private Subtype subtype;
 
     // FORMA Bool ::= Bool Join Relation
-    public SymbolBool(SymbolBool bool, SymbolJoin join, SymbolRelation relation) throws KotliteException.IncompatibleSubtypeException {
+    public SymbolBool(SymbolBool bool, SymbolJoin join, SymbolRelation relation, int line, int column) {
         super("Bool", 0);
 
         this.bool = bool;
@@ -27,7 +22,7 @@ public class SymbolBool extends SymbolBase {
         this.relation = relation;
 
         if (bool.getSubtype() != Subtype.BOOLEAN || relation.getSubtype() != Subtype.BOOLEAN)
-            throw new KotliteException.IncompatibleSubtypeException("Join requires BOOLEAN Subtype");
+            Output.writeError("Error in position: " + line + ":" + column + " - Join requires BOOLEAN Subtype");
 
         //Subtype de AND o OR es BOOL
         subtype = Subtype.BOOLEAN;

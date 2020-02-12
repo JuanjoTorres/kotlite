@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package compiler.syntax.symbols;
 
-import compiler.KotliteException;
+import compiler.output.Output;
 import compiler.syntax.table.*;
 
 import java.io.PrintWriter;
@@ -22,7 +17,7 @@ public class SymbolFunction extends SymbolBase {
     // [FORMA] Function ::= FUN Id:id LPAREN Argsdec:v1 RPAREN COLON Basic:v2 LBRACKET Decls:v3 Statments:v4
     //         Rtnpart:v5 RBRACKET
     public SymbolFunction(SymbolId id, SymbolArgsdec argsdec, SymbolBasic basic, SymbolDecls decls,
-                          SymbolStatments statments, SymbolRtnpart rtnpart) throws KotliteException.DuplicatedIdentifierException, KotliteException.IncompatibleSubtypeException {
+                          SymbolStatments statments, SymbolRtnpart rtnpart, int line, int column) {
         super("Function", 0);
 
         this.id = id;
@@ -36,11 +31,11 @@ public class SymbolFunction extends SymbolBase {
         if (rtnpart == null) {
             //Si no tiene return, la función tiene que ser de tipo subyacente None
             if (basic.getSubtype() != Subtype.NULL)
-                throw new KotliteException.IncompatibleSubtypeException("No return, " + basic.getSubtype() + " subtype return expected");
+                Output.writeError("Error in position: " + line + ":" + column + " - No return, " + basic.getSubtype() + " subtype return expected");
         } else {
             //Si tiene return, tiene que ser del mismo tipo subyacente que la funcion
             if (basic.getSubtype() != rtnpart.getSubtype())
-                throw new KotliteException.IncompatibleSubtypeException("Incompatible Subtype");
+                Output.writeError("Error in position: " + line + ":" + column + " - Incompatible Subtype");
         }
 
         //Crear símbolo de la funcion

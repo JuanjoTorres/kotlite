@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package compiler.syntax.symbols;
 
-import compiler.KotliteException;
+import compiler.output.Output;
 import compiler.syntax.table.Subtype;
 
 import java.io.PrintWriter;
@@ -19,7 +14,7 @@ public class SymbolExpr extends SymbolBase {
     private Subtype subtype;
 
     // [FORMA] Expr ::= Expr Add Term
-    public SymbolExpr(SymbolExpr expr, SymbolAdd add, SymbolTerm term) throws KotliteException.IncompatibleSubtypeException {
+    public SymbolExpr(SymbolExpr expr, SymbolAdd add, SymbolTerm term, int line, int column) {
         super("Expr", 0);
 
         this.expr = expr;
@@ -27,7 +22,7 @@ public class SymbolExpr extends SymbolBase {
         this.term = term;
 
         if (expr.getSubtype() != Subtype.INT || term.getSubtype() != Subtype.INT)
-            throw new KotliteException.IncompatibleSubtypeException("Add/Sub requires INT Subtype");
+            Output.writeError("Error in position: " + line + ":" + column + " - Add/Sub requires INT Subtype");
 
         //Resultado de + o - es INT
         subtype = Subtype.INT;

@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package compiler.syntax.symbols;
 
-import compiler.KotliteException;
+import compiler.output.Output;
 import compiler.syntax.table.Subtype;
 import compiler.syntax.table.Type;
 
@@ -22,19 +17,19 @@ public class SymbolStatment extends SymbolBase {
 
 
     // [FORMA] Statment ::= Id ASSIGN Bool SEMICOLON
-    public SymbolStatment(SymbolId id, SymbolBool bool) throws KotliteException.IdentifierNotExistException, KotliteException.IncompatibleSubtypeException {
+    public SymbolStatment(SymbolId id, SymbolBool bool, int line, int column) {
         super("Statment", 0);
 
         this.id = id;
         this.bool = bool;
 
         if (id.getSubtype() != bool.getSubtype())
-            throw new KotliteException.IncompatibleSubtypeException("Incompatible Subtype");
+            Output.writeError("Error in position: " + line + ":" + column + " - Incompatible Subtype");
     }
 
     // [FORMA] Statment ::= IF LPAREN Bool RPAREN LBRACKET Decls Statments
     //         RBRACKET Elsepart
-    public SymbolStatment(SymbolBool bool, SymbolDecls decls, SymbolStatments statments, SymbolElsepart elsepart) throws KotliteException.IncompatibleSubtypeException {
+    public SymbolStatment(SymbolBool bool, SymbolDecls decls, SymbolStatments statments, SymbolElsepart elsepart, int line, int column) {
         super("Statment", 0);
 
         this.bool = bool;
@@ -43,12 +38,12 @@ public class SymbolStatment extends SymbolBase {
         this.elsepart = elsepart;
 
         if (bool.getSubtype() != Subtype.BOOLEAN)
-            throw new KotliteException.IncompatibleSubtypeException("Condition Subtype must be BOOLEAN");
+            Output.writeError("Error in position: " + line + ":" + column + " - Condition Subtype must be BOOLEAN");
     }
 
     // [FORMA] Statment ::= WHILE LPAREN Bool RPAREN LBRACKET Decls
     //         Statments RBRACKET
-    public SymbolStatment(SymbolBool bool, SymbolDecls decls, SymbolStatments statments) throws KotliteException.IncompatibleSubtypeException {
+    public SymbolStatment(SymbolBool bool, SymbolDecls decls, SymbolStatments statments, int line, int column) {
         super("Statment", 0);
 
         this.bool = bool;
@@ -56,11 +51,11 @@ public class SymbolStatment extends SymbolBase {
         this.statments = statments;
 
         if (bool.getSubtype() != Subtype.BOOLEAN)
-            throw new KotliteException.IncompatibleSubtypeException("Condition Subtype must be BOOLEAN");
+            Output.writeError("Error in position: " + line + ":" + column + " - Condition Subtype must be BOOLEAN");
     }
 
     // [FORMA] Statment ::= Id ASSIGN Functioncall SEMICOLON
-    public SymbolStatment(SymbolId id, SymbolFunctioncall functioncall) throws KotliteException.IdentifierNotExistException, KotliteException.IncompatibleSubtypeException {
+    public SymbolStatment(SymbolId id, SymbolFunctioncall functioncall, int line, int column) {
         super("Statment", 0);
 
         this.id = id;
@@ -72,7 +67,7 @@ public class SymbolStatment extends SymbolBase {
         }
 
         if (id.getSubtype() != functioncall.getSubtype())
-            throw new KotliteException.IncompatibleSubtypeException("Incompatible Subtype");
+            Output.writeError("Error in position: " + line + ":" + column + " - Incompatible Subtype");
     }
 
     // [FORMA] Statment ::= Functioncall SEMICOLON

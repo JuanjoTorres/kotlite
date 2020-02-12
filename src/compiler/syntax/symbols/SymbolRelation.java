@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package compiler.syntax.symbols;
 
-import compiler.KotliteException;
+import compiler.output.Output;
 import compiler.syntax.ParserSym;
 import compiler.syntax.table.Subtype;
 
@@ -20,7 +15,7 @@ public class SymbolRelation extends SymbolBase {
     private Subtype subtype;
 
     // [FORMA] Relation ::= Expr Oprel Expr
-    public SymbolRelation(SymbolExpr expr1, SymbolOprel oprel, SymbolExpr expr2) throws KotliteException.IncompatibleSubtypeException {
+    public SymbolRelation(SymbolExpr expr1, SymbolOprel oprel, SymbolExpr expr2, int line, int column) {
         super("Relation", 0);
 
         this.expr1 = expr1;
@@ -28,7 +23,7 @@ public class SymbolRelation extends SymbolBase {
         this.expr2 = expr2;
 
         if (expr1.getSubtype() != expr2.getSubtype())
-            throw new KotliteException.IncompatibleSubtypeException("Oprel requires same Subtype");
+            Output.writeError("Error in position: " + line + ":" + column + " - Oprel requires same Subtype");
 
         switch (oprel.getRelationType()) {
             case ParserSym.LESS:
@@ -36,7 +31,7 @@ public class SymbolRelation extends SymbolBase {
             case ParserSym.GREATEREQU:
             case ParserSym.GREATER:
                 if (expr1.getSubtype() != Subtype.INT || expr2.getSubtype() != Subtype.INT)
-                    throw new KotliteException.IncompatibleSubtypeException("Oprel Less/Greater requires INT Subtype");
+                    Output.writeError("Error in position: " + line + ":" + column + " - Oprel Less/Greater requires INT Subtype");
         }
 
         this.subtype = Subtype.BOOLEAN;

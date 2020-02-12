@@ -2,9 +2,11 @@
 // El codi que es copiarà tal qual al document. A l'inici
 package compiler.lexic;
 
+import compiler.output.Output;
 import compiler.syntax.ParserSym;
 import java_cup.runtime.*;
 import java_cup.runtime.ComplexSymbolFactory.ComplexSymbol;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 
 %%
 
@@ -32,20 +34,27 @@ input = [^\r\n]
 // El següent codi es copiarà també, dins de la classe. És a dir, si es posa res
 // ha de ser en el format adient: mètodes, atributs, etc.
 %{
+
+    private ComplexSymbolFactory symbolFactory = new ComplexSymbolFactory();
+
     /**
      Construcció d'un symbol sense atribut associat.
      **/
-    private ComplexSymbol symbol(int type) {
-        return new ComplexSymbol(ParserSym.terminalNames[type], type);
+    private Symbol symbol(int type) {
+        Location left = new Location(yyline+1, yycolumn+1-yylength());
+        Location right = new Location(yyline+1, yycolumn+1);
+        return symbolFactory.newSymbol(ParserSym.terminalNames[type], type, left, right);
     }
 
     /**
      Construcció d'un symbol amb un atribut associat.
+     public ComplexSymbol(String name, int id, ComplexSymbolFactory.Location left, ComplexSymbolFactory.Location right, Object value)
      **/
     private Symbol symbol(int type, Object value) {
-        return new ComplexSymbol(ParserSym.terminalNames[type], type, value);
+        Location left = new Location(yyline+1, yycolumn+1-yylength());
+        Location right = new Location(yyline+1, yycolumn+1);
+        return symbolFactory.newSymbol(ParserSym.terminalNames[type], type, left, right, value);
     }
-
 
     /**
      * Metodo que devuelve el numero de lineas que lleva leidas desde el inicio
@@ -56,22 +65,6 @@ input = [^\r\n]
      * Metodo que devuelve la posicion en la linea del token
      */
     public int getCol() { return this.yycolumn; }
-
-    /**
-     * Metodo para emitir errores
-     */
-    public void emit_error (String message) {
-        System.out.println("Scanner error: " + message + " at " + (yyline + 1)
-            + ":" + (yycolumn + 1) + " " + yychar);
-    }
-
-    /**
-     * Metodo para emitir warnings
-     */
-    public void emit_warning (String message) {
-        System.out.println("Scanner warning: " + message + " at " + (yyline + 1)
-            + ":" + (yycolumn + 1) + " " + yychar);
-    }
 %}
 
 %eofval{
@@ -145,11 +138,11 @@ input = [^\r\n]
 
 // Strings
 \"(\\.|[^\"])*\" { return symbol(ParserSym.LITERAL, this.yytext()); }
-\".              { emit_warning ("Uncompleted string '" + yytext() + "' -- ignored"); }
+\".              { /* emit_warning ("Uncompleted string '" + yytext() + "' -- ignored"); */ }
 
 // Reglas especiales
 {whites} { /* no hacer nada */ }
 {eol}    { /* no hacer nada */ }
 
 /* Error fallback */
-[^] { emit_warning ("Unrecognized character '" + yytext() + "' -- ignored"); }
+[^] { Output.writeError("Lexic error: Unexpected character in input: '" + yytext() + "' at line " + (yyline+1) + " column " + (yycolumn+1)); }

@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package compiler.syntax.symbols;
 
-import compiler.KotliteException;
+import compiler.output.Output;
 import compiler.syntax.table.Subtype;
 
 import java.io.PrintWriter;
@@ -20,12 +15,12 @@ public class SymbolUnary extends SymbolBase {
     private boolean negado;
 
     // [FORMA] Unary ::= NOT Unary
-    public SymbolUnary(SymbolUnary unary) throws KotliteException.IncompatibleSubtypeException {
+    public SymbolUnary(SymbolUnary unary, int line, int column) {
         super("Unary", 0);
 
         this.subtype = unary.getSubtype();
         if (subtype != Subtype.BOOLEAN)
-            throw new KotliteException.IncompatibleSubtypeException("Subtype != BOOLEAN");
+            Output.writeError("Error in position: " + line + ":" + column + " - Subtype != BOOLEAN");
 
         this.negado = !this.negado;
         this.unary = unary;

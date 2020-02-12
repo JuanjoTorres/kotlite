@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package compiler.syntax.symbols;
 
-import compiler.KotliteException;
+import compiler.output.Output;
 import compiler.syntax.table.Symbol;
 
 import java.io.PrintWriter;
@@ -18,7 +13,7 @@ public class SymbolDecl extends SymbolBase {
     private SymbolBool bool;
 
     // FORMA Decl ::= Type Id COLON Basic SEMICOLON
-    public SymbolDecl(SymbolType type, SymbolId id, SymbolBasic basic) throws KotliteException.DuplicatedIdentifierException {
+    public SymbolDecl(SymbolType type, SymbolId id, SymbolBasic basic) {
         super("Decl", 0);
 
         this.type = type;
@@ -30,7 +25,7 @@ public class SymbolDecl extends SymbolBase {
     }
 
     // FORMA Decl ::= Type Id COLON Basic ASSIGN Bool SEMICOLON
-    public SymbolDecl(SymbolType type, SymbolId id, SymbolBasic basic, SymbolBool bool) throws KotliteException.DuplicatedIdentifierException, KotliteException.IncompatibleSubtypeException {
+    public SymbolDecl(SymbolType type, SymbolId id, SymbolBasic basic, SymbolBool bool, int line, int column) {
         super("Decl", 0);
 
         this.type = type;
@@ -39,7 +34,7 @@ public class SymbolDecl extends SymbolBase {
         this.bool = bool;
 
         if (basic.getSubtype() != bool.getSubtype())
-            throw new KotliteException.IncompatibleSubtypeException("Incompatible Subtype");
+            Output.writeError("Error in position: " + line + ":" + column + " - Incompatible Subtype");
 
         //Añadir id de la funcion a la table de simbolos
         symbolTable.add(new Symbol(id.getName(), type.getType(), basic.getSubtype()));
