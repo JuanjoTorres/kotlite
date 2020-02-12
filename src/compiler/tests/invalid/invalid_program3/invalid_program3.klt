@@ -4,7 +4,7 @@ val haceSol: Boolean = true;
 fun comprobarTemperatura(temp: Int) : None {
     var mensaje: String = "";
 
-    if(temp < true) { // ERROR DE COMPARACION
+    if(temp < true) { // ERROR DE TIPOS EN COMPARACION
         mensaje = "Hace mucho frío";
     } else {
         if(temp < 15) {
@@ -30,8 +30,6 @@ fun calcularKel (temp: Int) : Int {
     return temp;
 }
 
-//ERROR_LEXICO
-
 fun main(): None {
 
     val piernaRota: String = false; // ERROR DE TIPO
@@ -52,7 +50,7 @@ fun main(): None {
     } else {
         conductor = "Mi madre";
 
-        if (llueve and  haceSol and piernaRota) {
+        if (llueve and haceSol and piernaRota) {
             print("Me voy al cine");
         }
 
@@ -65,8 +63,8 @@ fun main(): None {
         print("Mi madre me cuida mucho");
     }
 
-    comprobarTemperatura(); // FALTA PARAMETROS
-    print("El conductor es", conductor);
+    comprobarTemperatura(); // FALTA PARAMETRO
+    print("El conductor es", conductor); //SOBRA PARAMETRO
 
-    calcularFahr(10); // ERROR FALTA DECLARAR FUNCION
+    calcularFahr(10); // FUNCION NO EXISTENTE
 }
