@@ -21,7 +21,8 @@ fun main () : None {
     while (!acabar) {
 
        factorialRes = potencia(base, exp);
-       print(frase, factorialRes);
+       print(frase);
+       //print(factorialRes);
        base = base -1;
 
        if (exp <= 0) {

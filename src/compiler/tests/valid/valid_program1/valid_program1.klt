@@ -17,7 +17,7 @@ fun max(num1: Int; num2: Int): Int {
     return res;
 }
 
-fun main (a: Int; b: Boolean) : None {
+fun main (a: Int; b: Int) : None {
     var c: Int;
     var d: Int;
     var e: Int;
@@ -27,5 +27,5 @@ fun main (a: Int; b: Boolean) : None {
     e = max(a, b);
 
     print("El numero mas grande es...");
-    print(c);
+    //print(c);
 }

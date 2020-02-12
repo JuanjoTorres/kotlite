@@ -25,9 +25,9 @@ fun comprobarTemperatura(temp: Int) : String {
     return mensaje;
 }
 
-fun calcularKel (temp: Int) : Int {
+fun calcularKel (temp: Int; texto: String) : None {
     temp = temp + 273;
-    return temp;
+    print(texto);
 }
 
 fun main(): None {
@@ -63,5 +63,8 @@ fun main(): None {
         print("Mi madre me cuida mucho");
     }
     comprobarTemperatura(40);
-    print("El conductor es", conductor);
+    print("El conductor es:");
+    print(conductor);
+
+    calcularKel(10, "La temperatura actual en Kelvin es:");
 }
