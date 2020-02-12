@@ -20,23 +20,43 @@ public class SymbolFunctioncall extends SymbolBase {
         super("Functioncall", 0);
 
         this.id = id;
-        this.args = args;
+
+        //Comprobar si existe la función
+        if (symbolTable.getId(id.getName()) == null) {
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - La función " + id.getName() + " no se encuentra en la tabla de símbolos");
+            return;
+        }
 
         subtype = id.getSubtype();
 
         ArrayList<Symbol> functionArgs = symbolTable.getId(id.getName()).getArgs();
 
-        //Comprobar el número de argumentos
-        if (args.getArgs().size() != functionArgs.size())
+        //Si la funcion se llama sin argumentos y si que tiene argumentos, el numero de argumentos es erróneo
+        if (args == null && functionArgs != null) {
             Output.writeError("Error semántico en posición " + line + ":" + column + " - La función " + id.getName() + " espera " + functionArgs.size() +
-                    " argumento(s) y se han recibido " + args.getArgs().size() + " argumento(s)");
+                    " argumento(s) y se han recibido 0 argumento(s)");
+            return;
+        } else if (args != null && functionArgs == null) {
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - La función " + id.getName() +
+                    " espera 0 argumentos y se han recibido " + args.getArgs().size() + " argumento(s)");
+            return;
+        }
 
-        //Comprobar el tipo subyacente de los argumentos
-        for (int i = 0; i < args.getArgs().size(); i++) {
-            if (args.getArgs().get(i).getSubtype() != functionArgs.get(i).getSubtype())
-                Output.writeError("Error semántico en posición " + line + ":" + column + " - El argumento en posición " + (i + 1) +
-                        " de la función " + id.getName() + "() es del tipo " + functionArgs.get(i).getSubtype() +
-                        " y se ha recibido un parámetro del tipo " + args.getArgs().get(i).getSubtype());
+        if (args != null && functionArgs != null) {
+            //Comprobar el número de argumentos
+            if (args.getArgs().size() != functionArgs.size()) {
+                Output.writeError("Error semántico en posición " + line + ":" + column + " - La función " + id.getName() + " espera " + functionArgs.size() +
+                        " argumento(s) y se han recibido " + args.getArgs().size() + " argumento(s)");
+                return;
+            }
+
+            //Comprobar el tipo subyacente de los argumentos
+            for (int i = 0; i < args.getArgs().size(); i++) {
+                if (args.getArgs().get(i).getSubtype() != functionArgs.get(i).getSubtype())
+                    Output.writeError("Error semántico en posición " + line + ":" + column + " - El argumento en posición " + (i + 1) +
+                            " de la función " + id.getName() + "() es del tipo " + functionArgs.get(i).getSubtype() +
+                            " y se ha recibido un parámetro del tipo " + args.getArgs().get(i).getSubtype());
+            }
         }
 
     }

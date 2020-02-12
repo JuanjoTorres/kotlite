@@ -1,9 +1,7 @@
 package compiler.syntax.symbols;
 
 import compiler.output.Output;
-import compiler.syntax.ParserSym;
 import compiler.syntax.table.Subtype;
-import compiler.syntax.table.Type;
 
 import java.io.PrintWriter;
 
@@ -69,7 +67,7 @@ public class SymbolStatment extends SymbolBase {
 
         if (id.getSubtype() != functioncall.getSubtype())
             Output.writeError("Error semántico en posición " + line + ":" + column + " - El id " + id.getName() +
-                    "es del tipo subyacente " + id.getSubtype() + " y se la ha asignado un valor de retorno de función del tipo " + functioncall.getSubtype());
+                    " es del tipo subyacente " + id.getSubtype() + " y se la ha asignado un valor de retorno de función del tipo " + functioncall.getSubtype());
     }
 
     // [FORMA] Statment ::= Functioncall SEMICOLON

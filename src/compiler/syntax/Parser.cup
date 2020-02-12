@@ -232,7 +232,7 @@ Basic ::= INT
 Factor ::= LPAREN Bool:v1 RPAREN
               {: RESULT = new SymbolFactor(v1); :}
 	    | Id:id
-              {: RESULT = new SymbolFactor(id); :}
+              {: RESULT = new SymbolFactor(id, lexer.getRow(), lexer.getCol()); :}
 	    | LITERAL
               {: RESULT = new SymbolFactor(ParserSym.LITERAL); :}
 	    | NUM

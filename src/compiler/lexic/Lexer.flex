@@ -137,7 +137,7 @@ input = [^\r\n]
 {digit}+ { return symbol(ParserSym.NUM, this.yytext()); }
 
 // Strings
-\"(\\.|[^\"])*\" { return symbol(ParserSym.LITERAL, this.yytext()); }
+{strings} { return symbol(ParserSym.LITERAL, this.yytext()); }
 
 // Reglas especiales
 {whites} { /* no hacer nada */ }

@@ -15,39 +15,10 @@ public class SymbolTable {
         init();
     }
 
-    public void startBlock() {
-        //Aumentar nivel insertando un nuevo hashmap en la pila
-        hashMapStack.push(new HashMap());
-    }
-
-    public void endBlock() {
-        //Reducir nivel eliminando un hashmap de la pila
-        hashMapStack.pop();
-    }
-
-    public boolean add(Symbol symbol) {
-        //System.out.println("Insertando ID:" + symbol.getId());
-
-        //Comprobar que no exista el identificador en el ámbito actual de la tabla de simbolos
-        if (!hashMapStack.peek().containsKey(symbol.getId())) {
-            //Insertar identificador en la tabla de símbolos
-            hashMapStack.peek().put(symbol.getId(), symbol);
-
-            //Añadir symbol al fichero de la tabla de símbolos
-            Output.writeTable(symbol, hashMapStack);
-        } else {
-            return false;
-        }
-
-        return true;
-    }
-
     /**
      * Vaciar la tabla de símbolo
      */
     public void init() {
-
-        System.out.println("Reiniciando tabla de símbolos");
 
         //Vaciar pila e inicializar nivel 0
         hashMapStack = new Stack<>();
@@ -71,9 +42,32 @@ public class SymbolTable {
         add(print);
     }
 
-    public Symbol getId(String id) {
+    public void startBlock() {
+        //Aumentar nivel insertando un nuevo hashmap en la pila
+        hashMapStack.push(new HashMap());
+    }
 
-        //System.out.println("Buscando id: " + id);
+    public void endBlock() {
+        //Reducir nivel eliminando un hashmap de la pila
+        hashMapStack.pop();
+    }
+
+    public boolean add(Symbol symbol) {
+        //Comprobar que no exista el identificador en el ámbito actual de la tabla de simbolos
+        if (!hashMapStack.peek().containsKey(symbol.getId())) {
+            //Insertar identificador en la tabla de símbolos
+            hashMapStack.peek().put(symbol.getId(), symbol);
+
+            //Añadir symbol al fichero de la tabla de símbolos
+            Output.writeTable(symbol, hashMapStack);
+        } else {
+            return false;
+        }
+
+        return true;
+    }
+
+    public Symbol getId(String id) {
 
         //Recorrer la tabla de símbolos desde el nivel superior hacia el inferior
         for (int i = hashMapStack.size() - 1; i >= 0; i--) {
@@ -85,7 +79,6 @@ public class SymbolTable {
 
         }
 
-        System.out.println("No existe el id: " + id);
         return null;
     }
 }

@@ -1,5 +1,6 @@
 package compiler.syntax.symbols;
 
+import compiler.output.Output;
 import compiler.syntax.ParserSym;
 import compiler.syntax.table.Subtype;
 
@@ -21,10 +22,17 @@ public class SymbolFactor extends SymbolBase {
     }
 
     // [FORMA] Factor ::= Id
-    public SymbolFactor(SymbolId id) {
+    public SymbolFactor(SymbolId id, int line, int column) {
         super("Factor", 0);
 
         this.id = id;
+
+        //Comprobar si existe el id
+        if (symbolTable.getId(id.getName()) == null) {
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - El id " + id.getName() + " no se encuentra en la tabla de símbolos");
+            return;
+        }
+
         this.subtype = id.getSubtype();
     }
 

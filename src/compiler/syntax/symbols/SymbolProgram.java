@@ -26,6 +26,10 @@ public class SymbolProgram extends SymbolBase {
         toDot(out);
         out.println("}");
         out.close();
+
+        //Comprobar que existe la función main()
+        if (symbolTable.getId("main") == null)
+            Output.writeError("Error semántico - El programa no tiene función main()");
     }
 
     @Override
