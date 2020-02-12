@@ -45,7 +45,12 @@ public class Compiler {
         Output.writeInfo("ANÁLISIS SINTÁCTICO iniciado.");
 
         Parser parser = new Parser(scanner, new ComplexSymbolFactory());
-        parser.debug_parse();
+        try {
+            parser.parse();
+        } catch (Exception e) {
+            Output.writeError("Error sintáctico en la posición " + scanner.getRow() + ":" + scanner.getCol() + ". No se puede continuar el análisis");
+            e.printStackTrace();
+        }
 
         Output.writeInfo("ANÁLISIS SINTÁCTICO terminado.");
     }
