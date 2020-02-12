@@ -42,7 +42,7 @@ public class SymbolFactor extends SymbolBase {
                 subtype = Subtype.BOOLEAN;
                 break;
             case ParserSym.NONE:
-                subtype = Subtype.NULL;
+                subtype = Subtype.NONE;
                 break;
         }
     }

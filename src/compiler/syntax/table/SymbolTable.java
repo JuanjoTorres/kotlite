@@ -66,7 +66,7 @@ public class SymbolTable {
         Output.initSymbolTable();
 
         //Añadir función print() a la tabla de simbolos
-        Symbol print = new Symbol("print", Type.PROC, Subtype.NULL);
+        Symbol print = new Symbol("print", Type.PROC, Subtype.NONE);
         print.getArgs().add(new Symbol("text", Type.ARG, Subtype.STRING));
         add(print);
     }

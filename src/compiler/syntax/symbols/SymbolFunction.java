@@ -30,7 +30,7 @@ public class SymbolFunction extends SymbolBase {
         //Comprobar si la función tiene return
         if (rtnpart == null) {
             //Si no tiene return, la función tiene que ser de tipo subyacente None
-            if (basic.getSubtype() != Subtype.NULL)
+            if (basic.getSubtype() != Subtype.NONE)
                 Output.writeError("Error semántico en posición " + line + ":" + column + " - La función " + id.getName() +
                         " es del tipo subyacente " + basic.getSubtype() + " y no se ha encontrado RETURN");
         } else {

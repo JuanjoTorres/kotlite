@@ -19,7 +19,7 @@ public class SymbolBasic extends SymbolBase {
         else if (symbol == ParserSym.BOOLEAN)
             tipo = Subtype.BOOLEAN;
         else if (symbol == ParserSym.NONE)
-            tipo = Subtype.NULL;
+            tipo = Subtype.NONE;
     }
 
     public Subtype getSubtype() {
