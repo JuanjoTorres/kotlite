@@ -22,4 +22,7 @@ public class SymbolJoin extends SymbolBase {
             out.print(index + " [label=\"" + name + " OR\"];\n");
     }
 
+    public int getSymbol() {
+        return symbol;
+    }
 }

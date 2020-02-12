@@ -9,7 +9,7 @@ import java.util.Stack;
 
 public class Output {
 
-
+    private final static String INFO_FILE = "info.txt";
     private final static String TOKENS_FILE = "tokens.txt";
     private final static String ERRORS_FILE = "errors.txt";
     private final static String SYMBOLS_FILE = "symbols_table.html";
@@ -138,6 +138,34 @@ public class Output {
             fileWriter.close();
         } catch (IOException e) {
             System.err.println("[IOException] Write Error in " + TOKENS_FILE + ": " + e.getMessage());
+        }
+    }
+
+    /**
+     * Vaciar fichero de info
+     *
+     * @return result
+     */
+    public static void truncateInfo() {
+        try {
+            FileWriter fileWriter = new FileWriter(INFO_FILE);
+            fileWriter.write("");
+            fileWriter.close();
+        } catch (IOException e) {
+            System.err.println("[IOException] Write Error in " + INFO_FILE + ": " + e.getMessage());
+        }
+    }
+
+    public static void writeInfo(String info) {
+
+        System.out.println(info);
+
+        try {
+            FileWriter fileWriter = new FileWriter(INFO_FILE, true);
+            fileWriter.write(info + "\n");
+            fileWriter.close();
+        } catch (IOException e) {
+            System.err.println("[IOException] Write Error in " + INFO_FILE + ": " + e.getMessage());
         }
     }
 }

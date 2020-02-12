@@ -31,11 +31,13 @@ public class SymbolFunction extends SymbolBase {
         if (rtnpart == null) {
             //Si no tiene return, la función tiene que ser de tipo subyacente None
             if (basic.getSubtype() != Subtype.NULL)
-                Output.writeError("Error semántico en posición " + line + ":" + column + " - No return, " + basic.getSubtype() + " subtype return expected");
+                Output.writeError("Error semántico en posición " + line + ":" + column + " - La función " + id.getName() +
+                        " es del tipo subyacente " + basic.getSubtype() + " y no se ha encontrado RETURN");
         } else {
             //Si tiene return, tiene que ser del mismo tipo subyacente que la funcion
             if (basic.getSubtype() != rtnpart.getSubtype())
-                Output.writeError("Error semántico en posición " + line + ":" + column + " - Incompatible Subtype");
+                Output.writeError("Error semántico en posición " + line + ":" + column + " - La función " + id.getName() +
+                        " es del tipo subyacente " + basic.getSubtype() + " y se ha encontrado RETURN del tipo " + rtnpart.getSubtype());
         }
 
         //Crear símbolo de la funcion
@@ -46,8 +48,10 @@ public class SymbolFunction extends SymbolBase {
             function.getArgs().addAll(argsdec.getArgs());
         }
 
-        //Añadir función a la tabla de simbolos
-        symbolTable.add(function);
+        //Añadir id de la función a la tabla de simbolos
+        if (!symbolTable.add(function))
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - El ID " + id.getName() +
+                    " ya se encuentra en la tabla de símbolos en el ámbito actual");
     }
 
     @Override

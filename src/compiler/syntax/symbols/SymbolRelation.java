@@ -23,7 +23,8 @@ public class SymbolRelation extends SymbolBase {
         this.expr2 = expr2;
 
         if (expr1.getSubtype() != expr2.getSubtype())
-            Output.writeError("Error semántico en posición " + line + ":" + column + " - Oprel requires same Subtype");
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - El operador relacional " + ParserSym.terminalNames[oprel.getRelationType()] +
+                    " requiere operandos dos operandos del mismo tipo, y se ha encontrado " + expr1.getSubtype() + " y " + expr2.getSubtype());
 
         switch (oprel.getRelationType()) {
             case ParserSym.LESS:
@@ -31,7 +32,8 @@ public class SymbolRelation extends SymbolBase {
             case ParserSym.GREATEREQU:
             case ParserSym.GREATER:
                 if (expr1.getSubtype() != Subtype.INT || expr2.getSubtype() != Subtype.INT)
-                    Output.writeError("Error semántico en posición " + line + ":" + column + " - Oprel Less/Greater requires INT Subtype");
+                    Output.writeError("Error semántico en posición " + line + ":" + column + " - El operador relacional " + ParserSym.terminalNames[oprel.getRelationType()] +
+                            " requiere operandos del tipo INT, y se ha encontrado " + expr1.getSubtype() + " y " + expr2.getSubtype());
         }
 
         this.subtype = Subtype.BOOLEAN;

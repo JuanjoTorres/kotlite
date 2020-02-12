@@ -22,7 +22,11 @@ public class CompilerUI extends JFrame {
     private static final int ANCHO = 1024;
     private static final int ALTO = 800;
 
+    private final static String INFO_FILE = "info.txt";
     private final static String TOKENS_FILE = "tokens.txt";
+    private final static String ARBOL_FILE = "ArbolSintactico.dot";
+    private final static String ERRORS_FILE = "errors.txt";
+    private final static String SYMBOLS_FILE = "symbols_table.html";
 
     private final static String DEFAULT_SOURCE_CODE = "./src/compiler/tests/valid/valid_program3/valid_program3.klt";
 
@@ -30,6 +34,9 @@ public class CompilerUI extends JFrame {
      * UI fields
      */
     private JPanel panelPrincipal;
+
+    private JTabbedPane tabbedPane;
+
     private JPanel panelCodigo;
     private JPanel panelInformacion;
     private JPanel panelArbol;
@@ -82,7 +89,7 @@ public class CompilerUI extends JFrame {
 
         int numTokens = 0;
 
-        System.out.println("ANÁLISIS LÉXICO iniciado.");
+        Output.writeInfo("ANÁLISIS LÉXICO iniciado.");
 
         Lexer scanner = new Lexer(sourceCodeReader);
         Symbol symbol = scanner.next_token();
@@ -93,33 +100,40 @@ public class CompilerUI extends JFrame {
             numTokens++;
         }
 
-        System.out.println("Número de tokens identificados: " + numTokens);
-        System.out.println("ANÁLISIS LÉXICO terminado.");
+        Output.writeInfo("Número de tokens identificados: " + numTokens);
+        Output.writeInfo("ANÁLISIS LÉXICO terminado.");
 
         sourceCodeReader.close();
         sourceCodeReader = new StringReader(sourceCodeEditor.getText());
         scanner.yyreset(sourceCodeReader);
 
-        System.out.println("ANÁLISIS SINTÁCTICO iniciado.");
+        Output.writeInfo("ANÁLISIS SINTÁCTICO iniciado.");
 
         Parser parser = new Parser(scanner, new ComplexSymbolFactory());
-        parser.parse();
+        try {
+            parser.parse();
+        } catch (Exception e) {
+            Output.writeError("Error sintáctico en la posición " + scanner.getRow() + ":" + scanner.getCol() + ". No se puede continuar el análisis");
+        }
 
-        System.out.println("ANÁLISIS SINTÁCTICO terminado.");
+        Output.writeInfo("ANÁLISIS SINTÁCTICO terminado.");
 
-        System.out.println("Leyendo ficheros de salida.");
+        Output.writeInfo("Leyendo ficheros de salida.");
+
+        //Leer fichero de info
+        infoEditor.setText(new String(Files.readAllBytes(Paths.get(INFO_FILE))));
 
         //Leer fichero de tokens
-        tokenEditor.setText(new String(Files.readAllBytes(Paths.get("tokens.txt"))));
+        tokenEditor.setText(new String(Files.readAllBytes(Paths.get(TOKENS_FILE))));
 
         //Leer fichero del árbol sintáctico
-        arbolEditor.setText(new String(Files.readAllBytes(Paths.get("ArbolSintactico.dot"))));
+        arbolEditor.setText(new String(Files.readAllBytes(Paths.get(ARBOL_FILE))));
 
-        //Leer fichero del árbol sintáctico
-        tablaEditor.setText(new String(Files.readAllBytes(Paths.get("symbols_table.html"))));
+        //Leer fichero del simbolos
+        tablaEditor.setText(new String(Files.readAllBytes(Paths.get(SYMBOLS_FILE))));
 
         //Leer fichero de errores
-        errorEditor.setText(new String(Files.readAllBytes(Paths.get("errors.txt"))));
+        errorEditor.setText(new String(Files.readAllBytes(Paths.get(ERRORS_FILE))));
     }
 
     private void initUI() {
@@ -155,7 +169,7 @@ public class CompilerUI extends JFrame {
     private void initTabPanel() {
 
         //Panel con pestañas
-        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane = new JTabbedPane();
 
         //Panel de código fuente
         panelCodigo = new JPanel();
@@ -191,10 +205,10 @@ public class CompilerUI extends JFrame {
 
         tabbedPane.addTab("  Código Fuente ", panelCodigo);
         tabbedPane.addTab("   Información  ", panelInformacion);
+        tabbedPane.addTab("     Errores    ", panelErrores);
         tabbedPane.addTab(" Tabla símbolos ", panelTabla);
         tabbedPane.addTab("Árbol Sintáctico", panelArbol);
         tabbedPane.addTab("     Tokens     ", panelToken);
-        tabbedPane.addTab("     Errores    ", panelErrores);
 
         //Add the tabbed pane to this panel.
         panelPrincipal.add(tabbedPane);
@@ -228,6 +242,7 @@ public class CompilerUI extends JFrame {
 
         resolver.addActionListener(e -> {
             try {
+                tabbedPane.setSelectedIndex(1);
                 parseSourceCode();
             } catch (Exception ex) {
                 ex.printStackTrace();

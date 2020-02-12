@@ -1,6 +1,7 @@
 package compiler.syntax.symbols;
 
 import compiler.output.Output;
+import compiler.syntax.ParserSym;
 import compiler.syntax.table.Subtype;
 import compiler.syntax.table.Type;
 
@@ -24,7 +25,8 @@ public class SymbolStatment extends SymbolBase {
         this.bool = bool;
 
         if (id.getSubtype() != bool.getSubtype())
-            Output.writeError("Error semántico en posición " + line + ":" + column + " - Incompatible Subtype");
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - El id " + id.getName() +
+                    " es del tipo subyacente " + id.getSubtype() + " y se le ha asignado un valor del tipo " + bool.getSubtype());
     }
 
     // [FORMA] Statment ::= IF LPAREN Bool RPAREN LBRACKET Decls Statments
@@ -38,7 +40,8 @@ public class SymbolStatment extends SymbolBase {
         this.elsepart = elsepart;
 
         if (bool.getSubtype() != Subtype.BOOLEAN)
-            Output.writeError("Error semántico en posición " + line + ":" + column + " - Condition Subtype must be BOOLEAN");
+            Output.writeError("Error semántico en posición " + line + ":" + column +
+                    " - El condicional IF requiere una condicion del tipo BOOLEAN y se ha encontrado un tipo " + bool.getSubtype());
     }
 
     // [FORMA] Statment ::= WHILE LPAREN Bool RPAREN LBRACKET Decls
@@ -51,7 +54,8 @@ public class SymbolStatment extends SymbolBase {
         this.statments = statments;
 
         if (bool.getSubtype() != Subtype.BOOLEAN)
-            Output.writeError("Error semántico en posición " + line + ":" + column + " - Condition Subtype must be BOOLEAN");
+            Output.writeError("Error semántico en posición " + line + ":" + column +
+                    " - El bucle WHILE requiere una condicion del tipo BOOLEAN y se ha encontrado un tipo " + bool.getSubtype());
     }
 
     // [FORMA] Statment ::= Id ASSIGN Functioncall SEMICOLON
@@ -61,13 +65,11 @@ public class SymbolStatment extends SymbolBase {
         this.id = id;
         this.functioncall = functioncall;
 
-        //TODO Comprobar si es una constante y ya tiene valor asignado
-        if (symbolTable.getId(id.getName()).getType() == Type.CONST) {
-
-        }
+        // ¿Comprobar si es una constante y ya tiene valor asignado?
 
         if (id.getSubtype() != functioncall.getSubtype())
-            Output.writeError("Error semántico en posición " + line + ":" + column + " - Incompatible Subtype");
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - El id " + id.getName() +
+                    "es del tipo subyacente " + id.getSubtype() + " y se la ha asignado un valor de retorno de función del tipo " + functioncall.getSubtype());
     }
 
     // [FORMA] Statment ::= Functioncall SEMICOLON

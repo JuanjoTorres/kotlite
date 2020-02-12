@@ -1,6 +1,7 @@
 package compiler.syntax.symbols;
 
 import compiler.output.Output;
+import compiler.syntax.ParserSym;
 import compiler.syntax.table.Subtype;
 
 import java.io.PrintWriter;
@@ -22,7 +23,9 @@ public class SymbolTerm extends SymbolBase {
         this.unary = unary;
 
         if (term.getSubtype() != Subtype.INT || unary.getSubtype() != Subtype.INT)
-            Output.writeError("Error semántico en posición " + line + ":" + column + " - Mult/Div requires INT Subtype");
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - La operacion " +
+                    ParserSym.terminalNames[mult.getSymbol()] + " requiere operandos del tipo INT y se ha encontrado " +
+                    term.getSubtype() + " y " + unary.getSubtype());
 
         //Resultado de multiplicacion es INT
         this.subtype = Subtype.INT;

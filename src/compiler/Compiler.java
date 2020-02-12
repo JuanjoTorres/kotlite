@@ -15,7 +15,7 @@ public class Compiler {
 
         //Comprobar que se pasa el fichero de código fuente como parámetro
         if (args[0].isEmpty()) {
-            System.out.println("Error: No se ha introducido fichero de código fuente como argumento");
+            System.err.println("Error: No se ha introducido fichero de código fuente como argumento");
             System.exit(-1);
         }
 
@@ -27,7 +27,7 @@ public class Compiler {
         scanner.yyreset(fileReader);
         Symbol symbol = scanner.next_token();
 
-        System.out.println("ANÁLISIS LÉXICO iniciado.");
+        Output.writeInfo("ANÁLISIS LÉXICO iniciado.");
 
         while (symbol.sym != ParserSym.EOF) {
             Output.writeToken(scanner.getRow() + ":" + scanner.getCol() + " TKN_" + ParserSym.terminalNames[symbol.sym] + " [" + symbol.value + "]");
@@ -35,18 +35,18 @@ public class Compiler {
             numTokens++;
         }
 
-        System.out.println("Número de tokens identificados: " + numTokens);
-        System.out.println("ANÁLISIS LÉXICO terminado.");
+        Output.writeInfo("Número de tokens identificados: " + numTokens);
+        Output.writeInfo("ANÁLISIS LÉXICO terminado.");
 
         scanner.yyclose();
         fileReader = new FileReader(sourceCode);
         scanner.yyreset(fileReader);
 
-        System.out.println("ANÁLISIS SINTÁCTICO iniciado.");
+        Output.writeInfo("ANÁLISIS SINTÁCTICO iniciado.");
 
         Parser parser = new Parser(scanner, new ComplexSymbolFactory());
         parser.debug_parse();
 
-        System.out.println("ANÁLISIS SINTÁCTICO terminado.");
+        Output.writeInfo("ANÁLISIS SINTÁCTICO terminado.");
     }
 }

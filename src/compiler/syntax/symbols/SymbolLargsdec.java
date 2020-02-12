@@ -1,5 +1,6 @@
 package compiler.syntax.symbols;
 
+import compiler.output.Output;
 import compiler.syntax.table.Symbol;
 import compiler.syntax.table.Type;
 
@@ -15,7 +16,7 @@ public class SymbolLargsdec extends SymbolBase {
     private ArrayList<Symbol> args = new ArrayList<>();
 
     // [FORMA] Largsdec ::= Largsdec SEMICOLON Id COLON Basic
-    public SymbolLargsdec(SymbolLargsdec largsdec, SymbolId id, SymbolBasic basic) {
+    public SymbolLargsdec(SymbolLargsdec largsdec, SymbolId id, SymbolBasic basic, int line, int column) {
         super("Largsdec", 0);
 
         this.largsdec = largsdec;
@@ -30,11 +31,13 @@ public class SymbolLargsdec extends SymbolBase {
         args.add(symbol);
 
         //Añadir a la tabla de simbolos
-        symbolTable.add(symbol);
+        if (!symbolTable.add(symbol))
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - El ID " + id.getName() +
+                    " ya se encuentra en la tabla de símbolos en el ámbito actual");
     }
 
     // [FORMA] Largsdec ::= Largsdec SEMICOLON Id COLON Basic
-    public SymbolLargsdec(SymbolId id, SymbolBasic basic) {
+    public SymbolLargsdec(SymbolId id, SymbolBasic basic, int line, int column) {
         super("Largsdec", 0);
 
         this.id = id;
@@ -47,7 +50,9 @@ public class SymbolLargsdec extends SymbolBase {
         args.add(new Symbol(id.getName(), Type.ARG, basic.getSubtype()));
 
         //Añadir a la tabla de simbolos
-        symbolTable.add(symbol);
+        if (!symbolTable.add(symbol))
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - El ID " + id.getName() +
+                    " ya se encuentra en la tabla de símbolos en el ámbito actual");
     }
 
     public void setArgs(ArrayList<Symbol> args) {

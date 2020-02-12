@@ -36,7 +36,6 @@ public class SymbolTable {
             //Añadir symbol al fichero de la tabla de símbolos
             Output.writeTable(symbol, hashMapStack);
         } else {
-            System.out.println("Duplicated ID: " + symbol.getId());
             return false;
         }
 
@@ -54,10 +53,13 @@ public class SymbolTable {
         hashMapStack = new Stack<>();
         hashMapStack.push(new HashMap());
 
+        //Vaciar contenido de fichero de info
+        Output.truncateInfo();
+
         //Vaciar contenido de fichero de errores
         Output.truncateErrors();
 
-        //Vaciar contenido de fichero de errores
+        //Vaciar contenido de fichero de tokens
         Output.truncateTokens();
 
         //Inicializar fichero de tabla de simbolos

@@ -12,17 +12,15 @@ public class SymbolUnary extends SymbolBase {
 
     private Subtype subtype;
 
-    private boolean negado;
-
     // [FORMA] Unary ::= NOT Unary
     public SymbolUnary(SymbolUnary unary, int line, int column) {
         super("Unary", 0);
 
         this.subtype = unary.getSubtype();
         if (subtype != Subtype.BOOLEAN)
-            Output.writeError("Error semántico en posición " + line + ":" + column + " - Subtype != BOOLEAN");
+            Output.writeError("Error semántico en posición " + line + ":" + column +
+                    " - El operador ! (NOT) espera un tipo subyacente BOOLEAN y se ha encontrado un tipo " + subtype);
 
-        this.negado = !this.negado;
         this.unary = unary;
     }
 

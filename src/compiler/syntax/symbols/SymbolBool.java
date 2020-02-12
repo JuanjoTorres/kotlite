@@ -1,6 +1,7 @@
 package compiler.syntax.symbols;
 
 import compiler.output.Output;
+import compiler.syntax.ParserSym;
 import compiler.syntax.table.Subtype;
 
 import java.io.PrintWriter;
@@ -22,7 +23,10 @@ public class SymbolBool extends SymbolBase {
         this.relation = relation;
 
         if (bool.getSubtype() != Subtype.BOOLEAN || relation.getSubtype() != Subtype.BOOLEAN)
-            Output.writeError("Error semántico en posición " + line + ":" + column + " - Join requires BOOLEAN Subtype");
+            Output.writeError("Error semántico en posición " + line + ":" + column +
+                    " - El operador binario " + ParserSym.terminalNames[join.getSymbol()] +
+                    " requiere los dos operandos de tipo BOOLEAN y se ha encontrado los tipos " +
+                    bool.getSubtype() + " y " + relation.getSubtype());
 
         //Subtype de AND o OR es BOOL
         subtype = Subtype.BOOLEAN;

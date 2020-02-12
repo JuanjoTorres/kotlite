@@ -12,6 +12,10 @@ public class SymbolMult extends SymbolBase {
         this.symbol = symbol;
     }
 
+    public int getSymbol() {
+        return symbol;
+    }
+
     @Override
     public void toDot(PrintWriter out) {
         out.print(index + " [label=\"" + name + "\"];\n");

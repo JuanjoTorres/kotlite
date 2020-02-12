@@ -13,7 +13,7 @@ public class SymbolDecl extends SymbolBase {
     private SymbolBool bool;
 
     // FORMA Decl ::= Type Id COLON Basic SEMICOLON
-    public SymbolDecl(SymbolType type, SymbolId id, SymbolBasic basic) {
+    public SymbolDecl(SymbolType type, SymbolId id, SymbolBasic basic, int line, int column) {
         super("Decl", 0);
 
         this.type = type;
@@ -21,7 +21,9 @@ public class SymbolDecl extends SymbolBase {
         this.basic = basic;
 
         //Añadir id de la funcion a la table de simbolos
-        symbolTable.add(new Symbol(id.getName(), type.getType(), basic.getSubtype()));
+        if (!symbolTable.add(new Symbol(id.getName(), type.getType(), basic.getSubtype())))
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - El ID " + id.getName() +
+                    " ya se encuentra en la tabla de símbolos en el ámbito actual");
     }
 
     // FORMA Decl ::= Type Id COLON Basic ASSIGN Bool SEMICOLON
@@ -34,10 +36,13 @@ public class SymbolDecl extends SymbolBase {
         this.bool = bool;
 
         if (basic.getSubtype() != bool.getSubtype())
-            Output.writeError("Error semántico en posición " + line + ":" + column + " - Incompatible Subtype");
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - El identificador " + id.getName() +
+                    " es del tipo subyacente " + basic.getSubtype() + " y se ha asignado un valor del tipo " + bool.getSubtype());
 
         //Añadir id de la funcion a la table de simbolos
-        symbolTable.add(new Symbol(id.getName(), type.getType(), basic.getSubtype()));
+        if (!symbolTable.add(new Symbol(id.getName(), type.getType(), basic.getSubtype())))
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - El ID " + id.getName() +
+                    " ya se encuentra en la tabla de símbolos en el ámbito actual");
     }
 
     @Override

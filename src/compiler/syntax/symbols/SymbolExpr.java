@@ -1,6 +1,7 @@
 package compiler.syntax.symbols;
 
 import compiler.output.Output;
+import compiler.syntax.ParserSym;
 import compiler.syntax.table.Subtype;
 
 import java.io.PrintWriter;
@@ -22,7 +23,8 @@ public class SymbolExpr extends SymbolBase {
         this.term = term;
 
         if (expr.getSubtype() != Subtype.INT || term.getSubtype() != Subtype.INT)
-            Output.writeError("Error semántico en posición " + line + ":" + column + " - Add/Sub requires INT Subtype");
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - El operador " + ParserSym.terminalNames[add.getSymbol()] +
+                    " requiere operandos del tipo INT, y se ha encontrado " + expr.getSubtype() + " y " + term.getSubtype());
 
         //Resultado de + o - es INT
         subtype = Subtype.INT;

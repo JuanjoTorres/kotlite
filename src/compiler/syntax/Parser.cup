@@ -121,7 +121,7 @@ Decls ::= Decls:v1 Decl:v2
               | {: RESULT = new SymbolDecls(); :};
 
 Decl ::= Type:v1 Id:id COLON Basic:v2 SEMICOLON
-                {: RESULT = new SymbolDecl(v1, id, v2); :}
+                {: RESULT = new SymbolDecl(v1, id, v2, lexer.getRow(), lexer.getCol()); :}
               | Type:v1 Id:id COLON Basic:v2 ASSIGN Bool:v3 SEMICOLON
                 {: RESULT = new SymbolDecl(v1, id, v2, v3, lexer.getRow(), lexer.getCol()); :};
 
@@ -130,9 +130,9 @@ Argsdec ::= Largsdec:v1
               | {: RESULT = new SymbolArgsdec(); :};
 
 Largsdec ::= Largsdec:v1 SEMICOLON Id:id COLON Basic:v2
-              {: RESULT = new SymbolLargsdec(v1, id, v2); :}
+              {: RESULT = new SymbolLargsdec(v1, id, v2, lexer.getRow(), lexer.getCol()); :}
         | Id:id COLON Basic:v1
-              {: RESULT = new SymbolLargsdec(id, v1); :};
+              {: RESULT = new SymbolLargsdec(id, v1, lexer.getRow(), lexer.getCol()); :};
 
 Args ::= Largs:v1
               {: RESULT = new SymbolArgs(v1); :}
