@@ -37,13 +37,6 @@ public class CompilerUI extends JFrame {
 
     private JTabbedPane tabbedPane;
 
-    private JPanel panelCodigo;
-    private JPanel panelInformacion;
-    private JPanel panelArbol;
-    private JPanel panelToken;
-    private JPanel panelTabla;
-    private JPanel panelErrores;
-
     private JEditorPane sourceCodeEditor = new JEditorPane();
     private JEditorPane infoEditor = new JEditorPane();
     private JEditorPane tokenEditor = new JEditorPane();
@@ -172,44 +165,16 @@ public class CompilerUI extends JFrame {
         //Panel con pestañas
         tabbedPane = new JTabbedPane();
 
-        //Panel de código fuente
-        panelCodigo = new JPanel();
-        panelCodigo.setLayout(new BorderLayout());
-        panelCodigo.add(new JScrollPane(sourceCodeEditor));
-
-        //Panel de informacion
-        panelInformacion = new JPanel();
-        panelInformacion.setLayout(new BorderLayout());
-        panelInformacion.add(new JScrollPane(infoEditor));
-
-        //Panel de árbol sintáctico
-        panelArbol = new JPanel();
-        panelArbol.setLayout(new BorderLayout());
-        panelArbol.add(new JScrollPane(arbolEditor));
-
         //Panel de tokens
-        panelToken = new JPanel();
-        panelToken.setLayout(new BorderLayout());
-        panelToken.add(new JScrollPane(tokenEditor));
-
-        //Panel de tokens
-        panelTabla = new JPanel();
-        panelTabla.setLayout(new BorderLayout());
-        panelTabla.add(new JScrollPane(tablaEditor));
         tablaEditor.setContentType("text/html");
         tablaEditor.setEditable(false);
 
-        //Panel de errores
-        panelErrores = new JPanel();
-        panelErrores.setLayout(new BorderLayout());
-        panelErrores.add(new JScrollPane(errorEditor));
-
-        tabbedPane.addTab("  Código Fuente ", panelCodigo);
-        tabbedPane.addTab("   Información  ", panelInformacion);
-        tabbedPane.addTab("     Errores    ", panelErrores);
-        tabbedPane.addTab(" Tabla símbolos ", panelTabla);
-        tabbedPane.addTab("Árbol Sintáctico", panelArbol);
-        tabbedPane.addTab("     Tokens     ", panelToken);
+        tabbedPane.addTab("  Código Fuente ", new JScrollPane(sourceCodeEditor));
+        tabbedPane.addTab("   Información  ", new JScrollPane(infoEditor));
+        tabbedPane.addTab("     Errores    ", new JScrollPane(errorEditor));
+        tabbedPane.addTab(" Tabla símbolos ", new JScrollPane(tablaEditor));
+        tabbedPane.addTab("Árbol Sintáctico", new JScrollPane(arbolEditor));
+        tabbedPane.addTab("     Tokens     ", new JScrollPane(tokenEditor));
 
         //Add the tabbed pane to this panel.
         panelPrincipal.add(tabbedPane);
@@ -264,7 +229,6 @@ public class CompilerUI extends JFrame {
                 }
             }
         });
-
     }
 
 }
