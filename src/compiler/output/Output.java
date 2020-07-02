@@ -2,6 +2,7 @@ package compiler.output;
 
 import compiler.syntax.table.Symbol;
 import compiler.syntax.table.Type;
+import compiler.syntax.table.Variable;
 
 import java.io.*;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ public class Output {
     private final static String TOKENS_FILE = "tokens.txt";
     private final static String ERRORS_FILE = "errors.txt";
     private final static String SYMBOLS_FILE = "symbols_table.html";
+    private final static String VARIABLE_FILE = "variable_table.html";
 
     /**
      * Crear fichero html y inicializar tabla de simbolos
@@ -29,13 +31,11 @@ public class Output {
             buffer.write("<meta charset=\"UTF-8\">");
             buffer.write("<style>table {width:100%;padding:0 100px;border-collapse:collapse;}table,th,td{border:1px solid #000}tr:nth-child(odd){background: #ddd}th, td {padding: 10px}</style>");
             buffer.write("</head><body>");
-            buffer.write("<h1>Práctica Compiladores 1 - UIB</h1>");
+            buffer.write("<h1>Práctica Compiladores - UIB</h1>");
             buffer.write("<h2>Tabla de simbolos</h2>");
             buffer.write("<table><tr><th>Context</th><th>ID</th><th>Type</th><th>SubType</th><th>Args</th></tr>");
 
             buffer.close();
-
-            // HACER VOLCADO DE MEMORIA QUE PIDE EL PROFE, FORMATO PDF
         } catch (IOException e) {
             System.err.println("[IOException] Write Error in " + SYMBOLS_FILE + ": " + e.getMessage());
         }
@@ -45,7 +45,7 @@ public class Output {
     /**
      * Añadir simbolo al fichero de tabla de símbolos
      */
-    public static void writeTable(Symbol symbol, Stack<HashMap> hashMapStack) {
+    public static void writeSymbol(Symbol symbol, Stack<HashMap> hashMapStack) {
 
         try {
             FileWriter fileWriter = new FileWriter(SYMBOLS_FILE, true);
@@ -77,7 +77,7 @@ public class Output {
     }
 
     /**
-     * Cerrar fichero html
+     * Cerrar fichero html de table símbolos
      */
     public static void closeSymbolTable() {
         try {
@@ -88,6 +88,66 @@ public class Output {
             buffer.close();
         } catch (IOException e) {
             System.err.println("[IOException] Write Error in " + SYMBOLS_FILE + ": " + e.getMessage());
+        }
+    }
+
+    /**
+     * Crear fichero html y inicializar tabla de variables
+     */
+    public static void initVariableTable() {
+
+        try {
+            FileWriter fileWriter = new FileWriter(VARIABLE_FILE);
+            BufferedWriter buffer = new BufferedWriter(fileWriter);
+
+            buffer.write("<!DOCTYPE html><html><head>");
+            buffer.write("<title>Tabla de variables</title>");
+            buffer.write("<meta charset=\"UTF-8\">");
+            buffer.write("<style>table {width:100%;padding:0 100px;border-collapse:collapse;}table,th,td{border:1px solid #000}tr:nth-child(odd){background: #ddd}th, td {padding: 10px}</style>");
+            buffer.write("</head><body>");
+            buffer.write("<h1>Práctica Compiladores - UIB</h1>");
+            buffer.write("<h2>Tabla de simbolos</h2>");
+            buffer.write("<table><tr><th>Context</th><th>ID</th><th>Type</th><th>SubType</th><th>Args</th></tr>");
+
+            buffer.close();
+        } catch (IOException e) {
+            System.err.println("[IOException] Write Error in " + VARIABLE_FILE + ": " + e.getMessage());
+        }
+
+    }
+
+    /**
+     * Añadir simbolo al fichero de tabla de símbolos
+     */
+    public static void writeVariable(String id, Variable variable) {
+
+        try {
+            FileWriter fileWriter = new FileWriter(VARIABLE_FILE, true);
+            BufferedWriter buffer = new BufferedWriter(fileWriter);
+
+            //Añadir entrada a la tabla html
+            buffer.write("<tr><td>Id : " + id + "</td><td>Subtype : " + variable.getSubtype() + "</td><td>Size : " + variable.getVariableSize() + "</td></tr>");
+
+
+            buffer.close();
+
+        } catch (IOException e) {
+            System.err.println("[IOException] Write Error in " + VARIABLE_FILE + ": " + e.getMessage());
+        }
+    }
+
+    /**
+     * Cerrar fichero html de tabla de variables
+     */
+    public static void closeVariableTable() {
+        try {
+            FileWriter fileWriter = new FileWriter(VARIABLE_FILE, true);
+            BufferedWriter buffer = new BufferedWriter(fileWriter);
+
+            buffer.write("</table></body></html>");
+            buffer.close();
+        } catch (IOException e) {
+            System.err.println("[IOException] Write Error in " + VARIABLE_FILE + ": " + e.getMessage());
         }
     }
 

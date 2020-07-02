@@ -1,6 +1,7 @@
 package compiler.syntax.symbols;
 
 import compiler.syntax.table.SymbolTable;
+import compiler.syntax.table.VariableTable;
 import java_cup.runtime.ComplexSymbolFactory.ComplexSymbol;
 
 import java.io.PrintWriter;
@@ -10,6 +11,7 @@ public abstract class SymbolBase extends ComplexSymbol {
     private static int idAutoIncrement = 0;
 
     public static SymbolTable symbolTable = new SymbolTable();
+    public static VariableTable variableTable = new VariableTable();
 
     protected int index;
 

@@ -20,6 +20,9 @@ public class SymbolProgram extends SymbolBase {
         //Cerrar fichero de tabla de símbolos
         Output.closeSymbolTable();
 
+        //Cerrar fichero de tabla de variables
+        Output.closeVariableTable();
+
         //Crear árbol sintáctico
         PrintWriter out = new PrintWriter("ArbolSintactico.dot");
         out.println("strict digraph {");

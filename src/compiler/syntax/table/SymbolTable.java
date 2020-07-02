@@ -36,6 +36,9 @@ public class SymbolTable {
         //Inicializar fichero de tabla de simbolos
         Output.initSymbolTable();
 
+        //Inicializar fichero de tabla de variable
+        Output.initVariableTable();
+
         //Añadir función print() a la tabla de simbolos
         Symbol print = new Symbol("print", Type.PROC, Subtype.NONE);
         print.getArgs().add(new Symbol("text", Type.ARG, Subtype.STRING));
@@ -59,7 +62,7 @@ public class SymbolTable {
             hashMapStack.peek().put(symbol.getId(), symbol);
 
             //Añadir symbol al fichero de la tabla de símbolos
-            Output.writeTable(symbol, hashMapStack);
+            Output.writeSymbol(symbol, hashMapStack);
         } else {
             return false;
         }

@@ -2,12 +2,12 @@ package compiler;
 
 import compiler.lexic.Lexer;
 import compiler.output.Output;
-import compiler.syntax.*;
-
+import compiler.syntax.Parser;
+import compiler.syntax.ParserSym;
 import java_cup.runtime.ComplexSymbolFactory;
 import java_cup.runtime.Symbol;
 
-import java.io.*;
+import java.io.FileReader;
 
 public class Compiler {
 

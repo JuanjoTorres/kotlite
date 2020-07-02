@@ -43,6 +43,8 @@ public class SymbolDecl extends SymbolBase {
         if (!symbolTable.add(new Symbol(id.getName(), type.getType(), basic.getSubtype())))
             Output.writeError("Error semántico en posición " + line + ":" + column + " - El ID " + id.getName() +
                     " ya se encuentra en la tabla de símbolos en el ámbito actual");
+        else
+            variableTable.put(id.getName());
     }
 
     @Override
