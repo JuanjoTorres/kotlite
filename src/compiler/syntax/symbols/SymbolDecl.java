@@ -2,6 +2,7 @@ package compiler.syntax.symbols;
 
 import compiler.output.Output;
 import compiler.syntax.table.Symbol;
+import compiler.syntax.table.Variable;
 
 import java.io.PrintWriter;
 
@@ -20,10 +21,13 @@ public class SymbolDecl extends SymbolBase {
         this.id = id;
         this.basic = basic;
 
-        //Añadir id de la funcion a la table de simbolos
+        //Añadir id de la variable a la tabla de simbolos
         if (!symbolTable.add(new Symbol(id.getName(), type.getType(), basic.getSubtype())))
             Output.writeError("Error semántico en posición " + line + ":" + column + " - El ID " + id.getName() +
                     " ya se encuentra en la tabla de símbolos en el ámbito actual");
+
+        //TODO Hace falta meter variables delcaradas por el usuario?
+        variableTable.put(id.getName(), new Variable(4, basic.getSubtype()));
     }
 
     // FORMA Decl ::= Type Id COLON Basic ASSIGN Bool SEMICOLON
@@ -43,8 +47,7 @@ public class SymbolDecl extends SymbolBase {
         if (!symbolTable.add(new Symbol(id.getName(), type.getType(), basic.getSubtype())))
             Output.writeError("Error semántico en posición " + line + ":" + column + " - El ID " + id.getName() +
                     " ya se encuentra en la tabla de símbolos en el ámbito actual");
-        else
-            variableTable.put(id.getName());
+
     }
 
     @Override

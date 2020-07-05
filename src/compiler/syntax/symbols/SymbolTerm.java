@@ -1,8 +1,11 @@
 package compiler.syntax.symbols;
 
+import compiler.codegeneration.Operation;
+import compiler.codegeneration.ThreeAddressCode;
 import compiler.output.Output;
 import compiler.syntax.ParserSym;
 import compiler.syntax.table.Subtype;
+import compiler.syntax.table.Variable;
 
 import java.io.PrintWriter;
 
@@ -11,6 +14,8 @@ public class SymbolTerm extends SymbolBase {
     private SymbolTerm term;
     private SymbolMult mult;
     private SymbolUnary unary;
+
+    private String variable;
 
     private Subtype subtype;
 
@@ -29,6 +34,14 @@ public class SymbolTerm extends SymbolBase {
 
         //Resultado de multiplicacion es INT
         this.subtype = Subtype.INT;
+
+        String termVar = term.getVariable();
+        String unaryVar = unary.getVariable();
+
+        //Generar nueva variable temporal
+        variable = Variable.nextVariable();
+
+        ThreeAddressCode.genera(ParserSym.terminalNames[mult.getSymbol()], termVar, unaryVar, variable);
     }
 
     // Term ::= Unary
@@ -37,6 +50,12 @@ public class SymbolTerm extends SymbolBase {
 
         this.unary = unary;
         this.subtype = unary.getSubtype();
+
+        variable = unary.getVariable();
+    }
+
+    public String getVariable() {
+        return variable;
     }
 
     public Subtype getSubtype() {

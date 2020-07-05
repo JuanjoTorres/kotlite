@@ -2,20 +2,22 @@ package compiler.syntax.table;
 
 public class Variable {
 
-    public int variableSize;
+    public static int numVar = 0;
+
+    public int size;
     public Subtype subtype;
 
-    public Variable(int ocup, Subtype ts) {
-        this.variableSize = ocup;
-        this.subtype = ts;
+    public Variable(int size, Subtype subtype) {
+        this.size = size;
+        this.subtype = subtype;
     }
 
-    public int getVariableSize() {
-        return variableSize;
+    public int getSize() {
+        return size;
     }
 
-    public void setVariableSize(int variableSize) {
-        this.variableSize = variableSize;
+    public void setSize(int size) {
+        this.size = size;
     }
 
     public Subtype getSubtype() {
@@ -24,5 +26,9 @@ public class Variable {
 
     public void setSubtype(Subtype subtype) {
         this.subtype = subtype;
+    }
+
+    public static String nextVariable() {
+        return "t" + ++numVar;
     }
 }

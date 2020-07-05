@@ -1,8 +1,10 @@
 package compiler.syntax.symbols;
 
+import compiler.codegeneration.ThreeAddressCode;
 import compiler.output.Output;
 import compiler.syntax.ParserSym;
 import compiler.syntax.table.Subtype;
+import compiler.syntax.table.Variable;
 
 import java.io.PrintWriter;
 
@@ -13,12 +15,17 @@ public class SymbolFactor extends SymbolBase {
 
     private Subtype subtype;
 
+    private String variable;
+
     // [FORMA] Factor ::= LPAREN Bool RPAREN
     public SymbolFactor(SymbolBool bool) {
         super("Factor", 0);
 
         this.bool = bool;
         subtype = bool.getSubtype();
+
+        //Obtener variable
+        variable = bool.getVariable();
     }
 
     // [FORMA] Factor ::= Id
@@ -34,10 +41,39 @@ public class SymbolFactor extends SymbolBase {
         }
 
         this.subtype = id.getSubtype();
+
+        //Obtener variable
+        variable = id.getVariable();
     }
 
     public SymbolFactor(int symbol) {
         super("Factor", 0);
+
+        //Generar nueva variable temporal
+        variable = Variable.nextVariable();
+
+        switch (symbol) {
+            case ParserSym.TRUE:
+                subtype = Subtype.BOOLEAN;
+
+                ThreeAddressCode.genera("ASSIG", "true", "", variable);
+                break;
+            case ParserSym.FALSE:
+                subtype = Subtype.BOOLEAN;
+
+                ThreeAddressCode.genera("ASSIG", "false", "", variable);
+                break;
+            case ParserSym.NONE:
+                subtype = Subtype.NONE;
+
+                ThreeAddressCode.genera("ASSIG", "null", "", variable);
+                break;
+        }
+    }
+
+    public SymbolFactor(int symbol, String literal) {
+        super("Factor", 0);
+
         switch (symbol) {
             case ParserSym.LITERAL:
                 subtype = Subtype.STRING;
@@ -45,14 +81,16 @@ public class SymbolFactor extends SymbolBase {
             case ParserSym.NUM:
                 subtype = Subtype.INT;
                 break;
-            case ParserSym.TRUE:
-            case ParserSym.FALSE:
-                subtype = Subtype.BOOLEAN;
-                break;
-            case ParserSym.NONE:
-                subtype = Subtype.NONE;
-                break;
         }
+
+        //Generar nueva variable temporal
+        variable = Variable.nextVariable();
+
+        ThreeAddressCode.genera("ASSIG", literal, "", variable);
+    }
+
+    public String getVariable() {
+        return variable;
     }
 
     public Subtype getSubtype() {

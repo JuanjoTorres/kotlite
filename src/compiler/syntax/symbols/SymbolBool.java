@@ -1,8 +1,11 @@
 package compiler.syntax.symbols;
 
+import compiler.codegeneration.Operation;
+import compiler.codegeneration.ThreeAddressCode;
 import compiler.output.Output;
 import compiler.syntax.ParserSym;
 import compiler.syntax.table.Subtype;
+import compiler.syntax.table.Variable;
 
 import java.io.PrintWriter;
 
@@ -13,6 +16,8 @@ public class SymbolBool extends SymbolBase {
     private SymbolRelation relation;
 
     private Subtype subtype;
+
+    private String variable;
 
     // FORMA Bool ::= Bool Join Relation
     public SymbolBool(SymbolBool bool, SymbolJoin join, SymbolRelation relation, int line, int column) {
@@ -30,6 +35,15 @@ public class SymbolBool extends SymbolBase {
 
         //Subtype de AND o OR es BOOL
         subtype = Subtype.BOOLEAN;
+
+        variable = Variable.nextVariable();
+
+        //TODO de donde se sacan las variables?
+        String boolVar = bool.getVariable();
+        String relationVar = relation.getVariable();
+
+        //TODO Coger operación del listado de symbol
+        ThreeAddressCode.genera(ParserSym.terminalNames[join.getSymbol()], boolVar, relationVar, variable);
     }
 
     // FORMA Bool ::= Relation
@@ -38,6 +52,12 @@ public class SymbolBool extends SymbolBase {
 
         this.relation = relation;
         subtype = relation.getSubtype();
+
+        variable = relation.getVariable();
+    }
+
+    public String getVariable() {
+        return variable;
     }
 
     public Subtype getSubtype() {

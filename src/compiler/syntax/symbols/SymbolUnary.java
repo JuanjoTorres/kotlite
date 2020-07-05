@@ -1,7 +1,9 @@
 package compiler.syntax.symbols;
 
+import compiler.codegeneration.ThreeAddressCode;
 import compiler.output.Output;
 import compiler.syntax.table.Subtype;
+import compiler.syntax.table.Variable;
 
 import java.io.PrintWriter;
 
@@ -11,6 +13,8 @@ public class SymbolUnary extends SymbolBase {
     private SymbolFactor factor;
 
     private Subtype subtype;
+
+    private String variable;
 
     // [FORMA] Unary ::= NOT Unary
     public SymbolUnary(SymbolUnary unary, int line, int column) {
@@ -22,6 +26,18 @@ public class SymbolUnary extends SymbolBase {
                     " - El operador ! (NOT) espera un tipo subyacente BOOLEAN y se ha encontrado un tipo " + subtype);
 
         this.unary = unary;
+
+        //Generar nueva variable temporal
+        variable = Variable.nextVariable();
+
+        //TODO de donde se sacan las variables?
+        String unaryVar = unary.getVariable();
+
+        //Generar nueva variable temporal
+        variable = Variable.nextVariable();
+
+        //TODO se pasa el id, el valor o que?
+        ThreeAddressCode.genera("NOT", unaryVar, "", variable);
     }
 
     // [FORMA] Unary ::= Factor
@@ -30,6 +46,13 @@ public class SymbolUnary extends SymbolBase {
 
         this.factor = factor;
         this.subtype = factor.getSubtype();
+
+        //Generar nueva variable temporal
+        variable = factor.getVariable();
+    }
+
+    public String getVariable() {
+        return variable;
     }
 
     public Subtype getSubtype() {

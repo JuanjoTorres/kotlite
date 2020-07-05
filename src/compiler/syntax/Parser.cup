@@ -233,10 +233,10 @@ Factor ::= LPAREN Bool:v1 RPAREN
               {: RESULT = new SymbolFactor(v1); :}
 	    | Id:id
               {: RESULT = new SymbolFactor(id, lexer.getRow(), lexer.getCol()); :}
-	    | LITERAL
-              {: RESULT = new SymbolFactor(ParserSym.LITERAL); :}
-	    | NUM
-              {: RESULT = new SymbolFactor(ParserSym.NUM); :}
+	    | LITERAL:literal
+              {: RESULT = new SymbolFactor(ParserSym.LITERAL, literal); :}
+	    | NUM:literal
+              {: RESULT = new SymbolFactor(ParserSym.NUM, literal); :}
 	    | TRUE
               {: RESULT = new SymbolFactor(ParserSym.TRUE); :}
 	    | FALSE

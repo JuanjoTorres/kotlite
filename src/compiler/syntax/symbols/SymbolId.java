@@ -1,6 +1,5 @@
 package compiler.syntax.symbols;
 
-import compiler.output.Output;
 import compiler.syntax.table.Subtype;
 
 import java.io.PrintWriter;
@@ -13,6 +12,10 @@ public class SymbolId extends SymbolBase {
         super(id, 0);
 
         this.id = id;
+    }
+
+    public String getVariable() {
+        return symbolTable.getId(id).getId();
     }
 
     public Subtype getSubtype() {

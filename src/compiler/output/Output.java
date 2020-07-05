@@ -15,6 +15,7 @@ public class Output {
     private final static String ERRORS_FILE = "errors.txt";
     private final static String SYMBOLS_FILE = "symbols_table.html";
     private final static String VARIABLE_FILE = "variable_table.html";
+    private final static String THREE_ADDRESS_CODE = "three_address_code.txt";
 
     /**
      * Crear fichero html y inicializar tabla de simbolos
@@ -126,7 +127,7 @@ public class Output {
             BufferedWriter buffer = new BufferedWriter(fileWriter);
 
             //Añadir entrada a la tabla html
-            buffer.write("<tr><td>Id : " + id + "</td><td>Subtype : " + variable.getSubtype() + "</td><td>Size : " + variable.getVariableSize() + "</td></tr>");
+            buffer.write("<tr><td>Id : " + id + "</td><td>Subtype : " + variable.getSubtype() + "</td><td>Size : " + variable.getSize() + "</td></tr>");
 
 
             buffer.close();
@@ -226,6 +227,34 @@ public class Output {
             fileWriter.close();
         } catch (IOException e) {
             System.err.println("[IOException] Write Error in " + INFO_FILE + ": " + e.getMessage());
+        }
+    }
+
+    /**
+     * Vaciar fichero de código de tres direcciones
+     *
+     * @return result
+     */
+    public static void truncateThreeAddressCode() {
+        try {
+            FileWriter fileWriter = new FileWriter(THREE_ADDRESS_CODE);
+            fileWriter.write("");
+            fileWriter.close();
+        } catch (IOException e) {
+            System.err.println("[IOException] Write Error in " + THREE_ADDRESS_CODE + ": " + e.getMessage());
+        }
+    }
+
+    public static void writeThreeAddressCode(String info) {
+
+        System.out.println(info);
+
+        try {
+            FileWriter fileWriter = new FileWriter(THREE_ADDRESS_CODE, true);
+            fileWriter.write(info + "\n");
+            fileWriter.close();
+        } catch (IOException e) {
+            System.err.println("[IOException] Write Error in " + THREE_ADDRESS_CODE + ": " + e.getMessage());
         }
     }
 }
