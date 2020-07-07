@@ -1,4 +1,4 @@
-package compiler.syntax.table;
+package compiler.syntax.tables;
 
 import compiler.output.Output;
 
@@ -23,7 +23,7 @@ public class VariableTable {
     }
 
     public void close() {
-        //TODO Cerrar tble HTML con Output
+        //TODO Cerrar table HTML con Output
     }
 
     public Variable get(String key) {

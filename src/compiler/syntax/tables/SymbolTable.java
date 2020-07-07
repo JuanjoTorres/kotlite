@@ -1,4 +1,4 @@
-package compiler.syntax.table;
+package compiler.syntax.tables;
 
 import compiler.output.Output;
 

@@ -3,8 +3,8 @@ package compiler.syntax.symbols;
 import compiler.codegeneration.ThreeAddressCode;
 import compiler.output.Output;
 import compiler.syntax.ParserSym;
-import compiler.syntax.table.Subtype;
-import compiler.syntax.table.Variable;
+import compiler.syntax.tables.Subtype;
+import compiler.syntax.tables.Variable;
 
 import java.io.PrintWriter;
 

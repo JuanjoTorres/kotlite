@@ -1,9 +1,8 @@
 package compiler.syntax.symbols;
 
 import compiler.output.Output;
-import compiler.syntax.table.Subtype;
-import compiler.syntax.table.Symbol;
-import jflex.Out;
+import compiler.syntax.tables.Subtype;
+import compiler.syntax.tables.Symbol;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;

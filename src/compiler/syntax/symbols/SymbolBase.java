@@ -1,7 +1,7 @@
 package compiler.syntax.symbols;
 
-import compiler.syntax.table.SymbolTable;
-import compiler.syntax.table.VariableTable;
+import compiler.syntax.tables.SymbolTable;
+import compiler.syntax.tables.VariableTable;
 import java_cup.runtime.ComplexSymbolFactory.ComplexSymbol;
 
 import java.io.PrintWriter;

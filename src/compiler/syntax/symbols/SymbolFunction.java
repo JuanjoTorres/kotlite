@@ -1,7 +1,7 @@
 package compiler.syntax.symbols;
 
 import compiler.output.Output;
-import compiler.syntax.table.*;
+import compiler.syntax.tables.*;
 
 import java.io.PrintWriter;
 

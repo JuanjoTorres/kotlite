@@ -1,8 +1,9 @@
 package compiler.output;
 
-import compiler.syntax.table.Symbol;
-import compiler.syntax.table.Type;
-import compiler.syntax.table.Variable;
+import compiler.syntax.tables.Procedure;
+import compiler.syntax.tables.Symbol;
+import compiler.syntax.tables.Type;
+import compiler.syntax.tables.Variable;
 
 import java.io.*;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ public class Output {
     private final static String ERRORS_FILE = "errors.txt";
     private final static String SYMBOLS_FILE = "symbols_table.html";
     private final static String VARIABLE_FILE = "variable_table.html";
+    private final static String PROCEDURE_FILE = "procedure_table.html";
     private final static String THREE_ADDRESS_CODE = "three_address_code.txt";
 
     /**
@@ -93,6 +95,67 @@ public class Output {
     }
 
     /**
+     * Crear fichero html y inicializar tabla de procedimientos
+     */
+    public static void initProcedureTable() {
+        try {
+            FileWriter fileWriter = new FileWriter(PROCEDURE_FILE);
+            BufferedWriter buffer = new BufferedWriter(fileWriter);
+
+            buffer.write("<!DOCTYPE html><html><head>");
+            buffer.write("<title>Tabla de procedimientos</title>");
+            buffer.write("<meta charset=\"UTF-8\">");
+            buffer.write("<style>table {width:100%;padding:0 100px;border-collapse:collapse;}table,th,td{border:1px solid #000}tr:nth-child(odd){background: #ddd}th, td {padding: 10px}</style>");
+            buffer.write("</head><body>");
+            buffer.write("<h1>Práctica Compiladores - UIB</h1>");
+            buffer.write("<h2>Tabla de procedimientos</h2>");
+            buffer.write("<table><tr><th>Context</th><th>ID</th><th>Type</th><th>SubType</th><th>Args</th></tr>");
+
+            buffer.close();
+        } catch (IOException e) {
+            System.err.println("[IOException] Write Error in " + PROCEDURE_FILE + ": " + e.getMessage());
+        }
+    }
+
+    /**
+     * Añadir simbolo al fichero de tabla de procedimientos
+     */
+    public static void writeProcedure(String id, Procedure procedure) {
+
+        try {
+            FileWriter fileWriter = new FileWriter(PROCEDURE_FILE, true);
+            BufferedWriter buffer = new BufferedWriter(fileWriter);
+
+            //Añadir entrada a la tabla html
+            buffer.write("<tr><td>ID : " + id
+                    + "</td><td>Initial Lab: " + procedure.getLabStart()
+                    + "</td><td>Deep: " + procedure.getDeep()
+                    + "</td><td>Params: " + procedure.getNumParams()
+                    + "</td><td>Size: " + procedure.getSize() + "</td></tr>");
+
+            buffer.close();
+
+        } catch (IOException e) {
+            System.err.println("[IOException] Write Error in " + PROCEDURE_FILE + ": " + e.getMessage());
+        }
+    }
+
+    /**
+     * Cerrar fichero html de tabla de procedimientos
+     */
+    public static void closeProcedureTable() {
+        try {
+            FileWriter fileWriter = new FileWriter(PROCEDURE_FILE, true);
+            BufferedWriter buffer = new BufferedWriter(fileWriter);
+
+            buffer.write("</table></body></html>");
+            buffer.close();
+        } catch (IOException e) {
+            System.err.println("[IOException] Write Error in " + PROCEDURE_FILE + ": " + e.getMessage());
+        }
+    }
+
+    /**
      * Crear fichero html y inicializar tabla de variables
      */
     public static void initVariableTable() {
@@ -107,14 +170,13 @@ public class Output {
             buffer.write("<style>table {width:100%;padding:0 100px;border-collapse:collapse;}table,th,td{border:1px solid #000}tr:nth-child(odd){background: #ddd}th, td {padding: 10px}</style>");
             buffer.write("</head><body>");
             buffer.write("<h1>Práctica Compiladores - UIB</h1>");
-            buffer.write("<h2>Tabla de simbolos</h2>");
+            buffer.write("<h2>Tabla de variables</h2>");
             buffer.write("<table><tr><th>Context</th><th>ID</th><th>Type</th><th>SubType</th><th>Args</th></tr>");
 
             buffer.close();
         } catch (IOException e) {
             System.err.println("[IOException] Write Error in " + VARIABLE_FILE + ": " + e.getMessage());
         }
-
     }
 
     /**

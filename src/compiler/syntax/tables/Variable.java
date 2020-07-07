@@ -1,9 +1,8 @@
-package compiler.syntax.table;
+package compiler.syntax.tables;
 
 public class Variable {
 
     public static int numVar = 0;
-
     public int size;
     public Subtype subtype;
 

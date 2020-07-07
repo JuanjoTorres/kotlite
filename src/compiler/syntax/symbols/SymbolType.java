@@ -1,7 +1,7 @@
 package compiler.syntax.symbols;
 
 import compiler.syntax.ParserSym;
-import compiler.syntax.table.Type;
+import compiler.syntax.tables.Type;
 
 import java.io.PrintWriter;
 

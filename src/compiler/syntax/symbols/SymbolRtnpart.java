@@ -1,6 +1,6 @@
 package compiler.syntax.symbols;
 
-import compiler.syntax.table.Subtype;
+import compiler.syntax.tables.Subtype;
 
 import java.io.PrintWriter;
 

@@ -1,6 +1,6 @@
 package compiler.syntax.symbols;
 
-import compiler.syntax.table.Symbol;
+import compiler.syntax.tables.Symbol;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
