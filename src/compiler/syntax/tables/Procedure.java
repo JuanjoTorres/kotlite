@@ -2,7 +2,7 @@ package compiler.syntax.tables;
 
 public class Procedure {
 
-    public static int numProc = 0;
+    public static int NUMPROC = 0;
     public int labStart;
     public int numParams;
     public int size;
@@ -41,6 +41,6 @@ public class Procedure {
     }
 
     public static String nextProcedure() {
-        return "fun" + ++numProc;
+        return "fun" + ++NUMPROC;
     }
 }

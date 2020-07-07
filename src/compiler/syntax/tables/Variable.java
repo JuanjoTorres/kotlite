@@ -2,7 +2,7 @@ package compiler.syntax.tables;
 
 public class Variable {
 
-    public static int numVar = 0;
+    public static int NUMVAR = 0;
     public int size;
     public Subtype subtype;
 
@@ -28,6 +28,6 @@ public class Variable {
     }
 
     public static String nextVariable() {
-        return "t" + ++numVar;
+        return "t" + ++NUMVAR;
     }
 }
