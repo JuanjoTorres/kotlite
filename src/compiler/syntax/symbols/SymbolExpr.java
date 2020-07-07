@@ -1,6 +1,6 @@
 package compiler.syntax.symbols;
 
-import compiler.codegeneration.ThreeAddressCode;
+import compiler.codegeneration.TAC;
 import compiler.output.Output;
 import compiler.syntax.ParserSym;
 import compiler.syntax.tables.Subtype;
@@ -32,15 +32,13 @@ public class SymbolExpr extends SymbolBase {
         //Resultado de + o - es INT
         subtype = Subtype.INT;
 
-        //TODO de donde se sacan las variables?
         String exprVar = expr.getVariable();
         String termVar = term.getVariable();
 
         //Generar nueva variable temporal
         variable = Variable.nextVariable();
 
-        //TODO se pasa el id, el valor o que?
-        ThreeAddressCode.genera(ParserSym.terminalNames[add.getSymbol()], exprVar, termVar, variable);
+        TAC.genera(ParserSym.terminalNames[add.getSymbol()], exprVar, termVar, variable);
 
     }
 

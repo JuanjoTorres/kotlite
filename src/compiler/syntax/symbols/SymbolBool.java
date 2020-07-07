@@ -1,6 +1,6 @@
 package compiler.syntax.symbols;
 
-import compiler.codegeneration.ThreeAddressCode;
+import compiler.codegeneration.TAC;
 import compiler.output.Output;
 import compiler.syntax.ParserSym;
 import compiler.syntax.tables.Subtype;
@@ -41,8 +41,7 @@ public class SymbolBool extends SymbolBase {
         String boolVar = bool.getVariable();
         String relationVar = relation.getVariable();
 
-        //TODO Coger operación del listado de symbol
-        ThreeAddressCode.genera(ParserSym.terminalNames[join.getSymbol()], boolVar, relationVar, variable);
+        TAC.genera(ParserSym.terminalNames[join.getSymbol()], boolVar, relationVar, variable);
     }
 
     // FORMA Bool ::= Relation

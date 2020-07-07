@@ -1,6 +1,6 @@
 package compiler.syntax.symbols;
 
-import compiler.codegeneration.ThreeAddressCode;
+import compiler.codegeneration.TAC;
 import compiler.output.Output;
 import compiler.syntax.ParserSym;
 import compiler.syntax.tables.Subtype;
@@ -56,17 +56,17 @@ public class SymbolFactor extends SymbolBase {
             case ParserSym.TRUE:
                 subtype = Subtype.BOOLEAN;
 
-                ThreeAddressCode.genera("ASSIG", "true", "", variable);
+                TAC.genera("ASSIG", "true", "", variable);
                 break;
             case ParserSym.FALSE:
                 subtype = Subtype.BOOLEAN;
 
-                ThreeAddressCode.genera("ASSIG", "false", "", variable);
+                TAC.genera("ASSIG", "false", "", variable);
                 break;
             case ParserSym.NONE:
                 subtype = Subtype.NONE;
 
-                ThreeAddressCode.genera("ASSIG", "null", "", variable);
+                TAC.genera("ASSIG", "null", "", variable);
                 break;
         }
     }
@@ -86,7 +86,7 @@ public class SymbolFactor extends SymbolBase {
         //Generar nueva variable temporal
         variable = Variable.nextVariable();
 
-        ThreeAddressCode.genera("ASSIG", literal, "", variable);
+        TAC.genera("ASSIG", literal, "", variable);
     }
 
     public String getVariable() {

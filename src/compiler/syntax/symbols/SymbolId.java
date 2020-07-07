@@ -1,5 +1,6 @@
 package compiler.syntax.symbols;
 
+import compiler.codegeneration.TAC;
 import compiler.syntax.tables.Subtype;
 
 import java.io.PrintWriter;
@@ -12,6 +13,9 @@ public class SymbolId extends SymbolBase {
         super(id, 0);
 
         this.id = id;
+
+        //Hacer push en la pila de etiquetas de funciones
+        TAC.pushFunctionLabel(id);
     }
 
     public String getVariable() {

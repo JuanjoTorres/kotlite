@@ -1,6 +1,6 @@
 package compiler.syntax.symbols;
 
-import compiler.codegeneration.ThreeAddressCode;
+import compiler.codegeneration.TAC;
 import compiler.output.Output;
 import compiler.syntax.ParserSym;
 import compiler.syntax.tables.Subtype;
@@ -42,15 +42,13 @@ public class SymbolRelation extends SymbolBase {
 
         this.subtype = Subtype.BOOLEAN;
 
-        //TODO de donde se sacan las variables?
         String expr1Var = expr1.getVariable();
         String expr2Var = expr2.getVariable();
 
         //Generar nueva variable temporal
         variable = Variable.nextVariable();
 
-        //TODO se pasa el id, el valor o que?
-        ThreeAddressCode.genera(ParserSym.terminalNames[oprel.getRelationType()], expr1Var, expr2Var, variable);
+        TAC.genera(ParserSym.terminalNames[oprel.getRelationType()], expr1Var, expr2Var, variable);
     }
 
     // [FORMA] Relation ::= Expr

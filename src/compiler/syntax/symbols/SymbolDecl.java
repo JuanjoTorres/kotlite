@@ -13,6 +13,8 @@ public class SymbolDecl extends SymbolBase {
     private SymbolBasic basic;
     private SymbolBool bool;
 
+    private String variable;
+
     // FORMA Decl ::= Type Id COLON Basic SEMICOLON
     public SymbolDecl(SymbolType type, SymbolId id, SymbolBasic basic, int line, int column) {
         super("Decl", 0);
@@ -48,6 +50,11 @@ public class SymbolDecl extends SymbolBase {
             Output.writeError("Error semántico en posición " + line + ":" + column + " - El ID " + id.getName() +
                     " ya se encuentra en la tabla de símbolos en el ámbito actual");
 
+        //Obtener variable
+        variable = Variable.nextVariable();
+
+        //TODO Meter la variable en la tabla de variables
+        variableTable.put(id.getName(), new Variable(4, basic.getSubtype()));
     }
 
     @Override

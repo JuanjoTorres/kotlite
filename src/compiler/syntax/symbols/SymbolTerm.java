@@ -1,6 +1,6 @@
 package compiler.syntax.symbols;
 
-import compiler.codegeneration.ThreeAddressCode;
+import compiler.codegeneration.TAC;
 import compiler.output.Output;
 import compiler.syntax.ParserSym;
 import compiler.syntax.tables.Subtype;
@@ -40,7 +40,7 @@ public class SymbolTerm extends SymbolBase {
         //Generar nueva variable temporal
         variable = Variable.nextVariable();
 
-        ThreeAddressCode.genera(ParserSym.terminalNames[mult.getSymbol()], termVar, unaryVar, variable);
+        TAC.genera(ParserSym.terminalNames[mult.getSymbol()], termVar, unaryVar, variable);
     }
 
     // Term ::= Unary
