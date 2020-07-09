@@ -1,0 +1,16 @@
+var globalA: Int = 6;
+var globalB: Int;
+
+fun sumar (num1: Int; num2: Int): Int {
+
+    var res: Int;
+    res = num1 + num2;
+    return res;
+}
+
+fun main (): None {
+
+    globalB = sumar(globalA, globalA);
+    print("El numero resultado es...");
+    print(globalB);
+}
