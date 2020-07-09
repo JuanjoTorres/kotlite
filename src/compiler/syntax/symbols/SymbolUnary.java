@@ -1,6 +1,7 @@
 package compiler.syntax.symbols;
 
-import compiler.codegeneration.TAC;
+import compiler.intermediate.Generator;
+import compiler.intermediate.ThreeAddressCode;
 import compiler.output.Output;
 import compiler.syntax.tables.Subtype;
 import compiler.syntax.tables.Variable;
@@ -14,7 +15,7 @@ public class SymbolUnary extends SymbolBase {
 
     private Subtype subtype;
 
-    private String variable;
+    private Variable variable;
 
     // [FORMA] Unary ::= NOT Unary
     public SymbolUnary(SymbolUnary unary, int line, int column) {
@@ -27,12 +28,13 @@ public class SymbolUnary extends SymbolBase {
 
         this.unary = unary;
 
-        String unaryVar = unary.getVariable();
+        Variable unaryVar = unary.getVariable();
 
         //Generar nueva variable temporal
-        variable = Variable.nextVariable();
+        variable = new Variable();
 
-        TAC.genera("NOT", unaryVar, "", variable);
+        //Añadir código de tres direcciones con la operacion
+        Generator.addThreeAddressCode(new ThreeAddressCode("NOT", unaryVar.getId(), "", variable.getId()));
     }
 
     // [FORMA] Unary ::= Factor
@@ -46,7 +48,7 @@ public class SymbolUnary extends SymbolBase {
         variable = factor.getVariable();
     }
 
-    public String getVariable() {
+    public Variable getVariable() {
         return variable;
     }
 

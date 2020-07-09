@@ -1,6 +1,7 @@
 package compiler.syntax.symbols;
 
-import compiler.codegeneration.TAC;
+import compiler.intermediate.Generator;
+import compiler.intermediate.ThreeAddressCode;
 import compiler.output.Output;
 import compiler.syntax.ParserSym;
 import compiler.syntax.tables.Subtype;
@@ -14,7 +15,7 @@ public class SymbolTerm extends SymbolBase {
     private SymbolMult mult;
     private SymbolUnary unary;
 
-    private String variable;
+    private Variable variable;
 
     private Subtype subtype;
 
@@ -34,13 +35,14 @@ public class SymbolTerm extends SymbolBase {
         //Resultado de multiplicacion es INT
         this.subtype = Subtype.INT;
 
-        String termVar = term.getVariable();
-        String unaryVar = unary.getVariable();
+        Variable termVar = term.getVariable();
+        Variable unaryVar = unary.getVariable();
 
         //Generar nueva variable temporal
-        variable = Variable.nextVariable();
+        variable = new Variable();
 
-        TAC.genera(ParserSym.terminalNames[mult.getSymbol()], termVar, unaryVar, variable);
+        //Añadir código de tres direcciones con la operacion
+        Generator.addThreeAddressCode(new ThreeAddressCode(ParserSym.terminalNames[mult.getSymbol()], termVar.getId(), unaryVar.getId(), variable.getId()));
     }
 
     // Term ::= Unary
@@ -53,7 +55,7 @@ public class SymbolTerm extends SymbolBase {
         variable = unary.getVariable();
     }
 
-    public String getVariable() {
+    public Variable getVariable() {
         return variable;
     }
 

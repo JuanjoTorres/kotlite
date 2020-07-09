@@ -2,13 +2,20 @@ package compiler.syntax.tables;
 
 public class Variable {
 
-    public static int NUMVAR = 0;
-    public int size;
-    public Subtype subtype;
+    private static int NUMVAR = 0;
 
-    public Variable(int size, Subtype subtype) {
-        this.size = size;
-        this.subtype = subtype;
+    private String id;
+
+    private int size;
+
+    private boolean global;
+
+    private String parentFunction;
+
+    private Subtype subtype;
+
+    public Variable() {
+        this.id = nextVariable();
     }
 
     public int getSize() {
@@ -27,7 +34,11 @@ public class Variable {
         this.subtype = subtype;
     }
 
-    public static String nextVariable() {
+    public String getId() {
+        return id;
+    }
+
+    private static String nextVariable() {
         return "t" + ++NUMVAR;
     }
 }

@@ -44,7 +44,7 @@ public class SymbolStatment extends SymbolBase {
 
     // [FORMA] Statment ::= WHILE LPAREN Bool RPAREN LBRACKET Decls
     //         Statments RBRACKET
-    public SymbolStatment(SymbolBool bool, SymbolDecls decls, SymbolStatments statments, int line, int column) {
+    public SymbolStatment(SymbolCond cond, SymbolBool bool, SymbolDecls decls, SymbolStatments statments, SymbolEndloop endloop, int line, int column) {
         super("Statment", 0);
 
         this.bool = bool;

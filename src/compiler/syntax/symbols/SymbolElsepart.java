@@ -8,7 +8,7 @@ public class SymbolElsepart extends SymbolBase {
     private SymbolStatments statments;
 
     // [FORMA] Elsepart ::= .
-    public SymbolElsepart() {
+    public SymbolElsepart(SymbolEndif endif) {
         super("Elsepart", 0);
     }
 

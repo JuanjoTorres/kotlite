@@ -1,6 +1,7 @@
 package compiler.syntax.symbols;
 
-import compiler.codegeneration.TAC;
+import compiler.intermediate.Generator;
+import compiler.intermediate.ThreeAddressCode;
 import compiler.output.Output;
 import compiler.syntax.ParserSym;
 import compiler.syntax.tables.Subtype;
@@ -16,7 +17,7 @@ public class SymbolRelation extends SymbolBase {
 
     private Subtype subtype;
 
-    private String variable;
+    private Variable variable;
 
     // [FORMA] Relation ::= Expr Oprel Expr
     public SymbolRelation(SymbolExpr expr1, SymbolOprel oprel, SymbolExpr expr2, int line, int column) {
@@ -42,13 +43,14 @@ public class SymbolRelation extends SymbolBase {
 
         this.subtype = Subtype.BOOLEAN;
 
-        String expr1Var = expr1.getVariable();
-        String expr2Var = expr2.getVariable();
+        Variable expr1Var = expr1.getVariable();
+        Variable expr2Var = expr2.getVariable();
 
         //Generar nueva variable temporal
-        variable = Variable.nextVariable();
+        variable = new Variable();
 
-        TAC.genera(ParserSym.terminalNames[oprel.getRelationType()], expr1Var, expr2Var, variable);
+        //Añadir código de tres direcciones con la operacion
+        Generator.addThreeAddressCode(new ThreeAddressCode(ParserSym.terminalNames[oprel.getRelationType()], expr1Var.getId(), expr2Var.getId(), variable.getId()));
     }
 
     // [FORMA] Relation ::= Expr
@@ -61,7 +63,7 @@ public class SymbolRelation extends SymbolBase {
         variable = expr1.getVariable();
     }
 
-    public String getVariable() {
+    public Variable getVariable() {
         return variable;
     }
 

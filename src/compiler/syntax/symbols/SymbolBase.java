@@ -1,5 +1,6 @@
 package compiler.syntax.symbols;
 
+import compiler.syntax.tables.ProcedureTable;
 import compiler.syntax.tables.SymbolTable;
 import compiler.syntax.tables.VariableTable;
 import java_cup.runtime.ComplexSymbolFactory.ComplexSymbol;
@@ -12,6 +13,7 @@ public abstract class SymbolBase extends ComplexSymbol {
 
     public static SymbolTable symbolTable = new SymbolTable();
     public static VariableTable variableTable = new VariableTable();
+    public static ProcedureTable procedureTable = new ProcedureTable();
 
     protected int index;
 

@@ -1,4 +1,4 @@
-package compiler.codegeneration;
+package compiler.intermediate;
 
 public enum Operation {
     ADD, SUBS, PROD, DIV,

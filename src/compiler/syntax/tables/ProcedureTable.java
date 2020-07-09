@@ -12,14 +12,18 @@ public class ProcedureTable {
         table = new Hashtable<>();
     }
 
-    public void put (String key, Procedure procedure) {
-        if(!table.containsKey(key)) {
-            // Insertar procedimiento en la tabla de procedimientos
-            table.put(key, procedure);
+    public boolean put(String key, Procedure procedure) {
 
-            // Escribir procedimiento en el fichero de la tabla de procedimientos
-            Output.writeProcedure(key, procedure);
-        }
+        if (table.containsKey(key))
+            return false;
+
+        // Insertar procedimiento en la tabla de procedimientos
+        table.put(key, procedure);
+
+        // Escribir procedimiento en el fichero de la tabla de procedimientos
+        Output.writeProcedure(key, procedure);
+
+        return true;
     }
 
     public void close() {

@@ -1,5 +1,6 @@
 package compiler;
 
+import compiler.intermediate.Generator;
 import compiler.lexic.Lexer;
 import compiler.output.Output;
 import compiler.syntax.Parser;
@@ -114,6 +115,12 @@ public class CompilerUI extends JFrame {
         }
 
         Output.writeInfo("ANÁLISIS SINTÁCTICO terminado.");
+
+        Output.writeInfo("Generando código de tres direcciones");
+
+        Output.writeThreeAddressCodes(Generator.getThreeAddressCodes());
+
+        //TODO Cargar código de tres direcciones en la interfaz
 
         Output.writeInfo("Leyendo ficheros de salida.");
 

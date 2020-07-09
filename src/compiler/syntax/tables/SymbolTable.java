@@ -39,6 +39,9 @@ public class SymbolTable {
         //Inicializar fichero de tabla de variable
         Output.initVariableTable();
 
+        //Inicializar fichero de codigo de tres direcciones
+        Output.truncateThreeAddressCode();
+
         //Añadir función print() a la tabla de simbolos
         Symbol print = new Symbol("print", Type.PROC, Subtype.NONE);
         print.getArgs().add(new Symbol("text", Type.ARG, Subtype.STRING));
