@@ -1,11 +1,13 @@
 package compiler.output;
 
+import compiler.intermediate.ThreeAddressCode;
 import compiler.syntax.tables.Procedure;
 import compiler.syntax.tables.Symbol;
 import compiler.syntax.tables.Type;
 import compiler.syntax.tables.Variable;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -128,7 +130,7 @@ public class Output {
 
             //Añadir entrada a la tabla html
             buffer.write("<tr><td>ID : " + id
-                    + "</td><td>Initial Lab: " + procedure.getLabStart()
+                    + "</td><td>Initial Lab: " + procedure.getStartLabel()
                     + "</td><td>Deep: " + procedure.getDeep()
                     + "</td><td>Params: " + procedure.getNumParams()
                     + "</td><td>Size: " + procedure.getSize() + "</td></tr>");
@@ -301,6 +303,21 @@ public class Output {
         try {
             FileWriter fileWriter = new FileWriter(THREE_ADDRESS_CODE);
             fileWriter.write("");
+            fileWriter.close();
+        } catch (IOException e) {
+            System.err.println("[IOException] Write Error in " + THREE_ADDRESS_CODE + ": " + e.getMessage());
+        }
+    }
+
+    public static void writeThreeAddressCodes(ArrayList<ThreeAddressCode> threeAddressCodes) {
+
+        try {
+            FileWriter fileWriter = new FileWriter(THREE_ADDRESS_CODE, true);
+
+            for (ThreeAddressCode threeAddressCode : threeAddressCodes) {
+                fileWriter.write(threeAddressCode.toString() + "\n");
+            }
+
             fileWriter.close();
         } catch (IOException e) {
             System.err.println("[IOException] Write Error in " + THREE_ADDRESS_CODE + ": " + e.getMessage());

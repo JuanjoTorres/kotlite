@@ -111,8 +111,8 @@ Functions ::= Functions:v1 Function:v2
               {: RESULT = new SymbolFunctions(v1, v2); :}
               | {: RESULT = new SymbolFunctions(); :};
 
-Function ::= FUN Id:id Aup LPAREN Argsdec:v1 RPAREN COLON Basic:v2 LBRACKET Decls:v3 Statments:v4 Rtnpart:v5 Adown RBRACKET
-              {: RESULT = new SymbolFunction(fun, id, v1, v2, v3, v4, v5, lexer.getRow(), lexer.getCol()); :};
+Function ::= FUN Id:id Fun:fun Aup LPAREN Argsdec:v1 RPAREN COLON Basic:v2 LBRACKET Decls:v3 Statments:v4 Rtnpart:v5 Adown RBRACKET
+              {: RESULT = new SymbolFunction(id, fun, v1, v2, v3, v4, v5, lexer.getRow(), lexer.getCol()); :};
 
 Functioncall ::= Id:id LPAREN Args:v1 RPAREN
               {: RESULT = new SymbolFunctioncall(id, v1, lexer.getRow(), lexer.getCol()); :};

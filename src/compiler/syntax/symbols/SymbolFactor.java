@@ -1,6 +1,7 @@
 package compiler.syntax.symbols;
 
-import compiler.codegeneration.TAC;
+import compiler.intermediate.Generator;
+import compiler.intermediate.ThreeAddressCode;
 import compiler.output.Output;
 import compiler.syntax.ParserSym;
 import compiler.syntax.tables.Subtype;
@@ -15,7 +16,7 @@ public class SymbolFactor extends SymbolBase {
 
     private Subtype subtype;
 
-    private String variable;
+    private Variable variable;
 
     // [FORMA] Factor ::= LPAREN Bool RPAREN
     public SymbolFactor(SymbolBool bool) {
@@ -43,30 +44,33 @@ public class SymbolFactor extends SymbolBase {
         this.subtype = id.getSubtype();
 
         //Obtener variable
-        variable = id.getVariable();
+        variable = new Variable();
     }
 
     public SymbolFactor(int symbol) {
         super("Factor", 0);
 
         //Generar nueva variable temporal
-        variable = Variable.nextVariable();
+        variable = new Variable();
 
         switch (symbol) {
             case ParserSym.TRUE:
                 subtype = Subtype.BOOLEAN;
 
-                TAC.genera("ASSIG", "true", "", variable);
+                //Añadir código de tres direcciones con la operacion
+                Generator.addThreeAddressCode(new ThreeAddressCode("ASSIG", "true", "", variable.getId()));
                 break;
             case ParserSym.FALSE:
                 subtype = Subtype.BOOLEAN;
 
-                TAC.genera("ASSIG", "false", "", variable);
+                //Añadir código de tres direcciones con la operacion
+                Generator.addThreeAddressCode(new ThreeAddressCode("ASSIG", "false", "", variable.getId()));
                 break;
             case ParserSym.NONE:
                 subtype = Subtype.NONE;
 
-                TAC.genera("ASSIG", "null", "", variable);
+                //Añadir código de tres direcciones con la operacion
+                Generator.addThreeAddressCode(new ThreeAddressCode("ASSIG", "null", "", variable.getId()));
                 break;
         }
     }
@@ -84,12 +88,13 @@ public class SymbolFactor extends SymbolBase {
         }
 
         //Generar nueva variable temporal
-        variable = Variable.nextVariable();
+        variable = new Variable();
 
-        TAC.genera("ASSIG", literal, "", variable);
+        //Añadir código de tres direcciones con la operacion
+        Generator.addThreeAddressCode(new ThreeAddressCode("ASSIG", literal, "", variable.getId()));
     }
 
-    public String getVariable() {
+    public Variable getVariable() {
         return variable;
     }
 

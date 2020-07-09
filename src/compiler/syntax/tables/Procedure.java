@@ -3,17 +3,21 @@ package compiler.syntax.tables;
 public class Procedure {
 
     public static int NUMPROC = 0;
-    public int labStart;
+    public String startLabel;
     public int numParams;
     public int size;
     public int deep;
 
-    public int getLabStart() {
-        return labStart;
+    public Procedure() {
+        this.startLabel = Procedure.nextProcedure();
     }
 
-    public void setLabStart(int labStart) {
-        this.labStart = labStart;
+    public String getStartLabel() {
+        return startLabel;
+    }
+
+    public void setStartLabel(String startLabel) {
+        this.startLabel = startLabel;
     }
 
     public int getNumParams() {
@@ -41,6 +45,6 @@ public class Procedure {
     }
 
     public static String nextProcedure() {
-        return "fun" + ++NUMPROC;
+        return "fun_" + ++NUMPROC;
     }
 }
