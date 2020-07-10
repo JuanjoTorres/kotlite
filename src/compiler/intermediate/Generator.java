@@ -5,7 +5,10 @@ import java.util.Stack;
 
 public class Generator {
 
-    private static final Stack<String> FUNCTION_STACK = new Stack<>();
+    private static int returnLabel = 0;
+    private static int variableNumber = 0;
+
+    private static Stack<String> functionStack = new Stack<>();
 
     private static ArrayList<ThreeAddressCode> threeAddressCodes = new ArrayList<>();
 
@@ -18,10 +21,18 @@ public class Generator {
     }
 
     public static String popFunctionLabel() {
-        return FUNCTION_STACK.pop();
+        return functionStack.pop();
     }
 
     public static void pushFunctionLabel(String functionLabel) {
-        FUNCTION_STACK.push(functionLabel);
+        functionStack.push(functionLabel);
+    }
+
+    public static String generateReturnLabel() {
+        return "rnt_" + ++variableNumber;
+    }
+
+    public static String generateVariable() {
+        return "t" + ++variableNumber;
     }
 }

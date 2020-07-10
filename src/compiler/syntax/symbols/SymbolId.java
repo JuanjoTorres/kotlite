@@ -1,11 +1,8 @@
 package compiler.syntax.symbols;
 
 import compiler.intermediate.Generator;
-import compiler.intermediate.ThreeAddressCode;
 import compiler.syntax.tables.Procedure;
 import compiler.syntax.tables.Subtype;
-import compiler.syntax.tables.Type;
-import compiler.syntax.tables.Variable;
 
 import java.io.PrintWriter;
 
@@ -29,6 +26,7 @@ public class SymbolId extends SymbolBase {
     }
 
     public Procedure getProcedure() {
+        System.out.println("Get procedure:" + id);
         return procedureTable.get(id);
     }
 

@@ -1,21 +1,18 @@
 package compiler.syntax.tables;
 
+import compiler.intermediate.Generator;
+
 public class Variable {
 
-    private static int NUMVAR = 0;
-
-    private String id;
-
     private int size;
-
     private boolean global;
-
+    private String id;
     private String parentFunction;
 
     private Subtype subtype;
 
     public Variable() {
-        this.id = nextVariable();
+        this.id = Generator.generateVariable();
     }
 
     public int getSize() {
@@ -38,7 +35,4 @@ public class Variable {
         return id;
     }
 
-    private static String nextVariable() {
-        return "t" + ++NUMVAR;
-    }
 }

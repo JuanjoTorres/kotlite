@@ -1,5 +1,7 @@
 package compiler.syntax.symbols;
 
+import compiler.intermediate.Generator;
+import compiler.intermediate.ThreeAddressCode;
 import compiler.output.Output;
 import compiler.syntax.tables.Symbol;
 import compiler.syntax.tables.Variable;
@@ -28,10 +30,10 @@ public class SymbolDecl extends SymbolBase {
             Output.writeError("Error semántico en posición " + line + ":" + column + " - El ID " + id.getName() +
                     " ya se encuentra en la tabla de símbolos en el ámbito actual");
 
-        variable = new Variable();
+        //variable = new Variable();
 
         //TODO Hace falta meter variables declaradas por el usuario?
-        variableTable.put(id.getName(), variable);
+        //variableTable.put(id.getName(), variable);
     }
 
     // FORMA Decl ::= Type Id COLON Basic ASSIGN Bool SEMICOLON
@@ -53,10 +55,15 @@ public class SymbolDecl extends SymbolBase {
                     " ya se encuentra en la tabla de símbolos en el ámbito actual");
 
         //Obtener variable
-        variable = new Variable();
+        variable = bool.getVariable();
 
         //TODO Meter la variable en la tabla de variables
         variableTable.put(id.getName(), new Variable());
+
+        Variable boolVar = bool.getVariable();
+
+        //Añadir código de tres direcciones con la operacion
+        Generator.addThreeAddressCode(new ThreeAddressCode("COPY", boolVar.getId(), "", id.getName()));
     }
 
     @Override

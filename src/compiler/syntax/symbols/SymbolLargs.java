@@ -22,7 +22,7 @@ public class SymbolLargs extends SymbolBase {
 
         //Añadir argumentos de lista de argumentos y el argumento actual
         args.addAll(largs.getArgs());
-        args.add(new Symbol(factor.getName(), Type.ARG, factor.getSubtype()));
+        args.add(new Symbol(factor.getVariable().getId(), Type.ARG, factor.getSubtype()));
     }
 
     // [FORMA] Largs ::= Factor
@@ -32,7 +32,7 @@ public class SymbolLargs extends SymbolBase {
         this.factor = factor;
 
         //Añadir el argumento actual
-        args.add(new Symbol(factor.getName(), Type.ARG, factor.getSubtype()));
+        args.add(new Symbol(factor.getVariable().getId(), Type.ARG, factor.getSubtype()));
     }
 
     public ArrayList<Symbol> getArgs() {

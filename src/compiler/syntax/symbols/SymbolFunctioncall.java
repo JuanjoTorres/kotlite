@@ -1,5 +1,7 @@
 package compiler.syntax.symbols;
 
+import compiler.intermediate.Generator;
+import compiler.intermediate.ThreeAddressCode;
 import compiler.output.Output;
 import compiler.syntax.tables.Subtype;
 import compiler.syntax.tables.Symbol;
@@ -57,6 +59,18 @@ public class SymbolFunctioncall extends SymbolBase {
                             " y se ha recibido un parámetro del tipo " + args.getArgs().get(i).getSubtype());
             }
         }
+
+        //Si tiene argumentos, generar código de tres direcciones
+        if (args != null) {
+
+            //Añadir instrucción de parametro por cada argumento
+            for (int i = 0; i < args.getArgs().size(); i++) {
+                Generator.addThreeAddressCode(new ThreeAddressCode("PARAM", "", "", args.getArgs().get(i).getId()));
+            }
+        }
+
+        Generator.addThreeAddressCode(new ThreeAddressCode("CALL", "", "", id.getProcedure().getStartLabel()));
+        Generator.addThreeAddressCode(new ThreeAddressCode("SKIP", "", "", Generator.generateReturnLabel()));
 
     }
 
