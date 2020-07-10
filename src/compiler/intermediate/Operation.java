@@ -6,6 +6,6 @@ public enum Operation {
     EQU, NOTEQU, GT, LT, GTEQU, LTQUE,  // Operaciones relacionales
     AND, OR, NOT,
     SKIP, GOTO,                         // Operaciones de saltos incondicionales
-    IFEQ, IFNE, IFGT, IFLT, IFGE, IFLE, // Operaciones de saltos condicionales
+    IFGOTO,                             // Operaciones de saltos condicionales
     PMB, CALL, PARAM, RTN               // Operaciones de subprogramas
 }

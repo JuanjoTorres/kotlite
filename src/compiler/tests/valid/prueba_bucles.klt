@@ -1,0 +1,16 @@
+fun bucles(): None {
+
+    while (true) {
+
+        while (false) {
+            var declaracionEnWhileInterior: Int = 6;
+        }
+
+    }
+}
+
+fun main (): None {
+
+    bucles();
+
+}

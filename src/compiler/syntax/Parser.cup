@@ -91,9 +91,10 @@ nonterminal SymbolId Id;
 nonterminal SymbolAup Aup;
 nonterminal SymbolAdown Adown;
 nonterminal SymbolFun Fun;
-nonterminal SymbolRtn Rtn;
+nonterminal SymbolLoopstart Loopstart;
+nonterminal SymbolLoopcond Loopcond;
+nonterminal SymbolLoopend Loopend;
 nonterminal SymbolCond Cond;
-nonterminal SymbolEndloop Endloop;
 nonterminal SymbolEndif Endif;
 
 
@@ -154,10 +155,10 @@ Statments ::= Statments:v1 Statment:v2
 
 Statment ::= Id:id ASSIGN Bool:v1 SEMICOLON
               {: RESULT = new SymbolStatment(id, v1, lexer.getRow(), lexer.getCol()); :}
-	    | IF LPAREN Bool:v1 RPAREN LBRACKET Aup Decls:v2 Statments:v3 Adown RBRACKET Elsepart:v4
-              {: RESULT = new SymbolStatment(v1, v2, v3, v4, lexer.getRow(), lexer.getCol()); :}
-	    | Cond:cond WHILE LPAREN Bool:v1 RPAREN LBRACKET Aup Decls:v2 Statments:v3 Adown Endloop:end RBRACKET
-              {: RESULT = new SymbolStatment(cond, v1, v2, v3, end, lexer.getRow(), lexer.getCol()); :}
+	    | IF LPAREN Bool:v1 Cond:cond RPAREN LBRACKET Aup Decls:v2 Statments:v3 Adown RBRACKET Elsepart:v4
+              {: RESULT = new SymbolStatment(v1, cond, v2, v3, v4, lexer.getRow(), lexer.getCol()); :}
+	    | Loopstart WHILE LPAREN Bool:v1 Loopcond RPAREN LBRACKET Aup Decls:v2 Statments:v3 Adown Loopend RBRACKET
+              {: RESULT = new SymbolStatment(v1, v2, v3, lexer.getRow(), lexer.getCol()); :}
 	    | Id:id ASSIGN Functioncall:v1 SEMICOLON
               {: RESULT = new SymbolStatment(id ,v1, lexer.getRow(), lexer.getCol()); :}
 	    | Functioncall:v1 SEMICOLON
@@ -254,6 +255,8 @@ Aup ::=         {: RESULT = new SymbolAup(); :};
 Adown ::=         {: RESULT = new SymbolAdown(); :};
 
 Fun ::=         {: RESULT = new SymbolFun(); :};
+Loopstart ::=         {: RESULT = new SymbolLoopstart(); :};
+Loopcond ::=         {: RESULT = new SymbolLoopcond(); :};
+Loopend ::=         {: RESULT = new SymbolLoopend(); :};
 Cond ::=         {: RESULT = new SymbolCond(); :};
-Endloop ::=         {: RESULT = new SymbolEndloop(); :};
 Endif ::=         {: RESULT = new SymbolEndif(); :};

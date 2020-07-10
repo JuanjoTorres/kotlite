@@ -16,7 +16,6 @@ public class SymbolStatment extends SymbolBase {
     private SymbolElsepart elsepart;
     private SymbolFunctioncall functioncall;
 
-
     // [FORMA] Statment ::= Id ASSIGN Bool SEMICOLON
     public SymbolStatment(SymbolId id, SymbolBool bool, int line, int column) {
         super("Statment", 0);
@@ -31,7 +30,7 @@ public class SymbolStatment extends SymbolBase {
 
     // [FORMA] Statment ::= IF LPAREN Bool RPAREN LBRACKET Decls Statments
     //         RBRACKET Elsepart
-    public SymbolStatment(SymbolBool bool, SymbolDecls decls, SymbolStatments statments, SymbolElsepart elsepart, int line, int column) {
+    public SymbolStatment(SymbolBool bool, SymbolCond cond, SymbolDecls decls, SymbolStatments statments, SymbolElsepart elsepart, int line, int column) {
         super("Statment", 0);
 
         this.bool = bool;
@@ -46,7 +45,7 @@ public class SymbolStatment extends SymbolBase {
 
     // [FORMA] Statment ::= WHILE LPAREN Bool RPAREN LBRACKET Decls
     //         Statments RBRACKET
-    public SymbolStatment(SymbolCond cond, SymbolBool bool, SymbolDecls decls, SymbolStatments statments, SymbolEndloop endloop, int line, int column) {
+    public SymbolStatment(SymbolBool bool, SymbolDecls decls, SymbolStatments statments, int line, int column) {
         super("Statment", 0);
 
         this.bool = bool;

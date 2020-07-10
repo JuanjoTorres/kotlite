@@ -42,6 +42,8 @@ public class SymbolBool extends SymbolBase {
         Variable boolVar = bool.getVariable();
         Variable relationVar = relation.getVariable();
 
+        Generator.setLastBoolVar(variable.getId());
+
         //Añadir código de tres direcciones con la operacion
         Generator.addThreeAddressCode(new ThreeAddressCode(ParserSym.terminalNames[join.getSymbol()], boolVar.getId(), relationVar.getId(), variable.getId()));
     }
@@ -54,6 +56,8 @@ public class SymbolBool extends SymbolBase {
         subtype = relation.getSubtype();
 
         variable = relation.getVariable();
+
+        Generator.setLastBoolVar(variable.getId());
     }
 
     public Variable getVariable() {
