@@ -5,6 +5,7 @@ import compiler.intermediate.ThreeAddressCode;
 import compiler.output.Output;
 import compiler.syntax.tables.Subtype;
 import compiler.syntax.tables.Symbol;
+import compiler.syntax.tables.Variable;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ public class SymbolFunctioncall extends SymbolBase {
 
     private SymbolId id;
     private SymbolArgs args;
+
+    private Variable variable;
 
     private Subtype subtype;
 
@@ -69,9 +72,17 @@ public class SymbolFunctioncall extends SymbolBase {
             }
         }
 
-        Generator.addThreeAddressCode(new ThreeAddressCode("CALL", "", "", id.getProcedure().getStartLabel()));
-        Generator.addThreeAddressCode(new ThreeAddressCode("SKIP", "", "", Generator.generateReturnLabel()));
+        variable = new Variable();
 
+        // Llamada a función guardando el valor de retorno en variable temporal
+        Generator.addThreeAddressCode(new ThreeAddressCode("CALL", id.getProcedure().getStartLabel(), "", variable.getId()));
+
+        // No es necesaria la etiqueta de retorno
+        //Generator.addThreeAddressCode(new ThreeAddressCode("SKIP", "", "", Generator.generateReturnLabel()));
+    }
+
+    public Variable getVariable() {
+        return variable;
     }
 
     public Subtype getSubtype() {

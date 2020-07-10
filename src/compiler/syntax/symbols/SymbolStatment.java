@@ -1,5 +1,7 @@
 package compiler.syntax.symbols;
 
+import compiler.intermediate.Generator;
+import compiler.intermediate.ThreeAddressCode;
 import compiler.output.Output;
 import compiler.syntax.tables.Subtype;
 
@@ -68,6 +70,9 @@ public class SymbolStatment extends SymbolBase {
         if (id.getSubtype() != functioncall.getSubtype())
             Output.writeError("Error semántico en posición " + line + ":" + column + " - El id " + id.getName() +
                     " es del tipo subyacente " + id.getSubtype() + " y se la ha asignado un valor de retorno de función del tipo " + functioncall.getSubtype());
+
+        // Copiar valor de retorno en la variable del ID
+        Generator.addThreeAddressCode(new ThreeAddressCode("COPY", functioncall.getVariable().getId(), "", id.getVariable()));
     }
 
     // [FORMA] Statment ::= Functioncall SEMICOLON
