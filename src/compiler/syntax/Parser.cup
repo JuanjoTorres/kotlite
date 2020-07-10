@@ -90,7 +90,7 @@ nonterminal SymbolFactor Factor;
 nonterminal SymbolId Id;
 nonterminal SymbolAup Aup;
 nonterminal SymbolAdown Adown;
-nonterminal SymbolFun Fun;
+nonterminal SymbolFuncstart Funcstart;
 nonterminal SymbolLoopstart Loopstart;
 nonterminal SymbolLoopcond Loopcond;
 nonterminal SymbolLoopend Loopend;
@@ -112,7 +112,7 @@ Functions ::= Functions:v1 Function:v2
               {: RESULT = new SymbolFunctions(v1, v2); :}
               | {: RESULT = new SymbolFunctions(); :};
 
-Function ::= FUN Id:id Fun:fun Aup LPAREN Argsdec:v1 RPAREN COLON Basic:v2 LBRACKET Decls:v3 Statments:v4 Rtnpart:v5 Adown RBRACKET
+Function ::= FUN Id:id Funcstart Aup LPAREN Argsdec:v1 RPAREN COLON Basic:v2 LBRACKET Decls:v3 Statments:v4 Rtnpart:v5 Adown RBRACKET
               {: RESULT = new SymbolFunction(id, fun, v1, v2, v3, v4, v5, lexer.getRow(), lexer.getCol()); :};
 
 Functioncall ::= Id:id LPAREN Args:v1 RPAREN
@@ -254,7 +254,7 @@ Id ::= ID:id
 Aup ::=         {: RESULT = new SymbolAup(); :};
 Adown ::=         {: RESULT = new SymbolAdown(); :};
 
-Fun ::=         {: RESULT = new SymbolFun(); :};
+Funcstart ::=         {: RESULT = new SymbolFuncstart(); :};
 Loopstart ::=         {: RESULT = new SymbolLoopstart(); :};
 Loopcond ::=         {: RESULT = new SymbolLoopcond(); :};
 Loopend ::=         {: RESULT = new SymbolLoopend(); :};

@@ -6,11 +6,11 @@ import compiler.syntax.tables.Procedure;
 
 import java.io.PrintWriter;
 
-public class SymbolFun extends SymbolBase {
+public class SymbolFuncstart extends SymbolBase {
 
     // FORMA Fun ::= .
-    public SymbolFun() {
-        super("Fun", 0);
+    public SymbolFuncstart() {
+        super("Functionstart", 0);
 
         String funId = Generator.popFunctionLabel();
 
@@ -31,5 +31,4 @@ public class SymbolFun extends SymbolBase {
     @Override
     public void toDot(PrintWriter out) {
     }
-
 }
