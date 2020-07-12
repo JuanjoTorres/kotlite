@@ -29,11 +29,6 @@ public class SymbolDecl extends SymbolBase {
         if (!symbolTable.add(new Symbol(id.getName(), type.getType(), basic.getSubtype())))
             Output.writeError("Error semántico en posición " + line + ":" + column + " - El ID " + id.getName() +
                     " ya se encuentra en la tabla de símbolos en el ámbito actual");
-
-        //variable = new Variable();
-
-        //TODO Hace falta meter variables declaradas por el usuario?
-        //variableTable.put(id.getName(), variable);
     }
 
     // FORMA Decl ::= Type Id COLON Basic ASSIGN Bool SEMICOLON
@@ -58,7 +53,8 @@ public class SymbolDecl extends SymbolBase {
         variable = bool.getVariable();
 
         //TODO Meter la variable en la tabla de variables
-        variableTable.put(id.getName(), new Variable());
+        //TODO ¿En la variable que del bool o una nueva? ¿Que se mete en ella?
+        variableTable.put(id.getName(), variable);
 
         Variable boolVar = bool.getVariable();
 

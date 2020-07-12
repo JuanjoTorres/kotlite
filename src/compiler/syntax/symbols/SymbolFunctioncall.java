@@ -24,8 +24,6 @@ public class SymbolFunctioncall extends SymbolBase {
     public SymbolFunctioncall(SymbolId id, SymbolArgs args, int line, int column) {
         super("Functioncall", 0);
 
-        System.out.println("FUNCTIONA CALL INICIO");
-
         this.id = id;
 
         //Comprobar si existe la función

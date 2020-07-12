@@ -37,6 +37,7 @@ public class SymbolLargsdec extends SymbolBase {
                     " ya se encuentra en la tabla de símbolos en el ámbito actual");
         else
             //TODO Hay que meterlos en la tabla de variables ¿?
+            //TODO ¿Con nueva variable? ¿Que se mete en ella?
             variableTable.put(symbol.getId(), new Variable());
     }
 
