@@ -14,8 +14,6 @@ public class SymbolFuncstart extends SymbolBase {
 
         String funId = Generator.popFunctionLabel();
 
-        System.out.println("Pop id: " + funId);
-
         //Si todavía no está en la tabla de procedimientos,
         // es que estamos en la definición de una función
         Procedure procedure = new Procedure(funId);
@@ -23,8 +21,6 @@ public class SymbolFuncstart extends SymbolBase {
 
         //Añadir código de tres direcciones con skip y la etiqueta
         Generator.addThreeAddressCode(new ThreeAddressCode("SKIP", "", "", procedure.getStartLabel()));
-
-        System.out.println("Generando etiqueta: " + procedure.getStartLabel());
 
     }
 

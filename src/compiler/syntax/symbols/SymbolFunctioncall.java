@@ -9,6 +9,7 @@ import compiler.syntax.tables.Variable;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SymbolFunctioncall extends SymbolBase {
 
@@ -23,6 +24,8 @@ public class SymbolFunctioncall extends SymbolBase {
     public SymbolFunctioncall(SymbolId id, SymbolArgs args, int line, int column) {
         super("Functioncall", 0);
 
+        System.out.println("FUNCTIONA CALL INICIO");
+
         this.id = id;
 
         //Comprobar si existe la función
@@ -36,17 +39,17 @@ public class SymbolFunctioncall extends SymbolBase {
         ArrayList<Symbol> functionArgs = symbolTable.getId(id.getName()).getArgs();
 
         //Si la funcion se llama sin argumentos y si que tiene argumentos, el numero de argumentos es erróneo
-        if (args == null && functionArgs != null) {
+        if (args == null && functionArgs.size() > 0) {
             Output.writeError("Error semántico en posición " + line + ":" + column + " - La función " + id.getName() + " espera " + functionArgs.size() +
                     " argumento(s) y se han recibido 0 argumento(s)");
             return;
-        } else if (args != null && functionArgs == null) {
+        } else if (args != null && functionArgs.size() == 0) {
             Output.writeError("Error semántico en posición " + line + ":" + column + " - La función " + id.getName() +
                     " espera 0 argumentos y se han recibido " + args.getArgs().size() + " argumento(s)");
             return;
         }
 
-        if (args != null && functionArgs != null) {
+        if (args != null) {
             //Comprobar el número de argumentos
             if (args.getArgs().size() != functionArgs.size()) {
                 Output.writeError("Error semántico en posición " + line + ":" + column + " - La función " + id.getName() + " espera " + functionArgs.size() +
@@ -61,10 +64,6 @@ public class SymbolFunctioncall extends SymbolBase {
                             " de la función " + id.getName() + "() es del tipo " + functionArgs.get(i).getSubtype() +
                             " y se ha recibido un parámetro del tipo " + args.getArgs().get(i).getSubtype());
             }
-        }
-
-        //Si tiene argumentos, generar código de tres direcciones
-        if (args != null) {
 
             //Añadir instrucción de parametro por cada argumento
             for (int i = 0; i < args.getArgs().size(); i++) {
@@ -77,7 +76,8 @@ public class SymbolFunctioncall extends SymbolBase {
         // Llamada a función guardando el valor de retorno en variable temporal
         Generator.addThreeAddressCode(new ThreeAddressCode("CALL", id.getProcedure().getStartLabel(), "", variable.getId()));
 
-        // No es necesaria la etiqueta de retorno
+        // No es necesaria la etiqueta de retorno,
+        // se hace en ensamblador guardando la dirección de retorno en la pila
         //Generator.addThreeAddressCode(new ThreeAddressCode("SKIP", "", "", Generator.generateReturnLabel()));
     }
 
