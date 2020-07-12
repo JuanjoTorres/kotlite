@@ -8,8 +8,8 @@ public class Procedure {
     public int size;
     public int deep;
 
-    public Procedure() {
-        this.startLabel = Procedure.nextProcedure();
+    public Procedure(String name) {
+        this.startLabel = Procedure.nextProcedure(name);
     }
 
     public String getStartLabel() {
@@ -44,7 +44,7 @@ public class Procedure {
         this.deep = deep;
     }
 
-    public static String nextProcedure() {
-        return "fun_" + ++NUMPROC;
+    public static String nextProcedure(String funName) {
+        return "fun_" + funName + "_" + ++NUMPROC;
     }
 }

@@ -3,6 +3,7 @@ package compiler.syntax.symbols;
 import compiler.intermediate.Generator;
 import compiler.syntax.tables.Procedure;
 import compiler.syntax.tables.Subtype;
+import compiler.syntax.tables.Variable;
 
 import java.io.PrintWriter;
 
@@ -21,8 +22,8 @@ public class SymbolId extends SymbolBase {
         System.out.println("Push id: " + id);
     }
 
-    public String getVariable() {
-        return symbolTable.getId(id).getId();
+    public Variable getVariable() {
+        return variableTable.get(id);
     }
 
     public Procedure getProcedure() {

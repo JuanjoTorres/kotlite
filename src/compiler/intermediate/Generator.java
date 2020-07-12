@@ -8,15 +8,16 @@ public class Generator {
     private static int variableNumber = 0;
     private static int loopStartNumber = 0;
     private static int loopEndNumber = 0;
+    private static int condTrueNumber = 0;
     private static int condFalseNumber = 0;
 
     private static Stack<String> functionLabelStack = new Stack<>();
 
     private static Stack<String> condFalseStack = new Stack<>();
+    private static Stack<String> condTrueStack = new Stack<>();
+
     private static Stack<String> endloopLabelStack = new Stack<>();
     private static Stack<String> startloopLabelStack = new Stack<>();
-
-    private static String lastBoolVar;
 
     private static ArrayList<ThreeAddressCode> threeAddressCodes = new ArrayList<>();
 
@@ -36,15 +37,29 @@ public class Generator {
         functionLabelStack.push(label);
     }
 
-    public static String popFalseLabel() {
+    public static String popCondTrueLabel() {
+        if (condTrueStack.empty())
+            return null;
+        return condTrueStack.pop();
+    }
+
+    public static void pushCondTrueLabel(String label) {
+        condTrueStack.push(label);
+    }
+
+    public static String popCondFalseLabel() {
+        if (condFalseStack.empty())
+            return null;
         return condFalseStack.pop();
     }
 
-    public static void pushFalseLabel(String label) {
+    public static void pushCondFalseLabel(String label) {
         condFalseStack.push(label);
     }
 
     public static String popEndloopLabel() {
+        if (endloopLabelStack.empty())
+            return null;
         return endloopLabelStack.pop();
     }
 
@@ -53,6 +68,8 @@ public class Generator {
     }
 
     public static String popStartloopLabel() {
+        if (startloopLabelStack.empty())
+            return null;
         return startloopLabelStack.pop();
     }
 
@@ -68,21 +85,15 @@ public class Generator {
         return "loop_end_" + ++loopEndNumber;
     }
 
+    public static String generateCondTrueLabel() {
+        return "cond_true_" + ++condTrueNumber;
+    }
+
     public static String generateCondFalseLabel() {
         return "cond_false_" + ++condFalseNumber;
     }
 
     public static String generateVariable() {
         return "t" + ++variableNumber;
-    }
-
-    public static String getLastBoolVar() {
-        System.out.println("GET LAST BOOL: " + lastBoolVar);
-        return lastBoolVar;
-    }
-
-    public static void setLastBoolVar(String lastBoolVar) {
-        System.out.println("SET LAST BOOL: " + lastBoolVar);
-        Generator.lastBoolVar = lastBoolVar;
     }
 }

@@ -75,6 +75,7 @@ nonterminal SymbolLargs Largs;
 nonterminal SymbolStatments Statments;
 nonterminal SymbolStatment Statment;
 nonterminal SymbolElsepart Elsepart;
+nonterminal SymbolCond Cond;
 nonterminal SymbolBool Bool;
 nonterminal SymbolRelation Relation;
 nonterminal SymbolExpr Expr;
@@ -92,10 +93,10 @@ nonterminal SymbolAup Aup;
 nonterminal SymbolAdown Adown;
 nonterminal SymbolFuncstart Funcstart;
 nonterminal SymbolLoopstart Loopstart;
-nonterminal SymbolLoopcond Loopcond;
 nonterminal SymbolLoopend Loopend;
-nonterminal SymbolCond Cond;
-nonterminal SymbolEndif Endif;
+nonterminal SymbolCondstart Condstart;
+nonterminal SymbolCondelse Condelse;
+nonterminal SymbolCondend Condend;
 
 
 /* Precedence declarations */
@@ -113,7 +114,7 @@ Functions ::= Functions:v1 Function:v2
               | {: RESULT = new SymbolFunctions(); :};
 
 Function ::= FUN Id:id Funcstart Aup LPAREN Argsdec:v1 RPAREN COLON Basic:v2 LBRACKET Decls:v3 Statments:v4 Rtnpart:v5 Adown RBRACKET
-              {: RESULT = new SymbolFunction(id, fun, v1, v2, v3, v4, v5, lexer.getRow(), lexer.getCol()); :};
+              {: RESULT = new SymbolFunction(id, v1, v2, v3, v4, v5, lexer.getRow(), lexer.getCol()); :};
 
 Functioncall ::= Id:id LPAREN Args:v1 RPAREN
               {: RESULT = new SymbolFunctioncall(id, v1, lexer.getRow(), lexer.getCol()); :};
@@ -155,18 +156,21 @@ Statments ::= Statments:v1 Statment:v2
 
 Statment ::= Id:id ASSIGN Bool:v1 SEMICOLON
               {: RESULT = new SymbolStatment(id, v1, lexer.getRow(), lexer.getCol()); :}
-	    | IF LPAREN Bool:v1 Cond:cond RPAREN LBRACKET Aup Decls:v2 Statments:v3 Adown RBRACKET Elsepart:v4
-              {: RESULT = new SymbolStatment(v1, cond, v2, v3, v4, lexer.getRow(), lexer.getCol()); :}
-	    | Loopstart WHILE LPAREN Bool:v1 Loopcond RPAREN LBRACKET Aup Decls:v2 Statments:v3 Adown Loopend RBRACKET
+	    | Condstart IF LPAREN Cond:v1 RPAREN LBRACKET Aup Decls:v2 Statments:v3 Adown RBRACKET Elsepart:v4
+              {: RESULT = new SymbolStatment(v1, v2, v3, v4, lexer.getRow(), lexer.getCol()); :}
+	    | Loopstart WHILE LPAREN Cond:v1 RPAREN LBRACKET Aup Decls:v2 Statments:v3 Adown RBRACKET Loopend
               {: RESULT = new SymbolStatment(v1, v2, v3, lexer.getRow(), lexer.getCol()); :}
 	    | Id:id ASSIGN Functioncall:v1 SEMICOLON
               {: RESULT = new SymbolStatment(id ,v1, lexer.getRow(), lexer.getCol()); :}
 	    | Functioncall:v1 SEMICOLON
               {: RESULT = new SymbolStatment(v1); :};
 
-Elsepart ::= ELSE LBRACKET Aup Decls:v1 Statments:v2 Adown Endif:endif RBRACKET
+Elsepart ::= Condelse ELSE LBRACKET Aup Decls:v1 Statments:v2 Adown RBRACKET Condend
               {: RESULT = new SymbolElsepart(v1, v2); :}
-        | Endif:endif {: RESULT = new SymbolElsepart(endif); :};
+        | Condelse Condend {: RESULT = new SymbolElsepart(); :};
+
+Cond ::= Bool:bool
+              {: RESULT = new SymbolCond(bool); :};
 
 Bool ::= Bool:v1 Join:v2 Relation:v3
               {: RESULT = new SymbolBool(v1, v2, v3, lexer.getRow(), lexer.getCol()); :}
@@ -256,7 +260,7 @@ Adown ::=         {: RESULT = new SymbolAdown(); :};
 
 Funcstart ::=         {: RESULT = new SymbolFuncstart(); :};
 Loopstart ::=         {: RESULT = new SymbolLoopstart(); :};
-Loopcond ::=         {: RESULT = new SymbolLoopcond(); :};
 Loopend ::=         {: RESULT = new SymbolLoopend(); :};
-Cond ::=         {: RESULT = new SymbolCond(); :};
-Endif ::=         {: RESULT = new SymbolEndif(); :};
+Condstart ::=         {: RESULT = new SymbolCondstart(); :};
+Condelse ::=         {: RESULT = new SymbolCondelse(); :};
+Condend ::=         {: RESULT = new SymbolCondend(); :};

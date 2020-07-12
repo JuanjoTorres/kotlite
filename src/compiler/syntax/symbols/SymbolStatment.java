@@ -11,6 +11,7 @@ public class SymbolStatment extends SymbolBase {
 
     private SymbolId id;
     private SymbolBool bool;
+    private SymbolCond cond;
     private SymbolDecls decls;
     private SymbolStatments statments;
     private SymbolElsepart elsepart;
@@ -30,31 +31,31 @@ public class SymbolStatment extends SymbolBase {
 
     // [FORMA] Statment ::= IF LPAREN Bool RPAREN LBRACKET Decls Statments
     //         RBRACKET Elsepart
-    public SymbolStatment(SymbolBool bool, SymbolCond cond, SymbolDecls decls, SymbolStatments statments, SymbolElsepart elsepart, int line, int column) {
+    public SymbolStatment(SymbolCond cond, SymbolDecls decls, SymbolStatments statments, SymbolElsepart elsepart, int line, int column) {
         super("Statment", 0);
 
-        this.bool = bool;
+        this.cond = cond;
         this.decls = decls;
         this.statments = statments;
         this.elsepart = elsepart;
 
-        if (bool.getSubtype() != Subtype.BOOLEAN)
+        if (cond.getSubtype() != Subtype.BOOLEAN)
             Output.writeError("Error semántico en posición " + line + ":" + column +
-                    " - El condicional IF requiere una condicion del tipo BOOLEAN y se ha encontrado un tipo " + bool.getSubtype());
+                    " - El condicional IF requiere una condicion del tipo BOOLEAN y se ha encontrado un tipo " + cond.getSubtype());
     }
 
     // [FORMA] Statment ::= WHILE LPAREN Bool RPAREN LBRACKET Decls
     //         Statments RBRACKET
-    public SymbolStatment(SymbolBool bool, SymbolDecls decls, SymbolStatments statments, int line, int column) {
+    public SymbolStatment(SymbolCond cond, SymbolDecls decls, SymbolStatments statments, int line, int column) {
         super("Statment", 0);
 
-        this.bool = bool;
+        this.cond = cond;
         this.decls = decls;
         this.statments = statments;
 
-        if (bool.getSubtype() != Subtype.BOOLEAN)
+        if (cond.getSubtype() != Subtype.BOOLEAN)
             Output.writeError("Error semántico en posición " + line + ":" + column +
-                    " - El bucle WHILE requiere una condicion del tipo BOOLEAN y se ha encontrado un tipo " + bool.getSubtype());
+                    " - El bucle WHILE requiere una condicion del tipo BOOLEAN y se ha encontrado un tipo " + cond.getSubtype());
     }
 
     // [FORMA] Statment ::= Id ASSIGN Functioncall SEMICOLON
@@ -71,7 +72,7 @@ public class SymbolStatment extends SymbolBase {
                     " es del tipo subyacente " + id.getSubtype() + " y se la ha asignado un valor de retorno de función del tipo " + functioncall.getSubtype());
 
         // Copiar valor de retorno en la variable del ID
-        Generator.addThreeAddressCode(new ThreeAddressCode("COPY", functioncall.getVariable().getId(), "", id.getVariable()));
+        Generator.addThreeAddressCode(new ThreeAddressCode("COPY", functioncall.getVariable().getId(), "", id.getVariable().getId()));
     }
 
     // [FORMA] Statment ::= Functioncall SEMICOLON
@@ -89,6 +90,8 @@ public class SymbolStatment extends SymbolBase {
             out.print(index + "->" + id.getIndex() + "\n");
         if (bool != null)
             out.print(index + "->" + bool.getIndex() + "\n");
+        if (cond != null)
+            out.print(index + "->" + cond.getIndex() + "\n");
         if (decls != null)
             out.print(index + "->" + decls.getIndex() + "\n");
         if (statments != null)
@@ -102,6 +105,8 @@ public class SymbolStatment extends SymbolBase {
             id.toDot(out);
         if (bool != null)
             bool.toDot(out);
+        if (cond != null)
+            cond.toDot(out);
         if (decls != null)
             decls.toDot(out);
         if (statments != null)

@@ -1,0 +1,25 @@
+fun condicionales(): None {
+
+    if (true) {
+
+        if (false) {
+            var ifif: Int = 0;
+        } else {
+            var ifelse: Int = 1;
+        }
+
+    } else {
+
+        if (false) {
+            var elseif: Int = 2;
+        } else {
+            var elseelse: Int = 3;
+        }
+    }
+}
+
+fun main (): None {
+
+    condicionales();
+
+}

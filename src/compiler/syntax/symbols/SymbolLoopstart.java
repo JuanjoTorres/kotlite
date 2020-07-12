@@ -7,15 +7,17 @@ import java.io.PrintWriter;
 
 public class SymbolLoopstart extends SymbolBase {
 
-    // FORMA Cond ::= .
+    // Marcador de inicio de loop WHILE
     public SymbolLoopstart() {
         super("LoopStart", 0);
 
-        //Generar etiqueta de inicio de loop
+        //Generar etiquetas de inicio y fin de loop
         String startLabel = Generator.generateLoopStartLabel();
+        String endLabel = Generator.generateLoopEndLabel();
 
-        //Guardar etiqueta en la pila
+        //Guardar etiquetas en la pila
         Generator.pushStartloopLabel(startLabel);
+        Generator.pushEndloopLabel(endLabel);
 
         //Añadir código de tres direcciones con skip y la etiqueta
         Generator.addThreeAddressCode(new ThreeAddressCode("SKIP", "", "", startLabel));

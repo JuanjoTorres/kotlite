@@ -44,7 +44,7 @@ public class SymbolFactor extends SymbolBase {
         this.subtype = id.getSubtype();
 
         //Obtener variable
-        variable = new Variable();
+        variable = id.getVariable();
     }
 
     public SymbolFactor(int symbol) {

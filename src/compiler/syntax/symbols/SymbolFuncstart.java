@@ -18,7 +18,7 @@ public class SymbolFuncstart extends SymbolBase {
 
         //Si todavía no está en la tabla de procedimientos,
         // es que estamos en la definición de una función
-        Procedure procedure = new Procedure();
+        Procedure procedure = new Procedure(funId);
         procedureTable.put(funId, procedure);
 
         //Añadir código de tres direcciones con skip y la etiqueta

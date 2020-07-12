@@ -12,7 +12,7 @@ public class ProcedureTable {
         table = new Hashtable<>();
 
         //Añadir funciones predefinidas a la tabla de procedimientos
-        Procedure procedure = new Procedure();
+        Procedure procedure = new Procedure("print");
         table.put("print", procedure);
     }
 

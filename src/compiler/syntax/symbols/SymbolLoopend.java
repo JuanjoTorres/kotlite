@@ -7,12 +7,11 @@ import java.io.PrintWriter;
 
 public class SymbolLoopend extends SymbolBase {
 
-    // FORMA Cond ::= .
+    // Marcador de fin de loop WHILE
     public SymbolLoopend() {
         super("LoopEnd", 0);
 
         //Añadir código de tres direcciones con goto a inicio de bucle y skip de final de bucle
-        //TODO Chapuza con variable temporal, hay que quitarlo
         Generator.addThreeAddressCode(new ThreeAddressCode("GOTO", "", "", Generator.popStartloopLabel()));
         Generator.addThreeAddressCode(new ThreeAddressCode("SKIP", "", "", Generator.popEndloopLabel()));
     }
