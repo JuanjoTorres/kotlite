@@ -18,16 +18,17 @@ public class SymbolId extends SymbolBase {
 
         //Hacer push en la pila de etiquetas de funciones
         Generator.pushFunctionLabel(id);
-
-        System.out.println("Push id: " + id);
     }
 
     public Variable getVariable() {
-        return variableTable.get(id);
+        System.out.println("Obtener variable de id: " + id);
+        Variable var = variableTable.get(id);
+        System.out.println("Sacando variable: " + id);
+        System.out.println(" --> Variable: " + var.toString());
+        return var;
     }
 
     public Procedure getProcedure() {
-        System.out.println("Get procedure:" + id);
         return procedureTable.get(id);
     }
 
