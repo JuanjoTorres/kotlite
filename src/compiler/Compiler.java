@@ -14,7 +14,7 @@ public class Compiler {
     public static void main(String[] args) throws Exception {
 
         //Comprobar que se pasa el fichero de código fuente como parámetro
-        if (args[0].isEmpty()) {
+        if (args.length == 0 || args[0].isEmpty()) {
             System.err.println("Error: No se ha introducido fichero de código fuente como argumento");
             System.exit(-1);
         }
