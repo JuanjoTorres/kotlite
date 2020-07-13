@@ -21,8 +21,8 @@ public class Generator {
 
     private static ArrayList<ThreeAddressCode> threeAddressCodes = new ArrayList<>();
 
-    public void addThreeAddressCode(ThreeAddressCode threeAddressCode) {
-        threeAddressCodes.add(threeAddressCode);
+    public void addThreeAddressCode(String operation, String op1, String op2, String destination) {
+        threeAddressCodes.add(new ThreeAddressCode(operation, op1, op2, destination));
     }
 
     public static ArrayList<ThreeAddressCode> getThreeAddressCodes() {

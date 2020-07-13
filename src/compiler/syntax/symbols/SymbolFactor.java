@@ -57,19 +57,19 @@ public class SymbolFactor extends SymbolBase {
                 subtype = Subtype.BOOLEAN;
 
                 //Añadir código de tres direcciones con la operacion
-                generator.addThreeAddressCode(new ThreeAddressCode("COPY", "true", "", variable.getId()));
+                generator.addThreeAddressCode("COPY", "true", "", variable.getId());
                 break;
             case ParserSym.FALSE:
                 subtype = Subtype.BOOLEAN;
 
                 //Añadir código de tres direcciones con la operacion
-                generator.addThreeAddressCode(new ThreeAddressCode("COPY", "false", "", variable.getId()));
+                generator.addThreeAddressCode("COPY", "false", "", variable.getId());
                 break;
             case ParserSym.NONE:
                 subtype = Subtype.NONE;
 
                 //Añadir código de tres direcciones con la operacion
-                generator.addThreeAddressCode(new ThreeAddressCode("COPY", "null", "", variable.getId()));
+                generator.addThreeAddressCode("COPY", "null", "", variable.getId());
                 break;
         }
     }
@@ -90,7 +90,7 @@ public class SymbolFactor extends SymbolBase {
         variable = new Variable(generator.generateVariable());
 
         //Añadir código de tres direcciones con la operacion
-        generator.addThreeAddressCode(new ThreeAddressCode("COPY", literal, "", variable.getId()));
+        generator.addThreeAddressCode("COPY", literal, "", variable.getId());
     }
 
     public Variable getVariable() {

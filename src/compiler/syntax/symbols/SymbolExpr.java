@@ -39,7 +39,7 @@ public class SymbolExpr extends SymbolBase {
         variable = new Variable(generator.generateVariable());
 
         //Añadir código de tres direcciones con la operacion
-        generator.addThreeAddressCode(new ThreeAddressCode(ParserSym.terminalNames[add.getSymbol()], exprVar.getId(), termVar.getId(), variable.getId()));
+        generator.addThreeAddressCode(ParserSym.terminalNames[add.getSymbol()], exprVar.getId(), termVar.getId(), variable.getId());
 
     }
 

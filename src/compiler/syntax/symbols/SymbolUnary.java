@@ -33,7 +33,7 @@ public class SymbolUnary extends SymbolBase {
         variable = new Variable(generator.generateVariable());
 
         //Añadir código de tres direcciones con la operacion
-        generator.addThreeAddressCode(new ThreeAddressCode("NOT", unaryVar.getId(), "", variable.getId()));
+        generator.addThreeAddressCode("NOT", unaryVar.getId(), "", variable.getId());
     }
 
     // [FORMA] Unary ::= Factor

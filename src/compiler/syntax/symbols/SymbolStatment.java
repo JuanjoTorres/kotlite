@@ -71,7 +71,7 @@ public class SymbolStatment extends SymbolBase {
                     " es del tipo subyacente " + id.getSubtype() + " y se la ha asignado un valor de retorno de función del tipo " + functioncall.getSubtype());
 
         // Copiar valor de retorno en la variable del ID
-        generator.addThreeAddressCode(new ThreeAddressCode("COPY", functioncall.getVariable().getId(), "", id.getName()));
+        generator.addThreeAddressCode("COPY", functioncall.getVariable().getId(), "", id.getName());
     }
 
     // [FORMA] Statment ::= Functioncall SEMICOLON

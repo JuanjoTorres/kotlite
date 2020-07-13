@@ -39,7 +39,7 @@ public class SymbolCond extends SymbolBase {
         }
 
         //Salto condicional a la etiqueta de false o endloop
-        generator.addThreeAddressCode(new ThreeAddressCode("IFGOTO", variable.getId(), "", falseLabel));
+        generator.addThreeAddressCode("IFGOTO", variable.getId(), "", falseLabel);
     }
 
     public Variable getVariable() {

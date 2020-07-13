@@ -14,13 +14,13 @@ public class SymbolCondelse extends SymbolBase {
         String trueLabel = generator.popCondTrueLabel();
 
         //Añadir código de tres direcciones con goto a final de condicional para saltar el elsepart
-        generator.addThreeAddressCode(new ThreeAddressCode("GOTO", "", "", trueLabel));
+        generator.addThreeAddressCode("GOTO", "", "", trueLabel);
 
         //Volver a guardar la etiqueta true para hacer el SKIP en Condend
         generator.pushCondTrueLabel(trueLabel);
 
         //Añadir código de tres direcciones con etiqueta a elsepart
-        generator.addThreeAddressCode(new ThreeAddressCode("SKIP", "", "", generator.popCondFalseLabel()));
+        generator.addThreeAddressCode("SKIP", "", "", generator.popCondFalseLabel());
     }
 
     @Override

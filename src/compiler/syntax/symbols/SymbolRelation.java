@@ -49,7 +49,7 @@ public class SymbolRelation extends SymbolBase {
         variable = new Variable(generator.generateVariable());
 
         //Añadir código de tres direcciones con la operacion
-        generator.addThreeAddressCode(new ThreeAddressCode(ParserSym.terminalNames[oprel.getRelationType()], expr1Var.getId(), expr2Var.getId(), variable.getId()));
+        generator.addThreeAddressCode(ParserSym.terminalNames[oprel.getRelationType()], expr1Var.getId(), expr2Var.getId(), variable.getId());
     }
 
     // [FORMA] Relation ::= Expr

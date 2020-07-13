@@ -19,7 +19,7 @@ public class SymbolLoopstart extends SymbolBase {
         generator.pushEndloopLabel(endLabel);
 
         //Añadir código de tres direcciones con skip y la etiqueta
-        generator.addThreeAddressCode(new ThreeAddressCode("SKIP", "", "", startLabel));
+        generator.addThreeAddressCode("SKIP", "", "", startLabel);
     }
 
     @Override

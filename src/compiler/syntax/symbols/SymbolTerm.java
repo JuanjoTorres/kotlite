@@ -41,7 +41,7 @@ public class SymbolTerm extends SymbolBase {
         variable = new Variable(generator.generateVariable());
 
         //Añadir código de tres direcciones con la operacion
-        generator.addThreeAddressCode(new ThreeAddressCode(ParserSym.terminalNames[mult.getSymbol()], termVar.getId(), unaryVar.getId(), variable.getId()));
+        generator.addThreeAddressCode(ParserSym.terminalNames[mult.getSymbol()], termVar.getId(), unaryVar.getId(), variable.getId());
     }
 
     // Term ::= Unary

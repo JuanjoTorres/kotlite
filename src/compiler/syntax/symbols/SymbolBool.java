@@ -41,7 +41,7 @@ public class SymbolBool extends SymbolBase {
         Variable relationVar = relation.getVariable();
 
         //Añadir código de tres direcciones con la operacion
-        generator.addThreeAddressCode(new ThreeAddressCode(ParserSym.terminalNames[join.getSymbol()], boolVar.getId(), relationVar.getId(), variable.getId()));
+        generator.addThreeAddressCode(ParserSym.terminalNames[join.getSymbol()], boolVar.getId(), relationVar.getId(), variable.getId());
     }
 
     // FORMA Bool ::= Relation

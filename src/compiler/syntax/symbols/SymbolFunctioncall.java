@@ -63,18 +63,18 @@ public class SymbolFunctioncall extends SymbolBase {
 
             //Añadir instrucción de parametro por cada argumento
             for (int i = 0; i < args.getArgs().size(); i++) {
-                generator.addThreeAddressCode(new ThreeAddressCode("PARAM", "", "", args.getArgs().get(i).getId()));
+                generator.addThreeAddressCode("PARAM", "", "", args.getArgs().get(i).getId());
             }
         }
 
         variable = new Variable(generator.generateVariable());
 
         // Llamada a función guardando el valor de retorno en variable temporal
-        generator.addThreeAddressCode(new ThreeAddressCode("CALL", id.getProcedure().getStartLabel(), "", variable.getId()));
+        generator.addThreeAddressCode("CALL", id.getProcedure().getStartLabel(), "", variable.getId());
 
         // No es necesaria la etiqueta de retorno,
         // se hace en ensamblador guardando la dirección de retorno en la pila
-        //generator.addThreeAddressCode(new ThreeAddressCode("SKIP", "", "", generator.generateReturnLabel()));
+        //generator.addThreeAddressCode("SKIP", "", "", generator.generateReturnLabel());
     }
 
     public Variable getVariable() {
