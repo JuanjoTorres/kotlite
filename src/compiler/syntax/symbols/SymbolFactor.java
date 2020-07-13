@@ -51,26 +51,26 @@ public class SymbolFactor extends SymbolBase {
         super("Factor", 0);
 
         //Generar nueva variable temporal
-        variable = new Variable();
+        variable = new Variable(generator.generateVariable());
 
         switch (symbol) {
             case ParserSym.TRUE:
                 subtype = Subtype.BOOLEAN;
 
                 //Añadir código de tres direcciones con la operacion
-                Generator.addThreeAddressCode(new ThreeAddressCode("COPY", "true", "", variable.getId()));
+                generator.addThreeAddressCode(new ThreeAddressCode("COPY", "true", "", variable.getId()));
                 break;
             case ParserSym.FALSE:
                 subtype = Subtype.BOOLEAN;
 
                 //Añadir código de tres direcciones con la operacion
-                Generator.addThreeAddressCode(new ThreeAddressCode("COPY", "false", "", variable.getId()));
+                generator.addThreeAddressCode(new ThreeAddressCode("COPY", "false", "", variable.getId()));
                 break;
             case ParserSym.NONE:
                 subtype = Subtype.NONE;
 
                 //Añadir código de tres direcciones con la operacion
-                Generator.addThreeAddressCode(new ThreeAddressCode("COPY", "null", "", variable.getId()));
+                generator.addThreeAddressCode(new ThreeAddressCode("COPY", "null", "", variable.getId()));
                 break;
         }
     }
@@ -88,10 +88,10 @@ public class SymbolFactor extends SymbolBase {
         }
 
         //Generar nueva variable temporal
-        variable = new Variable();
+        variable = new Variable(generator.generateVariable());
 
         //Añadir código de tres direcciones con la operacion
-        Generator.addThreeAddressCode(new ThreeAddressCode("COPY", literal, "", variable.getId()));
+        generator.addThreeAddressCode(new ThreeAddressCode("COPY", literal, "", variable.getId()));
     }
 
     public Variable getVariable() {

@@ -18,7 +18,7 @@ public class SymbolId extends SymbolBase {
 
         //Hacer push en la pila de etiquetas de funciones
         //TODO ¿Es necesario?
-        Generator.pushFunctionLabel(id);
+        generator.pushFunctionLabel(id);
     }
 
     public Variable getVariable() {

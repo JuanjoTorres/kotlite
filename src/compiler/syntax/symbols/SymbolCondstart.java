@@ -12,12 +12,12 @@ public class SymbolCondstart extends SymbolBase {
         super("CondStart", 0);
 
         //Generar etiqueta de condición true y false
-        String trueLabel = Generator.generateCondTrueLabel();
-        String falseLabel = Generator.generateCondFalseLabel();
+        String trueLabel = generator.generateCondTrueLabel();
+        String falseLabel = generator.generateCondFalseLabel();
 
         //Guardar etiquetas en pilas
-        Generator.pushCondTrueLabel(trueLabel);
-        Generator.pushCondFalseLabel(falseLabel);
+        generator.pushCondTrueLabel(trueLabel);
+        generator.pushCondFalseLabel(falseLabel);
     }
 
     @Override

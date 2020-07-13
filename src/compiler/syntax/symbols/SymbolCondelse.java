@@ -12,16 +12,16 @@ public class SymbolCondelse extends SymbolBase {
         super("CondElse", 0);
 
         //Obtener etiqueta true para hacer el GOTO
-        String trueLabel = Generator.popCondTrueLabel();
+        String trueLabel = generator.popCondTrueLabel();
 
         //Añadir código de tres direcciones con goto a final de condicional para saltar el elsepart
-        Generator.addThreeAddressCode(new ThreeAddressCode("GOTO", "", "", trueLabel));
+        generator.addThreeAddressCode(new ThreeAddressCode("GOTO", "", "", trueLabel));
 
         //Volver a guardar la etiqueta true para hacer el SKIP en Condend
-        Generator.pushCondTrueLabel(trueLabel);
+        generator.pushCondTrueLabel(trueLabel);
 
         //Añadir código de tres direcciones con etiqueta a elsepart
-        Generator.addThreeAddressCode(new ThreeAddressCode("SKIP", "", "", Generator.popCondFalseLabel()));
+        generator.addThreeAddressCode(new ThreeAddressCode("SKIP", "", "", generator.popCondFalseLabel()));
     }
 
     @Override

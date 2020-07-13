@@ -59,7 +59,7 @@ public class SymbolDecl extends SymbolBase {
         Variable boolVar = bool.getVariable();
 
         //Añadir código de tres direcciones con la operacion
-        Generator.addThreeAddressCode(new ThreeAddressCode("COPY", boolVar.getId(), "", id.getName()));
+        generator.addThreeAddressCode(new ThreeAddressCode("COPY", boolVar.getId(), "", id.getName()));
     }
 
     @Override

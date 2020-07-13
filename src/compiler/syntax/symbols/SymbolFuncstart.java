@@ -12,7 +12,7 @@ public class SymbolFuncstart extends SymbolBase {
     public SymbolFuncstart() {
         super("Functionstart", 0);
 
-        String funId = Generator.popFunctionLabel();
+        String funId = generator.popFunctionLabel();
 
         //Si todavía no está en la tabla de procedimientos,
         // es que estamos en la definición de una función
@@ -20,7 +20,7 @@ public class SymbolFuncstart extends SymbolBase {
         procedureTable.put(funId, procedure);
 
         //Añadir código de tres direcciones con skip y la etiqueta
-        Generator.addThreeAddressCode(new ThreeAddressCode("SKIP", "", "", procedure.getStartLabel()));
+        generator.addThreeAddressCode(new ThreeAddressCode("SKIP", "", "", procedure.getStartLabel()));
 
     }
 

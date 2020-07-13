@@ -37,10 +37,10 @@ public class SymbolExpr extends SymbolBase {
         Variable termVar = term.getVariable();
 
         //Generar nueva variable temporal
-        variable = new Variable();
+        variable = new Variable(generator.generateVariable());
 
         //Añadir código de tres direcciones con la operacion
-        Generator.addThreeAddressCode(new ThreeAddressCode(ParserSym.terminalNames[add.getSymbol()], exprVar.getId(), termVar.getId(), variable.getId()));
+        generator.addThreeAddressCode(new ThreeAddressCode(ParserSym.terminalNames[add.getSymbol()], exprVar.getId(), termVar.getId(), variable.getId()));
 
     }
 

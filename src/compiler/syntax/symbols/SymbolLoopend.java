@@ -12,8 +12,8 @@ public class SymbolLoopend extends SymbolBase {
         super("LoopEnd", 0);
 
         //Añadir código de tres direcciones con goto a inicio de bucle y skip de final de bucle
-        Generator.addThreeAddressCode(new ThreeAddressCode("GOTO", "", "", Generator.popStartloopLabel()));
-        Generator.addThreeAddressCode(new ThreeAddressCode("SKIP", "", "", Generator.popEndloopLabel()));
+        generator.addThreeAddressCode(new ThreeAddressCode("GOTO", "", "", generator.popStartloopLabel()));
+        generator.addThreeAddressCode(new ThreeAddressCode("SKIP", "", "", generator.popEndloopLabel()));
     }
 
     @Override

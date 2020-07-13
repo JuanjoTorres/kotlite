@@ -11,8 +11,8 @@ public class Variable {
 
     private Subtype subtype;
 
-    public Variable() {
-        this.id = Generator.generateVariable();
+    public Variable(String id) {
+        this.id = id;
     }
 
     public int getSize() {

@@ -36,13 +36,13 @@ public class SymbolBool extends SymbolBase {
         //Subtype de AND o OR es BOOL
         subtype = Subtype.BOOLEAN;
 
-        variable = new Variable();
+        variable = new Variable(generator.generateVariable());
 
         Variable boolVar = bool.getVariable();
         Variable relationVar = relation.getVariable();
 
         //Añadir código de tres direcciones con la operacion
-        Generator.addThreeAddressCode(new ThreeAddressCode(ParserSym.terminalNames[join.getSymbol()], boolVar.getId(), relationVar.getId(), variable.getId()));
+        generator.addThreeAddressCode(new ThreeAddressCode(ParserSym.terminalNames[join.getSymbol()], boolVar.getId(), relationVar.getId(), variable.getId()));
     }
 
     // FORMA Bool ::= Relation

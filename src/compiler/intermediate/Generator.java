@@ -11,17 +11,17 @@ public class Generator {
     private static int condTrueNumber = 0;
     private static int condFalseNumber = 0;
 
-    private static Stack<String> functionLabelStack = new Stack<>();
+    private Stack<String> functionLabelStack = new Stack<>();
 
-    private static Stack<String> condFalseStack = new Stack<>();
-    private static Stack<String> condTrueStack = new Stack<>();
+    private Stack<String> condFalseStack = new Stack<>();
+    private Stack<String> condTrueStack = new Stack<>();
 
-    private static Stack<String> endloopLabelStack = new Stack<>();
-    private static Stack<String> startloopLabelStack = new Stack<>();
+    private Stack<String> endloopLabelStack = new Stack<>();
+    private Stack<String> startloopLabelStack = new Stack<>();
 
     private static ArrayList<ThreeAddressCode> threeAddressCodes = new ArrayList<>();
 
-    public static void addThreeAddressCode(ThreeAddressCode threeAddressCode) {
+    public void addThreeAddressCode(ThreeAddressCode threeAddressCode) {
         threeAddressCodes.add(threeAddressCode);
     }
 
@@ -29,71 +29,71 @@ public class Generator {
         return threeAddressCodes;
     }
 
-    public static String popFunctionLabel() {
+    public String popFunctionLabel() {
         return functionLabelStack.pop();
     }
 
-    public static void pushFunctionLabel(String label) {
+    public void pushFunctionLabel(String label) {
         functionLabelStack.push(label);
     }
 
-    public static String popCondTrueLabel() {
+    public String popCondTrueLabel() {
         if (condTrueStack.empty())
             return null;
         return condTrueStack.pop();
     }
 
-    public static void pushCondTrueLabel(String label) {
+    public void pushCondTrueLabel(String label) {
         condTrueStack.push(label);
     }
 
-    public static String popCondFalseLabel() {
+    public String popCondFalseLabel() {
         if (condFalseStack.empty())
             return null;
         return condFalseStack.pop();
     }
 
-    public static void pushCondFalseLabel(String label) {
+    public void pushCondFalseLabel(String label) {
         condFalseStack.push(label);
     }
 
-    public static String popEndloopLabel() {
+    public String popEndloopLabel() {
         if (endloopLabelStack.empty())
             return null;
         return endloopLabelStack.pop();
     }
 
-    public static void pushEndloopLabel(String label) {
+    public void pushEndloopLabel(String label) {
         endloopLabelStack.push(label);
     }
 
-    public static String popStartloopLabel() {
+    public String popStartloopLabel() {
         if (startloopLabelStack.empty())
             return null;
         return startloopLabelStack.pop();
     }
 
-    public static void pushStartloopLabel(String label) {
+    public void pushStartloopLabel(String label) {
         startloopLabelStack.push(label);
     }
 
-    public static String generateLoopStartLabel() {
+    public String generateLoopStartLabel() {
         return "loop_start_" + ++loopStartNumber;
     }
 
-    public static String generateLoopEndLabel() {
+    public String generateLoopEndLabel() {
         return "loop_end_" + ++loopEndNumber;
     }
 
-    public static String generateCondTrueLabel() {
+    public String generateCondTrueLabel() {
         return "cond_true_" + ++condTrueNumber;
     }
 
-    public static String generateCondFalseLabel() {
+    public String generateCondFalseLabel() {
         return "cond_false_" + ++condFalseNumber;
     }
 
-    public static String generateVariable() {
+    public String generateVariable() {
         return "t" + ++variableNumber;
     }
 }

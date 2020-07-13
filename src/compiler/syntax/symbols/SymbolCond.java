@@ -29,20 +29,20 @@ public class SymbolCond extends SymbolBase {
         variable = bool.getVariable();
 
         //Obtener etiqueta de condición falsa
-        String falseLabel = Generator.popCondFalseLabel();
+        String falseLabel = generator.popCondFalseLabel();
 
         //Si no hay etiqueta de condiciona falsa es que estamos en un bucle WHILE
         if (falseLabel == null) {
-            falseLabel = Generator.popEndloopLabel();
+            falseLabel = generator.popEndloopLabel();
             //Volver a meter etiqueta en la pila para generar el SKIP del WHILE
-            Generator.pushEndloopLabel(falseLabel);
+            generator.pushEndloopLabel(falseLabel);
         } else {
             //Volver a meter etiqueta en la pila para generar el SKIP del ENDIF
-            Generator.pushCondFalseLabel(falseLabel);
+            generator.pushCondFalseLabel(falseLabel);
         }
 
         //Salto condicional a la etiqueta de false o endloop
-        Generator.addThreeAddressCode(new ThreeAddressCode("IFGOTO", variable.getId(), "", falseLabel));
+        generator.addThreeAddressCode(new ThreeAddressCode("IFGOTO", variable.getId(), "", falseLabel));
     }
 
     public Variable getVariable() {

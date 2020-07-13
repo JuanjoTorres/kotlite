@@ -39,10 +39,10 @@ public class SymbolTerm extends SymbolBase {
         Variable unaryVar = unary.getVariable();
 
         //Generar nueva variable temporal
-        variable = new Variable();
+        variable = new Variable(generator.generateVariable());
 
         //Añadir código de tres direcciones con la operacion
-        Generator.addThreeAddressCode(new ThreeAddressCode(ParserSym.terminalNames[mult.getSymbol()], termVar.getId(), unaryVar.getId(), variable.getId()));
+        generator.addThreeAddressCode(new ThreeAddressCode(ParserSym.terminalNames[mult.getSymbol()], termVar.getId(), unaryVar.getId(), variable.getId()));
     }
 
     // Term ::= Unary

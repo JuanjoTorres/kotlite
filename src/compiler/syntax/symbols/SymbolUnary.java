@@ -31,10 +31,10 @@ public class SymbolUnary extends SymbolBase {
         Variable unaryVar = unary.getVariable();
 
         //Generar nueva variable temporal
-        variable = new Variable();
+        variable = new Variable(generator.generateVariable());
 
         //Añadir código de tres direcciones con la operacion
-        Generator.addThreeAddressCode(new ThreeAddressCode("NOT", unaryVar.getId(), "", variable.getId()));
+        generator.addThreeAddressCode(new ThreeAddressCode("NOT", unaryVar.getId(), "", variable.getId()));
     }
 
     // [FORMA] Unary ::= Factor

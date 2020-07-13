@@ -12,15 +12,15 @@ public class SymbolLoopstart extends SymbolBase {
         super("LoopStart", 0);
 
         //Generar etiquetas de inicio y fin de loop
-        String startLabel = Generator.generateLoopStartLabel();
-        String endLabel = Generator.generateLoopEndLabel();
+        String startLabel = generator.generateLoopStartLabel();
+        String endLabel = generator.generateLoopEndLabel();
 
         //Guardar etiquetas en la pila
-        Generator.pushStartloopLabel(startLabel);
-        Generator.pushEndloopLabel(endLabel);
+        generator.pushStartloopLabel(startLabel);
+        generator.pushEndloopLabel(endLabel);
 
         //Añadir código de tres direcciones con skip y la etiqueta
-        Generator.addThreeAddressCode(new ThreeAddressCode("SKIP", "", "", startLabel));
+        generator.addThreeAddressCode(new ThreeAddressCode("SKIP", "", "", startLabel));
     }
 
     @Override

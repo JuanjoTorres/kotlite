@@ -12,7 +12,7 @@ public class SymbolCondend extends SymbolBase {
         super("CondEnd", 0);
 
         //Añadir código de tres direcciones con etiqueta true
-        Generator.addThreeAddressCode(new ThreeAddressCode("SKIP", "", "", Generator.popCondTrueLabel()));
+        generator.addThreeAddressCode(new ThreeAddressCode("SKIP", "", "", generator.popCondTrueLabel()));
     }
 
     @Override
