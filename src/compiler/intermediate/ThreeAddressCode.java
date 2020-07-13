@@ -16,6 +16,22 @@ public class ThreeAddressCode {
         this.destination = destination;
     }
 
+    public String getOperation() {
+        return operation;
+    }
+
+    public String getOperand1() {
+        return operand1;
+    }
+
+    public String getOperand2() {
+        return operand2;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
     @Override
     public String toString() {
         return operation + " | " + operand1 + " | " + operand2 + " | " + destination;

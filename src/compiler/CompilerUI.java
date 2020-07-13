@@ -1,5 +1,6 @@
 package compiler;
 
+import compiler.assembly.AssemblyGenerator;
 import compiler.intermediate.Generator;
 import compiler.lexic.Lexer;
 import compiler.output.Output;
@@ -138,6 +139,10 @@ public class CompilerUI extends JFrame {
 
         //Leer fichero de errores
         errorEditor.setText(new String(Files.readAllBytes(Paths.get(ERRORS_FILE))));
+
+        //Escribir fichero de ensamblador
+        AssemblyGenerator assemblyGenerator = new AssemblyGenerator();
+        assemblyGenerator.toAssembly();
     }
 
     private void initUI() {
