@@ -1,7 +1,5 @@
 package compiler.syntax.symbols;
 
-import compiler.intermediate.ThreeAddressCode;
-
 import java.io.PrintWriter;
 
 public class SymbolCondend extends SymbolBase {
