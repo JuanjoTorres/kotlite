@@ -25,6 +25,9 @@ public class SymbolStatment extends SymbolBase {
         if (id.getSubtype() != bool.getSubtype())
             Output.writeError("Error semántico en posición " + line + ":" + column + " - El id " + id.getName() +
                     " es del tipo subyacente " + id.getSubtype() + " y se le ha asignado un valor del tipo " + bool.getSubtype());
+
+        // Copiar valor de retorno en la variable del ID
+        generator.addThreeAddressCode("COPY", bool.getVariable().getId(), "", id.getName());
     }
 
     // [FORMA] Statment ::= IF LPAREN Bool RPAREN LBRACKET Decls Statments
