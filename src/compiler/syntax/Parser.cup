@@ -37,7 +37,7 @@ terminal LPAREN, RPAREN, LBRACKET, RBRACKET, COLON, SEMICOLON, COMMA;
 terminal AND, OR, NOT;
 
 // Operadores relacionales: == != < <= => >
-terminal EQU, NOTEQU, LESS, LESSEQU, GREATEREQU, GREATER;
+terminal EQU, NOTEQU, LT, LTEQU, GT, GTEQU;
 
 // Tipos booleanos: true false
 terminal TRUE, FALSE;
@@ -216,14 +216,14 @@ Oprel ::= EQU
               {: RESULT = new SymbolOprel(ParserSym.EQU); :}
 	    | NOTEQU
               {: RESULT = new SymbolOprel(ParserSym.NOTEQU); :}
-	    | LESS
-              {: RESULT = new SymbolOprel(ParserSym.LESS); :}
-	    | LESSEQU
-              {: RESULT = new SymbolOprel(ParserSym.LESSEQU); :}
-	    | GREATER
-              {: RESULT = new SymbolOprel(ParserSym.GREATER); :}
-	    | GREATEREQU
-              {: RESULT = new SymbolOprel(ParserSym.GREATEREQU); :};
+	    | LT
+              {: RESULT = new SymbolOprel(ParserSym.LT); :}
+	    | LTEQU
+              {: RESULT = new SymbolOprel(ParserSym.LTEQU); :}
+	    | GT
+              {: RESULT = new SymbolOprel(ParserSym.GT); :}
+	    | GTEQU
+              {: RESULT = new SymbolOprel(ParserSym.GTEQU); :};
 
 Type ::= VAR
               {: RESULT = new SymbolType(ParserSym.VAR); :}

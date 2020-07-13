@@ -102,10 +102,10 @@ input = [^\r\n]
 // Operadores relacionales
 "==" { return symbol(ParserSym.EQU); }
 "!=" { return symbol(ParserSym.NOTEQU); }
-"<"  { return symbol(ParserSym.LESS); }
-"<=" { return symbol(ParserSym.LESSEQU);}
-"=>" { return symbol(ParserSym.GREATEREQU); }
-">"  { return symbol(ParserSym.GREATER); }
+"<"  { return symbol(ParserSym.LT); }
+"<=" { return symbol(ParserSym.LTEQU);}
+">" { return symbol(ParserSym.GT); }
+">="  { return symbol(ParserSym.GTEQU); }
 
 // Valores booleanos
 "true"  { return symbol(ParserSym.TRUE); }

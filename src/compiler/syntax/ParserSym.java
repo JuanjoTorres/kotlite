@@ -9,20 +9,19 @@ package compiler.syntax;
 public class ParserSym {
   /* terminals */
   public static final int VAL = 34;
-  public static final int GREATEREQU = 22;
   public static final int LBRACKET = 10;
   public static final int LPAREN = 8;
-  public static final int GREATER = 23;
   public static final int INT = 26;
-  public static final int LESS = 20;
   public static final int MINUS = 4;
   public static final int RPAREN = 9;
   public static final int NOT = 17;
   public static final int SEMICOLON = 13;
   public static final int AND = 15;
+  public static final int LT = 20;
   public static final int FUN = 2;
   public static final int OR = 16;
   public static final int COMMA = 14;
+  public static final int LTEQU = 21;
   public static final int DIV = 6;
   public static final int NUM = 37;
   public static final int PLUS = 3;
@@ -40,12 +39,13 @@ public class ParserSym {
   public static final int NONE = 29;
   public static final int COLON = 12;
   public static final int ELSE = 32;
+  public static final int GTEQU = 23;
   public static final int WHILE = 30;
   public static final int NOTEQU = 19;
-  public static final int LESSEQU = 21;
   public static final int MULTI = 5;
   public static final int STRING = 27;
   public static final int FALSE = 25;
+  public static final int GT = 22;
   public static final int VAR = 33;
   public static final String[] terminalNames = new String[] {
   "EOF",
@@ -68,10 +68,10 @@ public class ParserSym {
   "NOT",
   "EQU",
   "NOTEQU",
-  "LESS",
-  "LESSEQU",
-  "GREATEREQU",
-  "GREATER",
+  "LT",
+  "LTEQU",
+  "GT",
+  "GTEQU",
   "TRUE",
   "FALSE",
   "INT",

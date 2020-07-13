@@ -30,10 +30,10 @@ public class SymbolRelation extends SymbolBase {
                     " requiere operandos dos operandos del mismo tipo, y se ha encontrado " + expr1.getSubtype() + " y " + expr2.getSubtype());
 
         switch (oprel.getRelationType()) {
-            case ParserSym.LESS:
-            case ParserSym.LESSEQU:
-            case ParserSym.GREATEREQU:
-            case ParserSym.GREATER:
+            case ParserSym.LT:
+            case ParserSym.LTEQU:
+            case ParserSym.GT:
+            case ParserSym.GTEQU:
                 if (expr1.getSubtype() != Subtype.INT || expr2.getSubtype() != Subtype.INT)
                     Output.writeError("Error semántico en posición " + line + ":" + column + " - El operador relacional " + ParserSym.terminalNames[oprel.getRelationType()] +
                             " requiere operandos del tipo INT, y se ha encontrado " + expr1.getSubtype() + " y " + expr2.getSubtype());
@@ -46,6 +46,9 @@ public class SymbolRelation extends SymbolBase {
 
         //Generar nueva variable temporal
         variable = new Variable(generator.generateVariable());
+
+        System.out.println("Escribiendo relación: " + oprel.getRelationType() + " --> " + ParserSym.terminalNames[oprel.getRelationType()]);
+        System.out.println("Para variables: " + expr1Var + " y " + expr2Var + " -> " + variable.getId());
 
         //Añadir código de tres direcciones con la operacion
         generator.addThreeAddressCode(ParserSym.terminalNames[oprel.getRelationType()], expr1Var.getId(), expr2Var.getId(), variable.getId());
