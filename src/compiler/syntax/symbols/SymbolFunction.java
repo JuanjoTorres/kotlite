@@ -1,7 +1,10 @@
 package compiler.syntax.symbols;
 
 import compiler.output.Output;
-import compiler.syntax.tables.*;
+import compiler.syntax.tables.Procedure;
+import compiler.syntax.tables.Subtype;
+import compiler.syntax.tables.Symbol;
+import compiler.syntax.tables.Type;
 
 import java.io.PrintWriter;
 

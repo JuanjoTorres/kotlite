@@ -1,6 +1,5 @@
 package compiler.syntax.symbols;
 
-import compiler.intermediate.Generator;
 import compiler.syntax.tables.Procedure;
 import compiler.syntax.tables.Subtype;
 import compiler.syntax.tables.Variable;

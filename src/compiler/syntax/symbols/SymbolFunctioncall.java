@@ -1,6 +1,5 @@
 package compiler.syntax.symbols;
 
-import compiler.intermediate.Generator;
 import compiler.intermediate.ThreeAddressCode;
 import compiler.output.Output;
 import compiler.syntax.tables.Subtype;
@@ -9,7 +8,6 @@ import compiler.syntax.tables.Variable;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class SymbolFunctioncall extends SymbolBase {
 

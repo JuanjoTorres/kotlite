@@ -1,9 +1,6 @@
 package compiler.syntax.symbols;
 
-import compiler.intermediate.Generator;
 import compiler.intermediate.ThreeAddressCode;
-import compiler.output.Output;
-import compiler.syntax.ParserSym;
 import compiler.syntax.tables.Subtype;
 import compiler.syntax.tables.Variable;
 

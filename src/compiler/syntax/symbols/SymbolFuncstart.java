@@ -1,6 +1,5 @@
 package compiler.syntax.symbols;
 
-import compiler.intermediate.Generator;
 import compiler.intermediate.ThreeAddressCode;
 import compiler.syntax.tables.Procedure;
 
