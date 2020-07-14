@@ -122,6 +122,9 @@ input = [^\r\n]
 "if"    { return symbol(ParserSym.IF); }
 "else"  { return symbol(ParserSym.ELSE); }
 
+// Función de salida
+"print" { return symbol(ParserSym.PRINT); }
+
 // Variables y constantes
 "var" { return symbol(ParserSym.VAR); }
 "val" { return symbol(ParserSym.VAL); }

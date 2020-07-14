@@ -9,6 +9,7 @@ public class SymbolStatment extends SymbolBase {
 
     private SymbolId id;
     private SymbolBool bool;
+    private SymbolBool bool2;
     private SymbolCond cond;
     private SymbolDecls decls;
     private SymbolStatments statments;
@@ -83,6 +84,52 @@ public class SymbolStatment extends SymbolBase {
         this.functioncall = functioncall;
     }
 
+    // [FORMA] Statment ::= PRINT LPAREN Bool RPAREN SEMICOLON
+    public SymbolStatment(SymbolBool bool, int line, int column) {
+        super("Statment", 0);
+
+        this.bool = bool;
+
+        // ¿Comprobar si es una constante y ya tiene valor asignado?
+
+        if (bool.getSubtype() != Subtype.STRING)
+            Output.writeError("Error semántico en posición " + line + ":" + column +
+                    " - El primer parametro de la función print() debe ser del tipo subyacente STRING " +
+                    " y es del tipo subyacente " + bool.getSubtype());
+
+        // Copiar valor de retorno en la variable del ID
+        generator.addThreeAddressCode("PRINT", bool.getVariable().getId(), "", "");
+    }
+
+    // [FORMA] Statment ::= PRINT LPAREN Bool Bool RPAREN SEMICOLON
+    public SymbolStatment(SymbolBool bool, SymbolBool bool2, int line, int column) {
+        super("Statment", 0);
+
+        this.bool = bool;
+        this.bool2 = bool2;
+
+        // ¿Comprobar si es una constante y ya tiene valor asignado?
+
+        if (bool.getSubtype() != Subtype.STRING)
+            Output.writeError("Error semántico en posición " + line + ":" + column +
+                    " - El primer parametro de la función print() debe ser del tipo subyaacente STRING " +
+                    " y es del tipo subyacente " + bool.getSubtype());
+
+        String instruction;
+
+        if (bool2.getSubtype() == Subtype.INT)
+            instruction = "PRINTINT";
+        else if (bool2.getSubtype() == Subtype.BOOLEAN)
+            instruction = "PRINTBOOL";
+        else if (bool2.getSubtype() == Subtype.STRING)
+            instruction = "PRINTSTRING";
+        else
+            instruction = "PRINT";
+
+        // Copiar valor de retorno en la variable del ID
+        generator.addThreeAddressCode(instruction, bool.getVariable().getId(), bool2.getVariable().getId(), "");
+    }
+
     @Override
     public void toDot(PrintWriter out) {
         out.print(index + " [label=\"" + name + "\"];\n");
@@ -91,6 +138,8 @@ public class SymbolStatment extends SymbolBase {
             out.print(index + "->" + id.getIndex() + "\n");
         if (bool != null)
             out.print(index + "->" + bool.getIndex() + "\n");
+        if (bool2 != null)
+            out.print(index + "->" + bool2.getIndex() + "\n");
         if (cond != null)
             out.print(index + "->" + cond.getIndex() + "\n");
         if (decls != null)
@@ -106,6 +155,8 @@ public class SymbolStatment extends SymbolBase {
             id.toDot(out);
         if (bool != null)
             bool.toDot(out);
+        if (bool2 != null)
+            bool2.toDot(out);
         if (cond != null)
             cond.toDot(out);
         if (decls != null)

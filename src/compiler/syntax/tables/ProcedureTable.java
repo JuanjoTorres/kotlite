@@ -11,10 +11,15 @@ public class ProcedureTable {
     public ProcedureTable() {
         table = new Hashtable<>();
 
+        /*
+        //YA NO ES NECESARIO, EL PRINT ESTÁ INCLUIDO EN LA GRAMÁTICA
+
         //Añadir funciones predefinidas a la tabla de procedimientos
         table.put("print", new Procedure("print"));
         table.put("printInt", new Procedure("printInt"));
         table.put("printBool", new Procedure("printBool"));
+
+        */
     }
 
     public boolean put(String key, Procedure procedure) {

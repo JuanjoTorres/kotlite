@@ -42,6 +42,9 @@ public class SymbolTable {
         //Inicializar fichero de codigo de tres direcciones
         Output.truncateThreeAddressCode();
 
+        /*
+        //YA NO ES NECESARIO, EL PRINT ESTÁ INCLUIDO EN LA GRAMÁTICA
+
         //Añadir función print() simple a la tabla de simbolos
         Symbol print = new Symbol("print", Type.PROC, Subtype.NONE);
         print.getArgs().add(new Symbol("text", Type.ARG, Subtype.STRING));
@@ -58,6 +61,8 @@ public class SymbolTable {
         printBool.getArgs().add(new Symbol("text", Type.ARG, Subtype.STRING));
         printBool.getArgs().add(new Symbol("bool", Type.ARG, Subtype.BOOLEAN));
         add(printBool);
+
+        */
     }
 
     public void startBlock() {

@@ -18,5 +18,5 @@ fun main (): None {
     globalC = sumar(globalA, globalB);
 
     comentario = "La suma es %d";
-    printInt(comentario, globalC);
+    print(comentario, globalC);
 }
