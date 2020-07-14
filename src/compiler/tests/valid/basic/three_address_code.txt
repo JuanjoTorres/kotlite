@@ -1,0 +1,18 @@
+SKIP |  |  | fun_sumar_4
+PLUS | t1 | t2 | t3
+COPY | t3 |  | res
+RTN |  |  | res
+SKIP |  |  | fun_main_5
+COPY | 1 |  | t4
+COPY | t4 |  | globalA
+COPY | 2 |  | t5
+COPY | t5 |  | globalB
+PARAM |  |  | globalA
+PARAM |  |  | globalB
+CALL | fun_sumar_4 |  | t6
+COPY | t6 |  | globalC
+COPY | "La suma es %d" |  | t7
+COPY | t7 |  | comentario
+PARAM |  |  | comentario
+PARAM |  |  | globalC
+CALL | fun_printInt_2 |  | t8
