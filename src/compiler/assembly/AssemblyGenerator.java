@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class AssemblyGenerator {
 
-    private static final String OUTPUT_FILENAME = "assembly.as";
+    private static final String OUTPUT_FILENAME = "basic_plantilla.asm";
 
     public VariableTable variableTable;
     public ProcedureTable procedureTable;
