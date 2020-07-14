@@ -42,10 +42,22 @@ public class SymbolTable {
         //Inicializar fichero de codigo de tres direcciones
         Output.truncateThreeAddressCode();
 
-        //Añadir función print() a la tabla de simbolos
+        //Añadir función print() simple a la tabla de simbolos
         Symbol print = new Symbol("print", Type.PROC, Subtype.NONE);
         print.getArgs().add(new Symbol("text", Type.ARG, Subtype.STRING));
         add(print);
+
+        //Añadir función printInt() simple a la tabla de simbolos
+        Symbol printInt = new Symbol("printInt", Type.PROC, Subtype.NONE);
+        printInt.getArgs().add(new Symbol("text", Type.ARG, Subtype.STRING));
+        printInt.getArgs().add(new Symbol("int", Type.ARG, Subtype.INT));
+        add(printInt);
+
+        //Añadir función printInt() simple a la tabla de simbolos
+        Symbol printBool = new Symbol("printBool", Type.PROC, Subtype.NONE);
+        printBool.getArgs().add(new Symbol("text", Type.ARG, Subtype.STRING));
+        printBool.getArgs().add(new Symbol("bool", Type.ARG, Subtype.BOOLEAN));
+        add(printBool);
     }
 
     public void startBlock() {

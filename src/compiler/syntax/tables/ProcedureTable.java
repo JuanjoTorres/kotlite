@@ -12,8 +12,9 @@ public class ProcedureTable {
         table = new Hashtable<>();
 
         //Añadir funciones predefinidas a la tabla de procedimientos
-        Procedure procedure = new Procedure("print");
-        table.put("print", procedure);
+        table.put("print", new Procedure("print"));
+        table.put("printInt", new Procedure("printInt"));
+        table.put("printBool", new Procedure("printBool"));
     }
 
     public boolean put(String key, Procedure procedure) {
