@@ -1,5 +1,7 @@
 global main
-extern printf, gets
+
+extern printf
+
 section .data
     globalA dd 0
     globalB dd 0
@@ -14,14 +16,19 @@ section .data
     t5      dd 0
     t6      dd 0
     t7      db 'La suma es %d', 10, 0
-section .bbs
+
+section .bss
     DISP       resb 1000
     comentario resb 512
+
 section .text
     ; ===== ===== ===== ===== =====
     ; Instrucción SKIP
-    ; Op1:  Op2:  Dest: fun_sumar_4
-    fun_sumar_4: np
+    ; Op1:  Op2:  Dest: fun_sumar_1
+    fun_sumar_1: nop
+
+        ; PASA POR EL PARAMETRO DEST EL IDENTIFICADOR DE LA FUNCION
+
         ; ===== ===== ===== ===== =====
         ; Instrucción PMB
         ; Op1:  Op2:  Dest:
@@ -55,7 +62,6 @@ section .text
         ; Op1:  Op2:  Dest: res
         mov esp, ebp
         pop ebp
-        mov edi
         mov edi, [4 + DISP]
         pop edi
         ret
@@ -134,7 +140,8 @@ section .text
           mov eax, [comentario]
           push eax
           call printf
-          pop eax
+          add esp, 8
 
-          mov eax, 0
-          ret
+	      mov ebx, 0 ; INSTRUCCIONES PARA ACABAR PROGRAMA
+	      mov eax, 1
+	      int 0x80
