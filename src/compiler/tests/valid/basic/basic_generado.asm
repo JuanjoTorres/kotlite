@@ -11,7 +11,9 @@ section .data
     t2      dd 0
     t3      dd 0
     t4      dd 0
-    t5      dd 'La suma es %d', 10, 0
+    t5      dd 0
+    t6      dd 0
+    t7      db 'La suma es %d', 10, 0
 section .bbs
     DISP       resb 1000
     comentario resb 512
@@ -41,3 +43,98 @@ section .text
         mov ebx, [num2]
         add eax, ebx
         mov [t3], eax
+
+        ; ===== ===== ===== ===== =====
+        ; Instrucción COPY
+        ; Op1: t3 Op2:  Dest: res
+        mov eax, [t3]
+        mov [res], eax
+
+        ; ===== ===== ===== ===== =====
+        ; Instrucción RTN
+        ; Op1:  Op2:  Dest: res
+        mov esp, ebp
+        pop ebp
+        mov edi
+        mov edi, [4 + DISP]
+        pop edi
+        ret
+
+    ; ===== ===== ===== ===== =====
+    ; Instrucción SKIP
+    ; Op1:  Op2:  Dest: fun_main_2
+    main:
+          ; ===== ===== ===== ===== =====
+          ; Instrucción COPY
+          ; Op1: 1 Op2:  Dest: t4
+          mov eax, 1
+          mov [t4], eax
+
+          ; ===== ===== ===== ===== =====
+          ; Instrucción COPY
+          ; Op1: t4 Op2:  Dest: globalA
+          mov eax, [t4]
+          mov [globalA], eax
+
+          ; ===== ===== ===== ===== =====
+          ; Instrucción COPY
+          ; Op1: 2 Op2:  Dest: t5
+          mov eax, 2
+          mov [t5], eax
+
+          ; ===== ===== ===== ===== =====
+          ; Instrucción COPY
+          ; Op1: t5 Op2:  Dest: globalB
+          mov eax, [t5]
+          mov [globalB], eax
+
+          ; LOS PARAMETROS SE INTRODUCEN EN ORDEN INVERSO (PRIMERO B Y LUEGO A)
+
+          ; ===== ===== ===== ===== =====
+          ; Instrucción PARAM
+          ; Op1:  Op2:  Dest: globalB
+          mov eax, [globalB]
+          push eax
+
+          ; ===== ===== ===== ===== =====
+          ; Instrucción PARAM
+          ; Op1:  Op2:  Dest: globalA
+          mov eax, [globalA]
+          push eax
+
+          ; LAS VARIABLES DEL CODIGO DEL CALL TAMBIEN SE DECLARAN ARRIBA
+
+          ; ===== ===== ===== ===== =====
+          ; Instrucción CALL
+          ; Op1: fun_sumar_1 Op2:  Dest: t6
+          call fun_sumar_1
+          mov ebx, 8    ; 4 bytes por parametro (4 + 4 = 8) o lo que ocupen las variables
+          add ebx, esp
+          mov eax, [res]
+          mov [t6], eax
+
+          ; ===== ===== ===== ===== =====
+          ; Instrucción COPY
+          ; Op1: t6 Op2:  Dest: globalC
+          mov eax, [t6]
+          mov [globalC], eax
+
+          ; ===== ===== ===== ===== =====
+          ; Instrucción COPY
+          ; Op1: t7 Op2:  Dest: comentario
+          mov eax, t7
+          mov [comentario], eax
+
+          ; ===== ===== ===== ===== =====
+          ; Instrucción PRINTINT
+          ; Op1: comentario Op2: globalC Dest:
+          sub esp, 4
+          mov ebx, [globalC]
+          push ebx
+          mov eax, [comentario]
+          push eax
+          call printf
+          pop eax
+
+          mov eax, 0
+          ret
