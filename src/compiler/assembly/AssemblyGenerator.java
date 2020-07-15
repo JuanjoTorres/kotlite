@@ -42,10 +42,10 @@ public class AssemblyGenerator {
         stringBuilder.append("; Código ensamblador en NASM para Linux 32 bits (i386)\n");
         stringBuilder.append(";\n");
         stringBuilder.append("; Requisitos en Ubuntu 18.04:\n");
-        stringBuilder.append(";   sudo apt install build-essential \n");
+        stringBuilder.append(";   sudo apt install build-essential gcc-multilib\n");
         stringBuilder.append(";\n");
         stringBuilder.append("; Comando para compilar:\n");
-        stringBuilder.append(";   nasm -felf64 " + FILENAME + ".asm && ld " + FILENAME + ".o -o " + FILENAME + "\n");
+        stringBuilder.append(";   nasm -felf64 " + FILENAME + ".asm && gcc -m32 " + FILENAME + ".o -o " + FILENAME + "\n");
         stringBuilder.append(";\n");
         stringBuilder.append("; Comando para ejecutar:\n");
         stringBuilder.append(";   ./" + FILENAME + "\n");
@@ -97,8 +97,9 @@ public class AssemblyGenerator {
         //Exit
         stringBuilder.append("; ===== ===== ===== ===== =====\n");
         stringBuilder.append("; exit(0)\n\n");
-        stringBuilder.append("    mov    eax, 0\n");
-        stringBuilder.append("    ret\n");
+        stringBuilder.append("    mov ebx, 0\n");
+        stringBuilder.append("    mov eax, 1\n");
+        stringBuilder.append("    int 0x80\n");
 
         //Escribir fichero
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File(FILENAME + FILE_EXTENSION)))) {
