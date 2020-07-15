@@ -94,6 +94,6 @@ public class Generator {
     }
 
     public String generateVariable() {
-        return "t" + ++variableNumber;
+        return "t#" + ++variableNumber;
     }
 }

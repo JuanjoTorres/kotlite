@@ -3,6 +3,7 @@ package compiler.syntax.symbols;
 import compiler.output.Output;
 import compiler.syntax.ParserSym;
 import compiler.syntax.tables.Subtype;
+import compiler.syntax.tables.Type;
 import compiler.syntax.tables.Variable;
 
 import java.io.PrintWriter;
@@ -34,7 +35,11 @@ public class SymbolBool extends SymbolBase {
         //Subtype de AND o OR es BOOL
         subtype = Subtype.BOOLEAN;
 
+        //Generar variable y meterla en la tabla de variables
         variable = new Variable(generator.generateVariable());
+        variable.setType(Type.VAR);
+        variable.setSubtype(subtype);
+        variableTable.put(variable.getId(), variable);
 
         Variable boolVar = bool.getVariable();
         Variable relationVar = relation.getVariable();
@@ -69,13 +74,15 @@ public class SymbolBool extends SymbolBase {
             out.print(index + "->" + bool.getIndex() + "\n");
         if (join != null)
             out.print(index + "->" + join.getIndex() + "\n");
-        out.print(index + "->" + relation.getIndex() + "\n");
+        if (relation != null)
+            out.print(index + "->" + relation.getIndex() + "\n");
 
         if (bool != null)
             bool.toDot(out);
         if (join != null)
             join.toDot(out);
-        relation.toDot(out);
+        if (relation != null)
+            relation.toDot(out);
     }
 
 }

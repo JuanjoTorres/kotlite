@@ -58,6 +58,12 @@ public class SymbolFunction extends SymbolBase {
 
         //Obtener el procedimiento para calcular sus propiedades
         Procedure procedure = id.getProcedure();
+
+        //Poner número de parámetros
+        if (argsdec != null)
+            procedure.setNumParams(argsdec.getArgs().size());
+        else
+            procedure.setNumParams(0);
     }
 
     @Override

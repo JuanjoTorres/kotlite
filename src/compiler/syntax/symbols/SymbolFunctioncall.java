@@ -3,6 +3,7 @@ package compiler.syntax.symbols;
 import compiler.output.Output;
 import compiler.syntax.tables.Subtype;
 import compiler.syntax.tables.Symbol;
+import compiler.syntax.tables.Type;
 import compiler.syntax.tables.Variable;
 
 import java.io.PrintWriter;
@@ -22,6 +23,7 @@ public class SymbolFunctioncall extends SymbolBase {
         super("Functioncall", 0);
 
         this.id = id;
+        this.args = args;
 
         //Comprobar si existe la función
         if (symbolTable.getId(id.getName()) == null) {
@@ -60,20 +62,26 @@ public class SymbolFunctioncall extends SymbolBase {
                             " y se ha recibido un parámetro del tipo " + args.getArgs().get(i).getSubtype());
             }
 
-            //Añadir instrucción de parametro por cada argumento
+            //Crear variable por cada parametro
             for (int i = 0; i < args.getArgs().size(); i++) {
-                generator.addThreeAddressCode("PARAM", "", "", args.getArgs().get(i).getId());
+                Variable variable = new Variable(args.getArgs().get(i).getId());
+                variable.setType(Type.ARG);
+                variable.setSubtype(args.getArgs().get(i).getSubtype());
+                variableTable.put(variable.getId(), variable);
+
+                //Generar código de tres direcciones
+                generator.addThreeAddressCode("PARAM", "", "", variable.getId());
             }
         }
 
+        //Generar variable y meterla en la tabla de variables
         variable = new Variable(generator.generateVariable());
+        variable.setType(Type.VAR);
+        variable.setSubtype(subtype);
+        variableTable.put(variable.getId(), variable);
 
         // Llamada a función guardando el valor de retorno en variable temporal
         generator.addThreeAddressCode("CALL", id.getProcedure().getStartLabel(), "", variable.getId());
-
-        // No es necesaria la etiqueta de retorno,
-        // se hace en ensamblador guardando la dirección de retorno en la pila
-        //generator.addThreeAddressCode("SKIP", "", "", generator.generateReturnLabel());
     }
 
     public Variable getVariable() {
@@ -88,11 +96,13 @@ public class SymbolFunctioncall extends SymbolBase {
     public void toDot(PrintWriter out) {
         out.print(index + " [label=\"" + name + "\"];\n");
 
-        out.print(index + "->" + id.getIndex() + "\n");
+        if (id != null)
+            out.print(index + "->" + id.getIndex() + "\n");
         if (args != null)
             out.print(index + "->" + args.getIndex() + "\n");
 
-        id.toDot(out);
+        if (id != null)
+            id.toDot(out);
         if (args != null)
             args.toDot(out);
     }

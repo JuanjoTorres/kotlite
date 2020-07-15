@@ -7,6 +7,8 @@ import compiler.output.Output;
 import compiler.syntax.Parser;
 import compiler.syntax.ParserSym;
 import compiler.syntax.symbols.SymbolBase;
+import compiler.syntax.tables.ProcedureTable;
+import compiler.syntax.tables.VariableTable;
 import java_cup.runtime.ComplexSymbolFactory;
 import java_cup.runtime.Symbol;
 
@@ -141,7 +143,7 @@ public class CompilerUI extends JFrame {
         errorEditor.setText(new String(Files.readAllBytes(Paths.get(ERRORS_FILE))));
 
         //Escribir fichero de ensamblador
-        AssemblyGenerator assemblyGenerator = new AssemblyGenerator();
+        AssemblyGenerator assemblyGenerator = new AssemblyGenerator(new VariableTable(), new ProcedureTable());
         assemblyGenerator.toAssembly();
     }
 

@@ -2,15 +2,11 @@ package compiler.syntax.tables;
 
 import compiler.output.Output;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 
 public class VariableTable {
 
-    private Hashtable<String, Variable> table;
-
-    public VariableTable() {
-        table = new Hashtable<>();
-    }
+    private static final HashMap<String, Variable> table = new HashMap<>();
 
     public void put(String key, Variable variable) {
         if (!table.containsKey(key)) {
@@ -28,5 +24,9 @@ public class VariableTable {
 
     public Variable get(String key) {
         return table.get(key);
+    }
+
+    public static HashMap<String, Variable> getTable() {
+        return table;
     }
 }

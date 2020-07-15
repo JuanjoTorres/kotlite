@@ -22,126 +22,126 @@ section .bss
     comentario resb 512
 
 section .text
-    ; ===== ===== ===== ===== =====
-    ; Instrucción SKIP
-    ; Op1:  Op2:  Dest: fun_sumar_1
-    fun_sumar_1: nop
+; ===== ===== ===== ===== =====
+; Instrucción SKIP
+; Op1:  Op2:  Dest: fun_sumar_1
+fun_sumar_1: nop
 
-        ; PASA POR EL PARAMETRO DEST EL IDENTIFICADOR DE LA FUNCION
-
-        ; ===== ===== ===== ===== =====
-        ; Instrucción PMB
-        ; Op1:  Op2:  Dest:
-        mov esi, [4 + DISP]
-        push esi
-        push ebp
-        mov ebp, esp
-        mov [4 + ebp], ebp
-        sub esp, 4
-        mov eax, [12 + ebp]
-        mov [num1], eax
-        mov eax, [16 + ebp]
-        mov [num2], eax
-
-        ; ===== ===== ===== ===== =====
-        ; Instrucción PLUS
-        ; Op1: t1 Op2: t2 Dest: t3
-        mov eax, [num1]
-        mov ebx, [num2]
-        add eax, ebx
-        mov [t3], eax
-
-        ; ===== ===== ===== ===== =====
-        ; Instrucción COPY
-        ; Op1: t3 Op2:  Dest: res
-        mov eax, [t3]
-        mov [res], eax
-
-        ; ===== ===== ===== ===== =====
-        ; Instrucción RTN
-        ; Op1:  Op2:  Dest: res
-        mov esp, ebp
-        pop ebp
-        mov edi, [4 + DISP]
-        pop edi
-        ret
+    ; PASA POR EL PARAMETRO DEST EL IDENTIFICADOR DE LA FUNCION
 
     ; ===== ===== ===== ===== =====
-    ; Instrucción SKIP
-    ; Op1:  Op2:  Dest: fun_main_2
-    main:
-          ; ===== ===== ===== ===== =====
-          ; Instrucción COPY
-          ; Op1: 1 Op2:  Dest: t4
-          mov eax, 1
-          mov [t4], eax
+    ; Instrucción PMB
+    ; Op1:  Op2:  Dest:
+    mov esi, [4 + DISP]
+    push esi
+    push ebp
+    mov ebp, esp
+    mov [4 + ebp], ebp
+    sub esp, 4
+    mov eax, [12 + ebp]
+    mov [num1], eax
+    mov eax, [16 + ebp]
+    mov [num2], eax
 
-          ; ===== ===== ===== ===== =====
-          ; Instrucción COPY
-          ; Op1: t4 Op2:  Dest: globalA
-          mov eax, [t4]
-          mov [globalA], eax
+    ; ===== ===== ===== ===== =====
+    ; Instrucción PLUS
+    ; Op1: num1 Op2: num2 Dest: t3
+    mov eax, [num1]
+    mov ebx, [num2]
+    add eax, ebx
+    mov [t3], eax
 
-          ; ===== ===== ===== ===== =====
-          ; Instrucción COPY
-          ; Op1: 2 Op2:  Dest: t5
-          mov eax, 2
-          mov [t5], eax
+    ; ===== ===== ===== ===== =====
+    ; Instrucción COPY
+    ; Op1: t3    Op2:    Dest: res
+    mov eax, [t3]
+    mov [res], eax
 
-          ; ===== ===== ===== ===== =====
-          ; Instrucción COPY
-          ; Op1: t5 Op2:  Dest: globalB
-          mov eax, [t5]
-          mov [globalB], eax
+    ; ===== ===== ===== ===== =====
+    ; Instrucción RTN
+    ; Op1:    Op2:    Dest: res
+    mov esp, ebp
+    pop ebp
+    mov edi, [4 + DISP]
+    pop edi
+    ret
 
-          ; LOS PARAMETROS SE INTRODUCEN EN ORDEN INVERSO (PRIMERO B Y LUEGO A)
+; ===== ===== ===== ===== =====
+; Instrucción SKIP
+; Op1:  Op2:  Dest: fun_main_2
+main:
+    ; ===== ===== ===== ===== =====
+    ; Instrucción COPY
+    ; Op1: 1 Op2:  Dest: t4
+    mov eax, 1
+    mov [t4], eax
 
-          ; ===== ===== ===== ===== =====
-          ; Instrucción PARAM
-          ; Op1:  Op2:  Dest: globalB
-          mov eax, [globalB]
-          push eax
+    ; ===== ===== ===== ===== =====
+    ; Instrucción COPY
+    ; Op1: t4 Op2:  Dest: globalA
+    mov eax, [t4]
+    mov [globalA], eax
 
-          ; ===== ===== ===== ===== =====
-          ; Instrucción PARAM
-          ; Op1:  Op2:  Dest: globalA
-          mov eax, [globalA]
-          push eax
+    ; ===== ===== ===== ===== =====
+    ; Instrucción COPY
+    ; Op1: 2 Op2:  Dest: t5
+    mov eax, 2
+    mov [t5], eax
 
-          ; LAS VARIABLES DEL CODIGO DEL CALL TAMBIEN SE DECLARAN ARRIBA
+    ; ===== ===== ===== ===== =====
+    ; Instrucción COPY
+    ; Op1: t5 Op2:  Dest: globalB
+    mov eax, [t5]
+    mov [globalB], eax
 
-          ; ===== ===== ===== ===== =====
-          ; Instrucción CALL
-          ; Op1: fun_sumar_1 Op2:  Dest: t6
-          call fun_sumar_1
-          mov ebx, 8    ; 4 bytes por parametro (4 + 4 = 8) o lo que ocupen las variables
-          add ebx, esp
-          mov eax, [res]
-          mov [t6], eax
+    ; LOS PARAMETROS SE INTRODUCEN EN ORDEN INVERSO (PRIMERO B Y LUEGO A)
 
-          ; ===== ===== ===== ===== =====
-          ; Instrucción COPY
-          ; Op1: t6 Op2:  Dest: globalC
-          mov eax, [t6]
-          mov [globalC], eax
+    ; ===== ===== ===== ===== =====
+    ; Instrucción PARAM
+    ; Op1:  Op2:  Dest: globalB
+    mov eax, [globalB]
+    push eax
 
-          ; ===== ===== ===== ===== =====
-          ; Instrucción COPY
-          ; Op1: t7 Op2:  Dest: comentario
-          mov eax, t7
-          mov [comentario], eax
+    ; ===== ===== ===== ===== =====
+    ; Instrucción PARAM
+    ; Op1:  Op2:  Dest: globalA
+    mov eax, [globalA]
+    push eax
 
-          ; ===== ===== ===== ===== =====
-          ; Instrucción PRINTINT
-          ; Op1: comentario Op2: globalC Dest:
-          sub esp, 4
-          mov ebx, [globalC]
-          push ebx
-          mov eax, [comentario]
-          push eax
-          call printf
-          add esp, 8
+    ; LAS VARIABLES DEL CODIGO DEL CALL TAMBIEN SE DECLARAN ARRIBA
 
-	      mov ebx, 0 ; INSTRUCCIONES PARA ACABAR PROGRAMA
-	      mov eax, 1
-	      int 0x80
+    ; ===== ===== ===== ===== =====
+    ; Instrucción CALL
+    ; Op1: fun_sumar_1 Op2:  Dest: t6
+    call fun_sumar_1
+    mov ebx, 8    ; 4 bytes por parametro (4 + 4 = 8) o lo que ocupen las variables
+    add ebx, esp
+    mov eax, [res]
+    mov [t6], eax
+
+    ; ===== ===== ===== ===== =====
+    ; Instrucción COPY
+    ; Op1: t6 Op2:  Dest: globalC
+    mov eax, [t6]
+    mov [globalC], eax
+
+    ; ===== ===== ===== ===== =====
+    ; Instrucción COPY
+    ; Op1: t7 Op2:  Dest: comentario
+    mov eax, t7
+    mov [comentario], eax
+
+    ; ===== ===== ===== ===== =====
+    ; Instrucción PRINTINT
+    ; Op1: comentario Op2: globalC Dest:
+    sub esp, 4
+    mov ebx, [globalC]
+    push ebx
+    mov eax, [comentario]
+    push eax
+    call printf
+    add esp, 8
+
+    mov ebx, 0 ; INSTRUCCIONES PARA ACABAR PROGRAMA
+    mov eax, 1
+    int 0x80

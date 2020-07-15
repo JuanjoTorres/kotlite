@@ -3,6 +3,7 @@ package compiler.syntax.symbols;
 import compiler.output.Output;
 import compiler.syntax.ParserSym;
 import compiler.syntax.tables.Subtype;
+import compiler.syntax.tables.Type;
 import compiler.syntax.tables.Variable;
 
 import java.io.PrintWriter;
@@ -51,8 +52,11 @@ public class SymbolRelation extends SymbolBase {
         Variable expr1Var = expr1.getVariable();
         Variable expr2Var = expr2.getVariable();
 
-        //Generar nueva variable temporal
+        //Generar variable y meterla en la tabla de variables
         variable = new Variable(generator.generateVariable());
+        variable.setType(Type.VAR);
+        variable.setSubtype(subtype);
+        variableTable.put(variable.getId(), variable);
 
         //Añadir código de tres direcciones con la operacion
         generator.addThreeAddressCode(ParserSym.terminalNames[oprel.getRelationType()], expr1Var.getId(), expr2Var.getId(), variable.getId());
@@ -80,13 +84,15 @@ public class SymbolRelation extends SymbolBase {
     public void toDot(PrintWriter out) {
         out.print(index + " [label=\"" + name + "\"];\n");
 
-        out.print(index + "->" + expr1.getIndex() + "\n");
+        if (expr1 != null)
+            out.print(index + "->" + expr1.getIndex() + "\n");
         if (oprel != null)
             out.print(index + "->" + oprel.getIndex() + "\n");
         if (expr2 != null)
             out.print(index + "->" + expr2.getIndex() + "\n");
 
-        expr1.toDot(out);
+        if (expr1 != null)
+            expr1.toDot(out);
         if (oprel != null)
             oprel.toDot(out);
         if (expr2 != null)

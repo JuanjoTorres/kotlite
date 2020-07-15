@@ -2,26 +2,12 @@ package compiler.syntax.tables;
 
 import compiler.output.Output;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 
 public class ProcedureTable {
 
-    private Hashtable<String, Procedure> table;
-
-    public ProcedureTable() {
-        table = new Hashtable<>();
-
-        /*
-        //YA NO ES NECESARIO, EL PRINT ESTÁ INCLUIDO EN LA GRAMÁTICA
-
-        //Añadir funciones predefinidas a la tabla de procedimientos
-        table.put("print", new Procedure("print"));
-        table.put("printInt", new Procedure("printInt"));
-        table.put("printBool", new Procedure("printBool"));
-
-        */
-    }
-
+    private HashMap<String, Procedure> table = new HashMap<>();
+            
     public boolean put(String key, Procedure procedure) {
 
         if (table.containsKey(key))

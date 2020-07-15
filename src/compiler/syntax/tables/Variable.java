@@ -1,14 +1,14 @@
 package compiler.syntax.tables;
 
-import compiler.intermediate.Generator;
-
 public class Variable {
 
     private int size;
     private boolean global;
     private String id;
     private String parentFunction;
+    private String value;
 
+    private Type type;
     private Subtype subtype;
 
     public Variable(String id) {
@@ -19,8 +19,24 @@ public class Variable {
         return size;
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    public String getId() {
+        return id;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
     public Subtype getSubtype() {
@@ -30,9 +46,4 @@ public class Variable {
     public void setSubtype(Subtype subtype) {
         this.subtype = subtype;
     }
-
-    public String getId() {
-        return id;
-    }
-
 }

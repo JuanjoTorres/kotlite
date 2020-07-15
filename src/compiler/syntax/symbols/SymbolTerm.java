@@ -3,6 +3,7 @@ package compiler.syntax.symbols;
 import compiler.output.Output;
 import compiler.syntax.ParserSym;
 import compiler.syntax.tables.Subtype;
+import compiler.syntax.tables.Type;
 import compiler.syntax.tables.Variable;
 
 import java.io.PrintWriter;
@@ -36,8 +37,11 @@ public class SymbolTerm extends SymbolBase {
         Variable termVar = term.getVariable();
         Variable unaryVar = unary.getVariable();
 
-        //Generar nueva variable temporal
+        //Generar variable y meterla en la tabla de variables
         variable = new Variable(generator.generateVariable());
+        variable.setType(Type.VAR);
+        variable.setSubtype(subtype);
+        variableTable.put(variable.getId(), variable);
 
         //Añadir código de tres direcciones con la operacion
         generator.addThreeAddressCode(ParserSym.terminalNames[mult.getSymbol()], termVar.getId(), unaryVar.getId(), variable.getId());
@@ -69,13 +73,15 @@ public class SymbolTerm extends SymbolBase {
             out.print(index + "->" + term.getIndex() + "\n");
         if (mult != null)
             out.print(index + "->" + mult.getIndex() + "\n");
-        out.print(index + "->" + unary.getIndex() + "\n");
+        if (unary != null)
+            out.print(index + "->" + unary.getIndex() + "\n");
 
         if (term != null)
             term.toDot(out);
         if (mult != null)
             mult.toDot(out);
-        unary.toDot(out);
+        if (unary != null)
+            unary.toDot(out);
     }
 
 }

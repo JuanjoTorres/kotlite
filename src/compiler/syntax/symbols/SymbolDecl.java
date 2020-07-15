@@ -2,6 +2,7 @@ package compiler.syntax.symbols;
 
 import compiler.output.Output;
 import compiler.syntax.tables.Symbol;
+import compiler.syntax.tables.Type;
 import compiler.syntax.tables.Variable;
 
 import java.io.PrintWriter;
@@ -28,12 +29,11 @@ public class SymbolDecl extends SymbolBase {
             Output.writeError("Error semántico en posición " + line + ":" + column + " - El ID " + id.getName() +
                     " ya se encuentra en la tabla de símbolos en el ámbito actual");
 
+        //Generar variable y meterla en la tabla de variables
         variable = new Variable(id.getName());
-
-        //TODO Meter la variable en la tabla de variables
-        //TODO ¿En la variable que del bool o una nueva? ¿Que se mete en ella?
-        variableTable.put(id.getName(), variable);
-
+        variable.setType(Type.CONST);
+        variable.setSubtype(basic.getSubtype());
+        variableTable.put(variable.getId(), variable);
     }
 
     // FORMA Decl ::= Type Id COLON Basic ASSIGN Bool SEMICOLON
@@ -54,12 +54,11 @@ public class SymbolDecl extends SymbolBase {
             Output.writeError("Error semántico en posición " + line + ":" + column + " - El ID " + id.getName() +
                     " ya se encuentra en la tabla de símbolos en el ámbito actual");
 
-        //Nueva variable
+        //Generar variable y meterla en la tabla de variables
         variable = new Variable(id.getName());
-
-        //TODO Meter la variable en la tabla de variables
-        //TODO ¿En la variable que del bool o una nueva? ¿Que se mete en ella?
-        variableTable.put(id.getName(), variable);
+        variable.setType(Type.VAR);
+        variable.setSubtype(basic.getSubtype());
+        variableTable.put(variable.getId(), variable);
 
         Variable boolVar = bool.getVariable();
 
@@ -72,15 +71,21 @@ public class SymbolDecl extends SymbolBase {
 
         out.print(index + " [label=\"" + name + "\"];\n");
 
-        out.print(index + "->" + type.getIndex() + "\n");
-        out.print(index + "->" + id.getIndex() + "\n");
-        out.print(index + "->" + basic.getIndex() + "\n");
+        if (type != null)
+            out.print(index + "->" + type.getIndex() + "\n");
+        if (id != null)
+            out.print(index + "->" + id.getIndex() + "\n");
+        if (basic != null)
+            out.print(index + "->" + basic.getIndex() + "\n");
         if (bool != null)
             out.print(index + "->" + bool.getIndex() + "\n");
 
-        type.toDot(out);
-        id.toDot(out);
-        basic.toDot(out);
+        if (type != null)
+            type.toDot(out);
+        if (id != null)
+            id.toDot(out);
+        if (basic != null)
+            basic.toDot(out);
         if (bool != null)
             bool.toDot(out);
     }

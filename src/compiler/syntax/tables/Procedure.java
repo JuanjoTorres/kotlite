@@ -2,22 +2,22 @@ package compiler.syntax.tables;
 
 public class Procedure {
 
-    public static int NUMPROC = 0;
-    public String startLabel;
-    public int numParams;
-    public int size;
-    public int deep;
+    private static int NUM_PROC = 0;
+
+    private String startLabel;
+    private int numParams;
+    private int size;
+    private int numProcedure;
+    private int deep;
 
     public Procedure(String name) {
         this.startLabel = Procedure.nextProcedure(name);
+        this.numProcedure = ++NUM_PROC;
+        this.deep = 1;
     }
 
     public String getStartLabel() {
         return startLabel;
-    }
-
-    public void setStartLabel(String startLabel) {
-        this.startLabel = startLabel;
     }
 
     public int getNumParams() {
@@ -40,11 +40,9 @@ public class Procedure {
         return deep;
     }
 
-    public void setDeep(int deep) {
-        this.deep = deep;
+    public static String nextProcedure(String funName) {
+        return "fun#" + funName;
     }
 
-    public static String nextProcedure(String funName) {
-        return "fun_" + funName + "_" + ++NUMPROC;
-    }
+
 }

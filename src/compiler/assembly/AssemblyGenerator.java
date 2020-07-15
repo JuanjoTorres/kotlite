@@ -3,6 +3,7 @@ package compiler.assembly;
 import compiler.intermediate.Generator;
 import compiler.intermediate.ThreeAddressCode;
 import compiler.syntax.tables.ProcedureTable;
+import compiler.syntax.tables.Subtype;
 import compiler.syntax.tables.VariableTable;
 
 import java.io.BufferedWriter;
@@ -17,14 +18,15 @@ public class AssemblyGenerator {
     private static final String FILE_EXTENSION = ".asm";
     private static final String STRING_MAX_SIZE = "512";
 
-    public VariableTable variableTable;
-    public ProcedureTable procedureTable;
+    private VariableTable variableTable;
+    private ProcedureTable procedureTable;
 
-    //TODO Constructor vacio porque por ahora no se usan las tablas y además no se de donde sacar las referencias
-    public AssemblyGenerator() {
-
-    }
-
+    /**
+     * Constructor con puntero a tablas de variables y procedimientos
+     *
+     * @param variableTable
+     * @param procedureTable
+     */
     public AssemblyGenerator(VariableTable variableTable, ProcedureTable procedureTable) {
         this.variableTable = variableTable;
         this.procedureTable = procedureTable;
@@ -59,44 +61,40 @@ public class AssemblyGenerator {
 
         stringBuilder.append("; Sección de memoria para las variables no inicializadas\n");
         stringBuilder.append("section .bss\n");
-        stringBuilder.append("    temp resb " + STRING_MAX_SIZE + "\n");
 
-        stringBuilder.append("; Sección de memoria para las variables inicializadas\n");
+        //Declarar todas las variables de tipo String sin inicializar
+        VariableTable.getTable().forEach((key, value) -> {
+            System.out.println("Key: " + key + " Value: " + value);
+
+            if (value.getSubtype() == Subtype.STRING && value.getValue() == null)
+                stringBuilder.append("    ").append(key).append(" resb " + STRING_MAX_SIZE + "\n");
+
+        });
+
+        stringBuilder.append("\n; Sección de memoria para las variables inicializadas\n");
         stringBuilder.append("section .data\n");
 
-        //TODO Recorrer tabla de variables para reservar memoria
-        stringBuilder.append("    msg db 'Hello world!',10,0\n\n");
+        //Declarar todas las variables excepto las de tipo String sin inicializar
+        VariableTable.getTable().forEach((id, variable) -> {
+            if (variable.getSubtype() == Subtype.STRING && variable.getValue() != null)
+                stringBuilder.append("    ").append(id).append(" db " + variable.getValue() + ", 10, 0\n");
+
+            if (variable.getSubtype() != Subtype.STRING)
+                stringBuilder.append("    ").append(id).append(" dd 0\n");
+        });
 
         //Código
-        stringBuilder.append("section .text\n\n");
+        stringBuilder.append("\nsection .text\n\n");
         stringBuilder.append("main:\n");
 
-        //Escribir por cada instrucción
-        //TODO Aquí dentro hay que llamar al switch, la cabecera se puede quedar aquí
+        //Escribir cada instrucción
         for (ThreeAddressCode tAC : threeAddressCodes) {
-            if (true)
-                break;
-            stringBuilder.append("; ===== ===== ===== ===== =====\n");
-            stringBuilder.append("; Instrucción ").append(tAC.getOperation()).append("\n");
-            stringBuilder.append("; Op1: ").append(tAC.getOperand1());
-            stringBuilder.append(" Op2: ").append(tAC.getOperand2());
-            stringBuilder.append(" Dest: ").append(tAC.getDestination()).append("\n\n\n");
+            writeOp(stringBuilder, tAC);
         }
 
-        //Print
-        //TODO No hace falta la variable temp para strings ya inicializados
-        stringBuilder.append("; ===== ===== ===== ===== =====\n");
-        stringBuilder.append("; printf msg\n");
-        stringBuilder.append("    mov eax, msg\n");
-        //stringBuilder.append("    mov [temp], eax\n");
-        //stringBuilder.append("    mov eax, [temp]\n");
-        stringBuilder.append("    push eax\n");
-        stringBuilder.append("    call printf\n");
-        stringBuilder.append("    pop eax\n");
-
         //Exit
-        stringBuilder.append("; ===== ===== ===== ===== =====\n");
-        stringBuilder.append("; exit(0)\n\n");
+        stringBuilder.append("\n    ; ===== ===== ===== ===== =====\n");
+        stringBuilder.append("    ; exit(0)\n");
         stringBuilder.append("    mov ebx, 0\n");
         stringBuilder.append("    mov eax, 1\n");
         stringBuilder.append("    int 0x80\n");
@@ -105,5 +103,38 @@ public class AssemblyGenerator {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File(FILENAME + FILE_EXTENSION)))) {
             bufferedWriter.write(stringBuilder.toString());
         }
+    }
+
+
+    private void writeOp(StringBuilder stringBuilder, ThreeAddressCode tAC) {
+
+        //Escribir cabecera
+        stringBuilder.append("\n    ; ===== ===== ===== ===== =====\n");
+        stringBuilder.append("    ; Instrucción ").append(tAC.getOperation()).append("\n");
+        stringBuilder.append("    ; Op1: ").append(tAC.getOperand1());
+        stringBuilder.append("    Op2: ").append(tAC.getOperand2());
+        stringBuilder.append("    Dest: ").append(tAC.getDestination()).append("\n");
+
+        switch (tAC.getOperation()) {
+            case "SKIP":
+                //Ignorar main
+                if (tAC.getDestination().equals("fun#main"))
+                    break;
+
+                stringBuilder.append("    ").append(tAC.getDestination()).append(": nop\n");
+                break;
+
+            case "COPY":
+                break;
+
+            case "PRINT":
+                stringBuilder.append("    mov eax, [").append(tAC.getOperand1()).append("]\n");
+                stringBuilder.append("    push eax\n");
+                stringBuilder.append("    call printf\n");
+                stringBuilder.append("    pop eax\n");
+                break;
+
+        }
+
     }
 }

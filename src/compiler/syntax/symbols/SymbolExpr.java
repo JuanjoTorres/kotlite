@@ -3,6 +3,7 @@ package compiler.syntax.symbols;
 import compiler.output.Output;
 import compiler.syntax.ParserSym;
 import compiler.syntax.tables.Subtype;
+import compiler.syntax.tables.Type;
 import compiler.syntax.tables.Variable;
 
 import java.io.PrintWriter;
@@ -34,8 +35,11 @@ public class SymbolExpr extends SymbolBase {
         Variable exprVar = expr.getVariable();
         Variable termVar = term.getVariable();
 
-        //Generar nueva variable temporal
+        //Generar variable y meterla en la tabla de variables
         variable = new Variable(generator.generateVariable());
+        variable.setType(Type.VAR);
+        variable.setSubtype(subtype);
+        variableTable.put(variable.getId(), variable);
 
         //Añadir código de tres direcciones con la operacion
         generator.addThreeAddressCode(ParserSym.terminalNames[add.getSymbol()], exprVar.getId(), termVar.getId(), variable.getId());
@@ -69,13 +73,15 @@ public class SymbolExpr extends SymbolBase {
             out.print(index + "->" + expr.getIndex() + "\n");
         if (add != null)
             out.print(index + "->" + add.getIndex() + "\n");
-        out.print(index + "->" + term.getIndex() + "\n");
+        if (term != null)
+            out.print(index + "->" + term.getIndex() + "\n");
 
         if (expr != null)
             expr.toDot(out);
         if (add != null)
             add.toDot(out);
-        term.toDot(out);
+        if (term != null)
+            term.toDot(out);
     }
 
 }
