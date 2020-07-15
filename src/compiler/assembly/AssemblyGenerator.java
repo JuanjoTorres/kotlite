@@ -128,10 +128,20 @@ public class AssemblyGenerator {
                 break;
 
             case "PRINT":
-                stringBuilder.append("    mov eax, [").append(tAC.getOperand1()).append("]\n");
+                stringBuilder.append("    mov eax, ").append(tAC.getOperand1()).append("\n");
                 stringBuilder.append("    push eax\n");
                 stringBuilder.append("    call printf\n");
                 stringBuilder.append("    pop eax\n");
+                break;
+
+            case "PRINTINT":
+                stringBuilder.append("    mov eax, ").append(tAC.getOperand1()).append("\n");
+                stringBuilder.append("    push eax\n");
+                stringBuilder.append("    mov ebx, [").append(tAC.getOperand2()).append("]\n");
+                stringBuilder.append("    push ebx\n");
+                stringBuilder.append("    call printf\n");
+                stringBuilder.append("    pop eax\n");
+                stringBuilder.append("    pop ebx\n");
                 break;
 
         }
