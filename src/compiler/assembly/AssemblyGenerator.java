@@ -148,7 +148,11 @@ public class AssemblyGenerator {
                 break;
 
             case "PRINT":
-                stringBuilder.append("    mov eax, ").append(operand1).append("\n");
+                //Si es una variable inicializada, pasar valor, sino referencia
+                if (variableTable.get(operand1).getValue() != null)
+                    stringBuilder.append("    mov eax, ").append(operand1).append("\n");
+                else
+                    stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 stringBuilder.append("    push eax\n");
                 stringBuilder.append("    call printf\n");
                 stringBuilder.append("    pop eax\n");
