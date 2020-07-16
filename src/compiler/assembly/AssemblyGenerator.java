@@ -78,9 +78,9 @@ public class AssemblyGenerator {
             if (variable.getSubtype() == Subtype.STRING)
                 stringBuilder.append("    ").append(id).append(" db " + variable.getValue() + ", 10, 0\n");
             else if (variable.getSubtype() == Subtype.BOOLEAN)
-                //Booleanos: true = -1, false = 0
+                //Booleanos: true = 1, false = 0
                 if (variable.getValue().equals("true"))
-                    stringBuilder.append("    ").append(id).append(" dd -1\n");
+                    stringBuilder.append("    ").append(id).append(" dd 1\n");
                 else
                     stringBuilder.append("    ").append(id).append(" dd 0\n");
             else if (variable.getSubtype() == Subtype.NONE)
@@ -154,8 +154,9 @@ public class AssemblyGenerator {
                 stringBuilder.append("    pop eax\n");
                 break;
 
+            case "PRINTBOOL":
             case "PRINTINT":
-                stringBuilder.append("    mov eax, ").append(operand1).append("\n");
+                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 stringBuilder.append("    push eax\n");
                 stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
                 stringBuilder.append("    push ebx\n");
@@ -163,7 +164,6 @@ public class AssemblyGenerator {
                 stringBuilder.append("    pop eax\n");
                 stringBuilder.append("    pop ebx\n");
                 break;
-
         }
 
     }

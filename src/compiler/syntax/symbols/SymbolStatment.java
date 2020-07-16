@@ -115,14 +115,16 @@ public class SymbolStatment extends SymbolBase {
                     " - El primer parametro de la función print() debe ser del tipo subyaacente STRING " +
                     " y es del tipo subyacente " + bool.getSubtype());
 
+        if (bool2.getSubtype() == Subtype.STRING)
+            Output.writeError("Error semántico en posición " + line + ":" + column +
+                    " - No se permite hacer print con 2 strings " + bool.getSubtype());
+
         String instruction;
 
         if (bool2.getSubtype() == Subtype.INT)
             instruction = "PRINTINT";
         else if (bool2.getSubtype() == Subtype.BOOLEAN)
             instruction = "PRINTBOOL";
-        else if (bool2.getSubtype() == Subtype.STRING)
-            instruction = "PRINTSTRING";
         else
             instruction = "PRINT";
 
