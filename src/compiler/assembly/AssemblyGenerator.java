@@ -59,12 +59,9 @@ public class AssemblyGenerator {
         stringBuilder.append("section .bss\n");
 
         //Declarar todas las variables de tipo String sin inicializar
-        variableTable.forEach((key, value) -> {
-            System.out.println("Key: " + key + " Value: " + value);
-
-            if (value.getSubtype() == Subtype.STRING && value.getValue() == null)
-                stringBuilder.append("    ").append(key).append(" resb " + STRING_MAX_SIZE + "\n");
-
+        variableTable.forEach((id, variable) -> {
+            if (variable.getSubtype() == Subtype.STRING && variable.getValue() == null)
+                stringBuilder.append("    ").append(id).append(" resb " + STRING_MAX_SIZE + "\n");
         });
 
         stringBuilder.append("\n; Sección de memoria para las variables inicializadas\n");
@@ -72,24 +69,31 @@ public class AssemblyGenerator {
 
         //Declarar todas las variables excepto las de tipo String sin inicializar
         variableTable.forEach((id, variable) -> {
-            if (variable.getValue() == null)
+            System.out.println(variable.getId() + " valor: " + variable.getValue());
+            if (variable.getSubtype() == Subtype.STRING && variable.getValue() == null)
                 return;
 
             if (variable.getSubtype() == Subtype.STRING)
                 stringBuilder.append("    ").append(id).append(" db " + variable.getValue() + ", 10, 0\n");
             else if (variable.getSubtype() == Subtype.BOOLEAN)
                 //Booleanos: true = 1, false = 0
-                if (variable.getValue().equals("true"))
-                    stringBuilder.append("    ").append(id).append(" dd 1\n");
-                else
+
+                //Si no está inicializado o es falso -> 0, sio es true -> 1
+                if (variable.getValue() == null || variable.getValue().equals("false"))
                     stringBuilder.append("    ").append(id).append(" dd 0\n");
+                else
+                    stringBuilder.append("    ").append(id).append(" dd 1\n");
             else if (variable.getSubtype() == Subtype.NONE)
                 stringBuilder.append("    ").append(id).append(" dd 0\n");
             else {
                 //Por descarte es de tipo entero
 
+                //Si no tiene valor, inicializar en 0
+                if (variable.getValue() == null)
+                    stringBuilder.append("    ").append(id).append(" dd 0").append("\n");
+
                 //Comprobar literales numéricos dentro del margen de valores máximos y mínimos permitidos
-                if (Long.parseLong(variable.getValue()) > Integer.MAX_VALUE)
+                else if (Long.parseLong(variable.getValue()) > Integer.MAX_VALUE)
                     stringBuilder.append("    ").append(id).append(" dd ").append(Integer.MAX_VALUE).append("\n");
                 else if (Long.parseLong(variable.getValue()) < Integer.MIN_VALUE)
                     stringBuilder.append("    ").append(id).append(" dd ").append(Integer.MIN_VALUE).append("\n");
@@ -97,11 +101,11 @@ public class AssemblyGenerator {
                     stringBuilder.append("    ").append(id).append(" dd ").append(variable.getValue()).append("\n");
             }
 
+
         });
 
         //Código
         stringBuilder.append("\nsection .text\n\n");
-        stringBuilder.append("main:\n");
 
         //Escribir cada instrucción
         for (ThreeAddressCode tAC : threeAddressCodes) {
@@ -138,17 +142,71 @@ public class AssemblyGenerator {
 
         switch (operation) {
             case "SKIP":
-                stringBuilder.append("    ").append(destination).append(": nop\n");
+                if (destination.equals("fun#main"))
+                    stringBuilder.append("main:\n");
+                else
+                    stringBuilder.append(destination).append(": nop\n");
+                break;
+
+            case "CALL":
+                stringBuilder.append("    call ").append(destination).append("\n");
+                //TODO Calcular espacio
+                stringBuilder.append("    mov ebx, 8\n");
+                stringBuilder.append("    add ebx, esp\n");
+                //TODO Calcular posición de varible de retorno en la pila
+                stringBuilder.append("    mov eax, [esp+8]\n");
+                stringBuilder.append("    mov [" + destination + "], eax\n");
+                break;
+
+            case "RTN":
+                //TODO Falta mover la variable de retorno a la pila
+                stringBuilder.append("    mov esp, ebp\n");
+                stringBuilder.append("    pop ebp\n");
+                stringBuilder.append("    mov edi, [4 + DISP]\n");
+                stringBuilder.append("    pop edi\n");
+                stringBuilder.append("    ret\n");
                 break;
 
             case "COPY":
                 //Copia entre dos variables (Dos direcciones de memoria)
                 stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
-                stringBuilder.append("    mov [").append(operand1).append("], eax\n");
+                stringBuilder.append("    mov [").append(destination).append("], eax\n");
+                break;
+
+            case "PLUS":
+                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
+                stringBuilder.append("    add eax, ebx\n");
+                stringBuilder.append("    mov [").append(destination).append("], eax\n");
+                break;
+
+            case "MINUS":
+                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
+                stringBuilder.append("    sub eax, ebx\n");
+                stringBuilder.append("    mov [").append(destination).append("], eax\n");
+                break;
+
+            case "MULTI":
+                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
+                stringBuilder.append("    mul eax, ebx\n");
+                stringBuilder.append("    mov [").append(destination).append("], eax\n");
+                break;
+
+            case "DIV":
+                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
+                stringBuilder.append("    div eax, ebx\n");
+                stringBuilder.append("    mov [").append(destination).append("], eax\n");
                 break;
 
             case "PRINT":
-                stringBuilder.append("    mov eax, ").append(operand1).append("\n");
+                //Si es una variable inicializada, pasar valor, sino referencia
+                if (variableTable.get(operand1).getValue() != null)
+                    stringBuilder.append("    mov eax, ").append(operand1).append("\n");
+                else
+                    stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 stringBuilder.append("    push eax\n");
                 stringBuilder.append("    call printf\n");
                 stringBuilder.append("    pop eax\n");
