@@ -1,11 +1,76 @@
 SKIP |  |  | fun#main
 COPY | t#1 |  | num1
 COPY | t#2 |  | num2
+COPY | t#3 |  | num3
+COPY | t#4 |  | num4
+COPY | t#5 |  | num5
+LT | num1 | t#6 | t#7
+IFGOTO | t#7 |  | cond_false_1
+PRINT | t#8 |  | 
+GOTO |  |  | cond_true_1
+SKIP |  |  | cond_false_1
+SKIP |  |  | cond_true_1
 SKIP |  |  | loop_start_1
-LTEQU | num1 | t#3 | t#4
-IFGOTO | t#4 |  | loop_end_1
-PRINTINT | t#5 | num1 | 
-PLUS | num1 | t#6 | t#7
-COPY | t#7 |  | num1
+LT | num1 | t#9 | t#10
+IFGOTO | t#10 |  | loop_end_1
+PRINTINT | t#11 | num1 | 
+PLUS | num1 | t#12 | t#13
+COPY | t#13 |  | num1
 GOTO |  |  | loop_start_1
 SKIP |  |  | loop_end_1
+LTEQU | num2 | t#14 | t#15
+IFGOTO | t#15 |  | cond_false_2
+PRINT | t#16 |  | 
+GOTO |  |  | cond_true_2
+SKIP |  |  | cond_false_2
+SKIP |  |  | cond_true_2
+SKIP |  |  | loop_start_2
+LTEQU | num2 | t#17 | t#18
+IFGOTO | t#18 |  | loop_end_2
+PRINTINT | t#19 | num2 | 
+PLUS | num2 | t#20 | t#21
+COPY | t#21 |  | num2
+GOTO |  |  | loop_start_2
+SKIP |  |  | loop_end_2
+GT | num3 | t#22 | t#23
+IFGOTO | t#23 |  | cond_false_3
+PRINT | t#24 |  | 
+GOTO |  |  | cond_true_3
+SKIP |  |  | cond_false_3
+SKIP |  |  | cond_true_3
+SKIP |  |  | loop_start_3
+GT | num3 | t#25 | t#26
+IFGOTO | t#26 |  | loop_end_3
+PRINTINT | t#27 | num3 | 
+MINUS | num3 | t#28 | t#29
+COPY | t#29 |  | num3
+GOTO |  |  | loop_start_3
+SKIP |  |  | loop_end_3
+GTEQU | num4 | t#30 | t#31
+IFGOTO | t#31 |  | cond_false_4
+PRINT | t#32 |  | 
+GOTO |  |  | cond_true_4
+SKIP |  |  | cond_false_4
+SKIP |  |  | cond_true_4
+SKIP |  |  | loop_start_4
+GTEQU | num4 | t#33 | t#34
+IFGOTO | t#34 |  | loop_end_4
+PRINTINT | t#35 | num4 | 
+MINUS | num4 | t#36 | t#37
+COPY | t#37 |  | num4
+GOTO |  |  | loop_start_4
+SKIP |  |  | loop_end_4
+EQU | num5 | t#38 | t#39
+IFGOTO | t#39 |  | cond_false_5
+PRINT | t#40 |  | 
+GOTO |  |  | cond_true_5
+SKIP |  |  | cond_false_5
+SKIP |  |  | cond_true_5
+SKIP |  |  | loop_start_5
+NOTEQU | num5 | t#41 | t#42
+IFGOTO | t#42 |  | loop_end_5
+PRINTINT | t#43 | num5 | 
+PLUS | num5 | t#44 | t#45
+COPY | t#45 |  | num5
+GOTO |  |  | loop_start_5
+SKIP |  |  | loop_end_5
