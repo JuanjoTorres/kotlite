@@ -101,7 +101,6 @@ public class AssemblyGenerator {
 
         //Código
         stringBuilder.append("\nsection .text\n\n");
-        stringBuilder.append("main:\n");
 
         //Escribir cada instrucción
         for (ThreeAddressCode tAC : threeAddressCodes) {
@@ -138,13 +137,53 @@ public class AssemblyGenerator {
 
         switch (operation) {
             case "SKIP":
-                stringBuilder.append("    ").append(destination).append(": nop\n");
+                if (destination.equals("fun#main"))
+                    stringBuilder.append("main:\n");
+                else
+                    stringBuilder.append(destination).append(": nop\n");
+                break;
+
+            case "RTN":
+                //TODO Falta mover la variable de retorno a la pila
+                stringBuilder.append("    mov esp, ebp\n");
+                stringBuilder.append("    pop ebp\n");
+                stringBuilder.append("    mov edi, [4 + DISP]\n");
+                stringBuilder.append("    pop edi\n");
+                stringBuilder.append("    ret\n");
                 break;
 
             case "COPY":
                 //Copia entre dos variables (Dos direcciones de memoria)
                 stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
-                stringBuilder.append("    mov [").append(operand1).append("], eax\n");
+                stringBuilder.append("    mov [").append(destination).append("], eax\n");
+                break;
+
+            case "PLUS":
+                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
+                stringBuilder.append("    add eax, ebx\n");
+                stringBuilder.append("    mov [").append(destination).append("], eax\n");
+                break;
+
+            case "MINUS":
+                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
+                stringBuilder.append("    sub eax, ebx\n");
+                stringBuilder.append("    mov [").append(destination).append("], eax\n");
+                break;
+
+            case "MULTI":
+                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
+                stringBuilder.append("    mul eax, ebx\n");
+                stringBuilder.append("    mov [").append(destination).append("], eax\n");
+                break;
+
+            case "DIV":
+                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
+                stringBuilder.append("    div eax, ebx\n");
+                stringBuilder.append("    mov [").append(destination).append("], eax\n");
                 break;
 
             case "PRINT":
