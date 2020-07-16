@@ -1,0 +1,12 @@
+
+fun get5(): Int {
+    return 5;
+}
+
+fun main (): None {
+    var numero: Int;
+
+    numero = get5();
+
+    print("El numero es: ", numero);
+}
