@@ -1,0 +1,16 @@
+
+fun main (): None {
+    var comentario: String;
+
+    var num1 : Int = 15;
+    var num2 : Int = 25;
+    var mensaje : String = "Hola Mundo!";
+    
+    if (num1 >= num2) {
+       mensaje = "num1 es mayor";
+    } else {
+       mensaje = "num2 es mayor";
+    }
+
+    print(mensaje);
+}

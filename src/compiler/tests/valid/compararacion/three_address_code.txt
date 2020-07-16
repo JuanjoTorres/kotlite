@@ -1,0 +1,12 @@
+SKIP |  |  | fun#main
+COPY | t#1 |  | num1
+COPY | t#2 |  | num2
+COPY | t#3 |  | mensaje
+GTEQU | num1 | num2 | t#4
+IFGOTO | t#4 |  | cond_false_1
+COPY | t#5 |  | mensaje
+GOTO |  |  | cond_true_1
+SKIP |  |  | cond_false_1
+COPY | t#6 |  | mensaje
+SKIP |  |  | cond_true_1
+PRINT | mensaje |  | 
