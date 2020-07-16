@@ -19,7 +19,9 @@ section .bss
 
 ; Sección de memoria para las variables inicializadas
 section .data
+    t#2 dd 0
     t#1 dd 5
+    numero dd 0
     t#3 db "El numero es: ", 10, 0
 
 section .text

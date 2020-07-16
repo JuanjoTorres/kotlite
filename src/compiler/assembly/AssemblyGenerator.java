@@ -59,12 +59,9 @@ public class AssemblyGenerator {
         stringBuilder.append("section .bss\n");
 
         //Declarar todas las variables de tipo String sin inicializar
-        variableTable.forEach((key, value) -> {
-            System.out.println("Key: " + key + " Value: " + value);
-
-            if (value.getSubtype() == Subtype.STRING && value.getValue() == null)
-                stringBuilder.append("    ").append(key).append(" resb " + STRING_MAX_SIZE + "\n");
-
+        variableTable.forEach((id, variable) -> {
+            if (variable.getSubtype() == Subtype.STRING && variable.getValue() == null)
+                stringBuilder.append("    ").append(id).append(" resb " + STRING_MAX_SIZE + "\n");
         });
 
         stringBuilder.append("\n; Sección de memoria para las variables inicializadas\n");
@@ -72,30 +69,38 @@ public class AssemblyGenerator {
 
         //Declarar todas las variables excepto las de tipo String sin inicializar
         variableTable.forEach((id, variable) -> {
-            if (variable.getValue() == null)
+            System.out.println(variable.getId() + " valor: " + variable.getValue());
+            if (variable.getSubtype() == Subtype.STRING && variable.getValue() == null)
                 return;
 
             if (variable.getSubtype() == Subtype.STRING)
                 stringBuilder.append("    ").append(id).append(" db " + variable.getValue() + ", 10, 0\n");
             else if (variable.getSubtype() == Subtype.BOOLEAN)
                 //Booleanos: true = 1, false = 0
-                if (variable.getValue().equals("true"))
-                    stringBuilder.append("    ").append(id).append(" dd 1\n");
-                else
+
+                //Si no está inicializado o es falso -> 0, sio es true -> 1
+                if (variable.getValue() == null || variable.getValue().equals("false"))
                     stringBuilder.append("    ").append(id).append(" dd 0\n");
+                else
+                    stringBuilder.append("    ").append(id).append(" dd 1\n");
             else if (variable.getSubtype() == Subtype.NONE)
                 stringBuilder.append("    ").append(id).append(" dd 0\n");
             else {
                 //Por descarte es de tipo entero
 
+                //Si no tiene valor, inicializar en 0
+                if (variable.getValue() == null)
+                    stringBuilder.append("    ").append(id).append(" dd 0").append("\n");
+
                 //Comprobar literales numéricos dentro del margen de valores máximos y mínimos permitidos
-                if (Long.parseLong(variable.getValue()) > Integer.MAX_VALUE)
+                else if (Long.parseLong(variable.getValue()) > Integer.MAX_VALUE)
                     stringBuilder.append("    ").append(id).append(" dd ").append(Integer.MAX_VALUE).append("\n");
                 else if (Long.parseLong(variable.getValue()) < Integer.MIN_VALUE)
                     stringBuilder.append("    ").append(id).append(" dd ").append(Integer.MIN_VALUE).append("\n");
                 else
                     stringBuilder.append("    ").append(id).append(" dd ").append(variable.getValue()).append("\n");
             }
+
 
         });
 
