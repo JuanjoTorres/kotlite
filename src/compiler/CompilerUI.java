@@ -143,7 +143,7 @@ public class CompilerUI extends JFrame {
         errorEditor.setText(new String(Files.readAllBytes(Paths.get(ERRORS_FILE))));
 
         //Escribir fichero de ensamblador
-        AssemblyGenerator assemblyGenerator = new AssemblyGenerator(new VariableTable(), new ProcedureTable());
+        AssemblyGenerator assemblyGenerator = new AssemblyGenerator();
         assemblyGenerator.toAssembly();
     }
 

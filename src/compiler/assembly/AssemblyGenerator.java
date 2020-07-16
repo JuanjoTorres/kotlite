@@ -2,15 +2,14 @@ package compiler.assembly;
 
 import compiler.intermediate.Generator;
 import compiler.intermediate.ThreeAddressCode;
-import compiler.syntax.tables.ProcedureTable;
-import compiler.syntax.tables.Subtype;
-import compiler.syntax.tables.VariableTable;
+import compiler.syntax.tables.*;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AssemblyGenerator {
 
@@ -18,18 +17,15 @@ public class AssemblyGenerator {
     private static final String FILE_EXTENSION = ".asm";
     private static final String STRING_MAX_SIZE = "512";
 
-    private VariableTable variableTable;
-    private ProcedureTable procedureTable;
+    private HashMap<String, Variable> variableTable;
+    private HashMap<String, Procedure> procedureTable;
 
     /**
-     * Constructor con puntero a tablas de variables y procedimientos
-     *
-     * @param variableTable
-     * @param procedureTable
+     * Constructor sin parámetros
      */
-    public AssemblyGenerator(VariableTable variableTable, ProcedureTable procedureTable) {
-        this.variableTable = variableTable;
-        this.procedureTable = procedureTable;
+    public AssemblyGenerator() {
+        this.variableTable = VariableTable.getTable();
+        this.procedureTable = ProcedureTable.getTable();
     }
 
     public void toAssembly() throws IOException {
@@ -63,7 +59,7 @@ public class AssemblyGenerator {
         stringBuilder.append("section .bss\n");
 
         //Declarar todas las variables de tipo String sin inicializar
-        VariableTable.getTable().forEach((key, value) -> {
+        variableTable.forEach((key, value) -> {
             System.out.println("Key: " + key + " Value: " + value);
 
             if (value.getSubtype() == Subtype.STRING && value.getValue() == null)
@@ -75,7 +71,7 @@ public class AssemblyGenerator {
         stringBuilder.append("section .data\n");
 
         //Declarar todas las variables excepto las de tipo String sin inicializar
-        VariableTable.getTable().forEach((id, variable) -> {
+        variableTable.forEach((id, variable) -> {
             if (variable.getSubtype() == Subtype.STRING && variable.getValue() != null)
                 stringBuilder.append("    ").append(id).append(" db " + variable.getValue() + ", 10, 0\n");
 
@@ -108,36 +104,71 @@ public class AssemblyGenerator {
 
     private void writeOp(StringBuilder stringBuilder, ThreeAddressCode tAC) {
 
+        String operation = tAC.getOperation();
+        String operand1 = tAC.getOperand1();
+        String operand2 = tAC.getOperand2();
+        String destination = tAC.getDestination();
+
         //Escribir cabecera
         stringBuilder.append("\n    ; ===== ===== ===== ===== =====\n");
-        stringBuilder.append("    ; Instrucción ").append(tAC.getOperation()).append("\n");
-        stringBuilder.append("    ; Op1: ").append(tAC.getOperand1());
-        stringBuilder.append("    Op2: ").append(tAC.getOperand2());
-        stringBuilder.append("    Dest: ").append(tAC.getDestination()).append("\n");
+        stringBuilder.append("    ; Instrucción ").append(operation).append("\n");
+        stringBuilder.append("    ; Op1: ").append(operand1);
+        stringBuilder.append("    Op2: ").append(operand2);
+        stringBuilder.append("    Dest: ").append(destination).append("\n");
 
-        switch (tAC.getOperation()) {
+        switch (operation) {
             case "SKIP":
                 //Ignorar main
-                if (tAC.getDestination().equals("fun#main"))
+                if (destination.equals("fun#main"))
                     break;
 
-                stringBuilder.append("    ").append(tAC.getDestination()).append(": nop\n");
+                stringBuilder.append("    ").append(destination).append(": nop\n");
+                break;
+
+            case "COPY_LIT":
+                //Si es un String literal se ignora, porque ya se inicializa en memoria
+                if (operand1.startsWith("\"")) {
+                    stringBuilder.append("    ; Copy de String literal se ignora, ya está en memoria").append("\n");
+                    break;
+                }
+
+                //Comprobar boolean, si es false 0 sino -1
+                if (operand1.equals("true"))
+                    operand1 = "-1";
+                else if (operand1.equals("false"))
+                    operand1 = "0";
+
+                //TODO PROBAR nulls, se copia un valor 0
+                if (operand1.equals("null"))
+                    operand1 = "0";
+
+                //Comprobar literales numéricos dentro del margen de valores máximos y mínimos permitidos
+                if (Long.parseLong(operand1) > Integer.MAX_VALUE)
+                    operand1 = String.valueOf(Integer.MAX_VALUE);
+                else if (Long.parseLong(operand1) < Integer.MIN_VALUE)
+                    operand1 = String.valueOf(Integer.MIN_VALUE);
+
+                stringBuilder.append("    mov eax, ").append(operand1).append("\n");
+                stringBuilder.append("    mov [").append(destination).append("], eax\n");
                 break;
 
             case "COPY":
+                //Copia entre dos variables (Dos direcciones de memoria)
+                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                stringBuilder.append("    mov [").append(operand1).append("], eax\n");
                 break;
 
             case "PRINT":
-                stringBuilder.append("    mov eax, ").append(tAC.getOperand1()).append("\n");
+                stringBuilder.append("    mov eax, ").append(operand1).append("\n");
                 stringBuilder.append("    push eax\n");
                 stringBuilder.append("    call printf\n");
                 stringBuilder.append("    pop eax\n");
                 break;
 
             case "PRINTINT":
-                stringBuilder.append("    mov eax, ").append(tAC.getOperand1()).append("\n");
+                stringBuilder.append("    mov eax, ").append(operand1).append("\n");
                 stringBuilder.append("    push eax\n");
-                stringBuilder.append("    mov ebx, [").append(tAC.getOperand2()).append("]\n");
+                stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
                 stringBuilder.append("    push ebx\n");
                 stringBuilder.append("    call printf\n");
                 stringBuilder.append("    pop eax\n");

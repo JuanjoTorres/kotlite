@@ -6,8 +6,8 @@ import java.util.HashMap;
 
 public class ProcedureTable {
 
-    private HashMap<String, Procedure> table = new HashMap<>();
-            
+    private static HashMap<String, Procedure> table = new HashMap<>();
+
     public boolean put(String key, Procedure procedure) {
 
         if (table.containsKey(key))
@@ -22,11 +22,12 @@ public class ProcedureTable {
         return true;
     }
 
-    public void close() {
-        // TODO Cerrar table HTML con Output
-    }
-
     public Procedure get(String key) {
         return table.get(key);
+    }
+
+
+    public static HashMap<String, Procedure> getTable() {
+        return table;
     }
 }
