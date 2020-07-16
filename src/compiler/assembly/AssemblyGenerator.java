@@ -143,6 +143,16 @@ public class AssemblyGenerator {
                     stringBuilder.append(destination).append(": nop\n");
                 break;
 
+            case "CALL":
+                stringBuilder.append("    call ").append(destination).append("\n");
+                //TODO Calcular espacio
+                stringBuilder.append("    mov ebx, 8\n");
+                stringBuilder.append("    add ebx, esp\n");
+                //TODO Calcular posición de varible de retorno en la pila
+                stringBuilder.append("    mov eax, [esp+8]\n");
+                stringBuilder.append("    mov [" + destination + "], eax\n");
+                break;
+
             case "RTN":
                 //TODO Falta mover la variable de retorno a la pila
                 stringBuilder.append("    mov esp, ebp\n");

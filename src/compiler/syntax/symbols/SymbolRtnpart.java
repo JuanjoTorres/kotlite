@@ -23,7 +23,7 @@ public class SymbolRtnpart extends SymbolBase {
         this.subtype = factor.getSubtype();
 
         //Escibir C3D con operación RTN
-        generator.addThreeAddressCode("RTN", "", "", factor.getVariable().getId());
+        generator.addThreeAddressCode("RTN", factor.getVariable().getId(), "", "");
     }
 
     public Subtype getSubtype() {
