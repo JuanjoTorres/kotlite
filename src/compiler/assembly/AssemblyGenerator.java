@@ -167,10 +167,57 @@ public class AssemblyGenerator {
                 stringBuilder.append("    ret\n");
                 break;
 
+            case "IFGOTO":
+                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                stringBuilder.append("    mov ebx, 1\n");
+                stringBuilder.append("    cmp eax, ebx\n");
+                stringBuilder.append("    jne ").append(destination).append("\n");
+                break;
+
+            case "GOTO":
+                stringBuilder.append("    jmp ").append(destination).append("\n");
+                break;
+
             case "COPY":
                 //Copia entre dos variables (Dos direcciones de memoria)
                 stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 stringBuilder.append("    mov [").append(destination).append("], eax\n");
+                break;
+
+            case "EQU":
+                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
+                stringBuilder.append("    setne [").append(destination).append("]\n");
+                break;
+
+            case "NOTEQU":
+                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
+                stringBuilder.append("    sete [").append(destination).append("]\n");
+                break;
+
+            case "LT":
+                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
+                stringBuilder.append("    setnl [").append(destination).append("]\n");
+                break;
+
+            case "LTEQU":
+                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
+                stringBuilder.append("    setnle [").append(destination).append("]\n");
+                break;
+
+            case "GT":
+                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
+                stringBuilder.append("    setng [").append(destination).append("]\n");
+                break;
+
+            case "GTEQU":
+                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
+                stringBuilder.append("    setnge [").append(destination).append("]\n");
                 break;
 
             case "PLUS":
