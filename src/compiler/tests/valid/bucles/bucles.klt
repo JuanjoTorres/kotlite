@@ -1,0 +1,54 @@
+
+fun main (): None {
+    var num1 : Int = 0;
+    var num2 : Int = 0;
+    var num3 : Int = 10;
+    var num4 : Int = 10;
+    var num5 : Int = 0;
+
+    if (num1 < 10) {
+        print("Entro dentro del menorque");
+    }
+
+    while (num1 < 10) {
+        print("menorque %d", num1);
+        num1 = num1 + 1;
+    }
+
+    if (num2 <= 10) {
+        print("Entro dentro del menorigualque");
+    }
+
+    while (num2 <= 10) {
+        print("menorigualque %d", num2);
+        num2 = num2 + 1;
+    }
+
+    if (num3 > 0) {
+        print("Entro dentro del mayorque");
+    }
+
+    while (num3 > 0) {
+        print("mayorque %d", num3);
+        num3 = num3 - 1;
+    }
+
+    if (num4 >= 0) {
+        print("Entro dentro del mayorigualque");
+    }
+
+    while (num4 >= 0) {
+        print("mayorigualque %d", num4);
+        num4 = num4 - 1;
+    }
+
+    if (num5 == 0) {
+        print("Entro dentro del igual");
+    }
+
+    while (num5 != 10) {
+        print("noigual %d", num5);
+        num5 = num5 + 1;
+    }
+
+}

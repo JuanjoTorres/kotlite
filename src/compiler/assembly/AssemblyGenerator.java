@@ -188,37 +188,37 @@ public class AssemblyGenerator {
             case "EQU":
                 stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
-                stringBuilder.append("    setne [").append(destination).append("]\n");
+                stringBuilder.append("    sete [").append(destination).append("]\n");
                 break;
 
             case "NOTEQU":
                 stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
-                stringBuilder.append("    sete [").append(destination).append("]\n");
+                stringBuilder.append("    setne [").append(destination).append("]\n");
                 break;
 
             case "LT":
                 stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
-                stringBuilder.append("    setnl [").append(destination).append("]\n");
+                stringBuilder.append("    setl [").append(destination).append("]\n");
                 break;
 
             case "LTEQU":
                 stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
-                stringBuilder.append("    setnle [").append(destination).append("]\n");
+                stringBuilder.append("    setle [").append(destination).append("]\n");
                 break;
 
             case "GT":
                 stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
-                stringBuilder.append("    setng [").append(destination).append("]\n");
+                stringBuilder.append("    setg [").append(destination).append("]\n");
                 break;
 
             case "GTEQU":
                 stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
-                stringBuilder.append("    setnge [").append(destination).append("]\n");
+                stringBuilder.append("    setge [").append(destination).append("]\n");
                 break;
 
             case "PLUS":

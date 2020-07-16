@@ -1,0 +1,11 @@
+SKIP |  |  | fun#main
+COPY | t#1 |  | num1
+COPY | t#2 |  | num2
+SKIP |  |  | loop_start_1
+LTEQU | num1 | t#3 | t#4
+IFGOTO | t#4 |  | loop_end_1
+PRINTINT | t#5 | num1 | 
+PLUS | num1 | t#6 | t#7
+COPY | t#7 |  | num1
+GOTO |  |  | loop_start_1
+SKIP |  |  | loop_end_1
