@@ -117,7 +117,7 @@ public class SymbolStatment extends SymbolBase {
 
         if (bool2.getSubtype() == Subtype.STRING)
             Output.writeError("Error semántico en posición " + line + ":" + column +
-                    " - No se permite hacer print con 2 strings " + bool.getSubtype());
+                    " - La función print() no admite 2 strings. Se ha encontrado: " + bool.getSubtype() + " - "  + bool.getSubtype());
 
         String instruction;
 
