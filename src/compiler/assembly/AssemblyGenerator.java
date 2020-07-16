@@ -72,11 +72,31 @@ public class AssemblyGenerator {
 
         //Declarar todas las variables excepto las de tipo String sin inicializar
         variableTable.forEach((id, variable) -> {
-            if (variable.getSubtype() == Subtype.STRING && variable.getValue() != null)
-                stringBuilder.append("    ").append(id).append(" db " + variable.getValue() + ", 10, 0\n");
+            if (variable.getValue() == null)
+                return;
 
-            if (variable.getSubtype() != Subtype.STRING)
+            if (variable.getSubtype() == Subtype.STRING)
+                stringBuilder.append("    ").append(id).append(" db " + variable.getValue() + ", 10, 0\n");
+            else if (variable.getSubtype() == Subtype.BOOLEAN)
+                //Booleanos: true = -1, false = 0
+                if (variable.getValue().equals("true"))
+                    stringBuilder.append("    ").append(id).append(" dd -1\n");
+                else
+                    stringBuilder.append("    ").append(id).append(" dd 0\n");
+            else if (variable.getSubtype() == Subtype.NONE)
                 stringBuilder.append("    ").append(id).append(" dd 0\n");
+            else {
+                //Por descarte es de tipo entero
+
+                //Comprobar literales numéricos dentro del margen de valores máximos y mínimos permitidos
+                if (Long.parseLong(variable.getValue()) > Integer.MAX_VALUE)
+                    stringBuilder.append("    ").append(id).append(" dd ").append(Integer.MAX_VALUE).append("\n");
+                else if (Long.parseLong(variable.getValue()) < Integer.MIN_VALUE)
+                    stringBuilder.append("    ").append(id).append(" dd ").append(Integer.MIN_VALUE).append("\n");
+                else
+                    stringBuilder.append("    ").append(id).append(" dd ").append(variable.getValue()).append("\n");
+            }
+
         });
 
         //Código
@@ -123,33 +143,6 @@ public class AssemblyGenerator {
                     break;
 
                 stringBuilder.append("    ").append(destination).append(": nop\n");
-                break;
-
-            case "COPY_LIT":
-                //Si es un String literal se ignora, porque ya se inicializa en memoria
-                if (operand1.startsWith("\"")) {
-                    stringBuilder.append("    ; Copy de String literal se ignora, ya está en memoria").append("\n");
-                    break;
-                }
-
-                //Comprobar boolean, si es false 0 sino -1
-                if (operand1.equals("true"))
-                    operand1 = "-1";
-                else if (operand1.equals("false"))
-                    operand1 = "0";
-
-                //TODO PROBAR nulls, se copia un valor 0
-                if (operand1.equals("null"))
-                    operand1 = "0";
-
-                //Comprobar literales numéricos dentro del margen de valores máximos y mínimos permitidos
-                if (Long.parseLong(operand1) > Integer.MAX_VALUE)
-                    operand1 = String.valueOf(Integer.MAX_VALUE);
-                else if (Long.parseLong(operand1) < Integer.MIN_VALUE)
-                    operand1 = String.valueOf(Integer.MIN_VALUE);
-
-                stringBuilder.append("    mov eax, ").append(operand1).append("\n");
-                stringBuilder.append("    mov [").append(destination).append("], eax\n");
                 break;
 
             case "COPY":
