@@ -43,7 +43,7 @@ public class AssemblyGenerator {
         stringBuilder.append(";   sudo apt install build-essential gcc-multilib\n");
         stringBuilder.append(";\n");
         stringBuilder.append("; Comando para compilar:\n");
-        stringBuilder.append(";   nasm -felf64 " + FILENAME + ".asm && gcc -m32 " + FILENAME + ".o -o " + FILENAME + "\n");
+        stringBuilder.append(";   nasm -f elf " + FILENAME + ".asm && gcc -m32 " + FILENAME + ".o -o " + FILENAME + "\n");
         stringBuilder.append(";\n");
         stringBuilder.append("; Comando para ejecutar:\n");
         stringBuilder.append(";   ./" + FILENAME + "\n");
@@ -178,6 +178,7 @@ public class AssemblyGenerator {
                 stringBuilder.append("    jmp ").append(destination).append("\n");
                 break;
 
+                //TODO Está dando fallos al copiar con variables de tipo String como destino
             case "COPY":
                 //Copia entre dos variables (Dos direcciones de memoria)
                 stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
