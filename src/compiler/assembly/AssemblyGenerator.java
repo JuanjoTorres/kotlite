@@ -156,10 +156,10 @@ public class AssemblyGenerator {
 
             case "PRINTBOOL":
             case "PRINTINT":
-                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
-                stringBuilder.append("    push eax\n");
                 stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
                 stringBuilder.append("    push ebx\n");
+                stringBuilder.append("    mov eax, ").append(operand1).append("\n");
+                stringBuilder.append("    push eax\n");
                 stringBuilder.append("    call printf\n");
                 stringBuilder.append("    pop eax\n");
                 stringBuilder.append("    pop ebx\n");
