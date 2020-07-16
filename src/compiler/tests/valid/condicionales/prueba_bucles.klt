@@ -1,0 +1,12 @@
+fun main(): None {
+
+    var mensaje: String = "";
+    var temp : Int = 5;
+
+    if (temp <= 15) {
+        mensaje = "Hace frío";
+    } else {
+        mensaje = "Hace calor";
+    }
+
+}
