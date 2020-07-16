@@ -101,22 +101,6 @@ section .text
         ; Op1: t2 Op2:  Dest: haceSol
         mov eax, [t2]
         mov [haceSol], eax
-        ¡
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-iiiiiiiiiiiiiiiiiiiiiiiiiii kkkkkkkkkkkkkkkkkkkkkkkkkk
 
 
         mov ebx, 0 ; INSTRUCCIONES PARA ACABAR PROGRAMA
