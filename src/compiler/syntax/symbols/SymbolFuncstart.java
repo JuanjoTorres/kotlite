@@ -18,7 +18,9 @@ public class SymbolFuncstart extends SymbolBase {
         procedureTable.put(funId, procedure);
 
         //Añadir código de tres direcciones con skip y la etiqueta
-        generator.addThreeAddressCode("SKIP", "", "", procedure.getStartLabel());
+        // ignorando la función main
+        if (!procedure.getStartLabel().equals("fun#main"))
+            generator.addThreeAddressCode("SKIP", "", "", procedure.getStartLabel());
 
     }
 

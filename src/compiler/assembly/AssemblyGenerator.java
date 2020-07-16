@@ -138,10 +138,6 @@ public class AssemblyGenerator {
 
         switch (operation) {
             case "SKIP":
-                //Ignorar main
-                if (destination.equals("fun#main"))
-                    break;
-
                 stringBuilder.append("    ").append(destination).append(": nop\n");
                 break;
 
