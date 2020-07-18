@@ -18,10 +18,6 @@ public class VariableTable {
         }
     }
 
-    public void close() {
-        //TODO Cerrar table HTML con Output
-    }
-
     public Variable get(String key) {
         return table.get(key);
     }

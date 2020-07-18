@@ -77,8 +77,6 @@ public class SymbolFactor extends SymbolBase {
         variable.setType(Type.VAR);
         variable.setSubtype(subtype);
 
-        //TODO Dar valor, hay que modificar la clase Variable
-
         //Meter en tabla de variables
         variableTable.put(variable.getId(), variable);
     }

@@ -38,7 +38,7 @@ public class AssemblyGenerator {
         //TODO Mirar enlace: https://www.devdungeon.com/content/hello-world-nasm-assembler
 
         //Escribir cabecera del fichero
-        stringBuilder.append("; ------------------------------------\n");
+        stringBuilder.append("; ----------------------------------------------------\n");
         stringBuilder.append("; Código ensamblador en NASM para Linux 32 bits (i386)\n");
         stringBuilder.append(";\n");
         stringBuilder.append("; Requisitos en Ubuntu 18.04:\n");
@@ -49,7 +49,7 @@ public class AssemblyGenerator {
         stringBuilder.append(";\n");
         stringBuilder.append("; Comando para ejecutar:\n");
         stringBuilder.append(";   ./" + FILENAME + "\n");
-        stringBuilder.append(";\n");
+        stringBuilder.append("; ----------------------------------------------------\n");
 
         //Etiqueta de inicio
         stringBuilder.append("global main\n\n");

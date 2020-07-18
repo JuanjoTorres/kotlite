@@ -36,8 +36,6 @@ public class SymbolLargsdec extends SymbolBase {
             Output.writeError("Error semántico en posición " + line + ":" + column + " - El ID " + id.getName() +
                     " ya se encuentra en la tabla de símbolos en el ámbito actual");
         else
-            //TODO Hay que meterlos en la tabla de variables ¿?
-            //TODO ¿Con nueva variable? ¿Que se mete en ella?
             variableTable.put(symbol.getId(), new Variable(generator.generateVariable()));
     }
 
@@ -59,7 +57,6 @@ public class SymbolLargsdec extends SymbolBase {
             Output.writeError("Error semántico en posición " + line + ":" + column + " - El ID " + id.getName() +
                     " ya se encuentra en la tabla de símbolos en el ámbito actual");
         else
-            //TODO Hay que meterlos en la tabla de variables ¿?
             variableTable.put(symbol.getId(), new Variable(generator.generateVariable()));
     }
 
