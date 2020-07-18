@@ -20,6 +20,8 @@ public class AssemblyGenerator {
     private HashMap<String, Variable> variableTable;
     private HashMap<String, Procedure> procedureTable;
 
+    private boolean gotoMain = false;
+
     /**
      * Constructor sin parámetros
      */
@@ -69,13 +71,13 @@ public class AssemblyGenerator {
 
         //Declarar todas las variables excepto las de tipo String sin inicializar
         variableTable.forEach((id, variable) -> {
-            System.out.println(variable.getId() + " valor: " + variable.getValue());
+
             if (variable.getSubtype() == Subtype.STRING && variable.getValue() == null)
                 return;
 
-            if (variable.getSubtype() == Subtype.STRING)
+            if (variable.getSubtype() == Subtype.STRING) {
                 stringBuilder.append("    ").append(id).append(" db " + variable.getValue() + ", 10, 0\n");
-            else if (variable.getSubtype() == Subtype.BOOLEAN)
+            } else if (variable.getSubtype() == Subtype.BOOLEAN) {
                 //Booleanos: true = 1, false = 0
 
                 //Si no está inicializado o es falso -> 0, sio es true -> 1
@@ -83,16 +85,17 @@ public class AssemblyGenerator {
                     stringBuilder.append("    ").append(id).append(" dd 0\n");
                 else
                     stringBuilder.append("    ").append(id).append(" dd 1\n");
-            else if (variable.getSubtype() == Subtype.NONE)
+
+            } else if (variable.getSubtype() == Subtype.NONE) {
                 stringBuilder.append("    ").append(id).append(" dd 0\n");
-            else {
+            } else {
                 //Por descarte es de tipo entero
 
                 //Si no tiene valor, inicializar en 0
                 if (variable.getValue() == null)
                     stringBuilder.append("    ").append(id).append(" dd 0").append("\n");
 
-                //Comprobar literales numéricos dentro del margen de valores máximos y mínimos permitidos
+                    //Comprobar literales numéricos dentro del margen de valores máximos y mínimos permitidos
                 else if (Long.parseLong(variable.getValue()) > Integer.MAX_VALUE)
                     stringBuilder.append("    ").append(id).append(" dd ").append(Integer.MAX_VALUE).append("\n");
                 else if (Long.parseLong(variable.getValue()) < Integer.MIN_VALUE)
@@ -106,6 +109,7 @@ public class AssemblyGenerator {
 
         //Código
         stringBuilder.append("\nsection .text\n\n");
+        stringBuilder.append("main:\n");
 
         //Escribir cada instrucción
         for (ThreeAddressCode tAC : threeAddressCodes) {
@@ -142,10 +146,13 @@ public class AssemblyGenerator {
 
         switch (operation) {
             case "SKIP":
-                if (destination.equals("fun#main"))
-                    stringBuilder.append("main:\n");
-                else
-                    stringBuilder.append(destination).append(": nop\n");
+                //Antes del skip de la primera función hay que hacer un jump a nuestro función inicial
+                if (!gotoMain) {
+                    stringBuilder.append("    jmp fun#main").append("\n");
+                    gotoMain = true;
+                }
+
+                stringBuilder.append(destination).append(": nop\n");
                 break;
 
             case "CALL":
@@ -178,7 +185,7 @@ public class AssemblyGenerator {
                 stringBuilder.append("    jmp ").append(destination).append("\n");
                 break;
 
-                //TODO Está dando fallos al copiar con variables de tipo String como destino
+            //TODO Está dando fallos al copiar con variables de tipo String como destino
             case "COPY":
                 //Copia entre dos variables (Dos direcciones de memoria)
                 stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
