@@ -242,7 +242,7 @@ public class AssemblyGenerator {
 
             case "AND":
                 stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
-                stringBuilder.append("    and eax, [").append(destination).append("]\n");
+                stringBuilder.append("    and eax, [").append(operand2).append("]\n");
                 stringBuilder.append("    setnz [").append(destination).append("]\n");
                 break;
 

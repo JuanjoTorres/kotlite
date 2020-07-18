@@ -3,14 +3,14 @@ val falso: Boolean = false;
 
 fun main (): None {
 
-    print("Not verdadero: ", !true);
-    print("Not falso: ", !false);
-    print("OR true y true: ", true or false);
-    print("OR true y false: ", true or false);
-    print("OR false y false: ", true or false);
-    print("AND true y true: ", true and false);
-    print("AND true y false: ", true and false);
-    print("AND false y false: ", true and false);
+    print("Not verdadero: %d", !true);
+    print("Not falso: %d", !false);
+    print("OR true y true: %d", true or true);
+    print("OR true y false: %d", true or false);
+    print("OR false y false: %d", false or false);
+    print("AND true y true: %d", true and true);
+    print("AND true y false: %d", true and false);
+    print("AND false y false: %d", false and false);
 
     if (!falso) {
         print("Not falso es true");
