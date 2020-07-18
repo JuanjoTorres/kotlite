@@ -1,7 +1,16 @@
 var globalA: Boolean = true;
+val globalB: Boolean = false;
 
 fun main (): None {
-    print("El valor es %d", globalA);
-    globalA = !globalA;
-    print("El valor es %d", globalA);
+    if (!!!globalB) {
+        print("He entrado dentro del condicional OR");
+    } else {
+        print("No he entrado dentro del condicional OR");
+    }
+
+    if (globalB or (globalA and globalB)) {
+        print("He entrado dentro del condicional AND");
+    } else {
+        print("No he entrado dentro del condicional AND");
+    }
 }
