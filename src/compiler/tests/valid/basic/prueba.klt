@@ -1,12 +1,13 @@
 var globalA: Int;
-var globalB: Int;
+var globalB: Int = 2;
 var globalC: Int;
 
 fun sumar (num1: Int; num2: Int): Int {
 
+    globalB = 3;
     var res: Int;
     res = num1 + num2;
-    return res;
+    return 2 + 2;
 
 }
 

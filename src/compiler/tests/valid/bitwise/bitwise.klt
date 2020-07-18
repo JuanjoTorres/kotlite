@@ -1,0 +1,7 @@
+var globalA: Boolean = true;
+
+fun main (): None {
+    print("El valor es %d", globalA);
+    globalA = !globalA;
+    print("El valor es %d", globalA);
+}

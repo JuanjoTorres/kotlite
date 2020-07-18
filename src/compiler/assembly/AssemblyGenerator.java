@@ -221,6 +221,25 @@ public class AssemblyGenerator {
                 stringBuilder.append("    setge [").append(destination).append("]\n");
                 break;
 
+            case "NOT":
+                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                stringBuilder.append("    test eax, eax\n");
+                stringBuilder.append("    setz [").append(destination).append("]\n");
+
+                break;
+
+            case "OR":
+                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                stringBuilder.append("    or eax, [").append(operand2).append("]\n");
+                stringBuilder.append("    mov [").append(destination).append("], eax\n");
+                break;
+
+            case "AND":
+                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                stringBuilder.append("    mov [").append(destination).append("], eax\n");
+                stringBuilder.append("    and ").append(destination).append("\n");
+                break;
+
             case "PLUS":
                 stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");

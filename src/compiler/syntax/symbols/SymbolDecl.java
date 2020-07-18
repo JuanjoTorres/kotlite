@@ -61,7 +61,10 @@ public class SymbolDecl extends SymbolBase {
         variableTable.put(variable.getId(), variable);
 
         Variable boolVar = bool.getVariable();
-
+        if(boolVar == null)
+            System.out.println("boolvar es nulo");
+        if(id == null)
+            System.out.println("boolvar es nulo");
         //Añadir código de tres direcciones con la operacion
         generator.addThreeAddressCode("COPY", boolVar.getId(), "", id.getName());
     }

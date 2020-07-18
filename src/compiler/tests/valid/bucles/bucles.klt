@@ -16,6 +16,7 @@ fun main (): None {
     }
 
     if (num2 <= 10) {
+
         print("Entro dentro del menorigualque");
     }
 
