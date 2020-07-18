@@ -1,0 +1,7 @@
+fun escribir (): None {
+    print("Estoy en la subrutina");
+}
+
+fun main (): None {
+    escribir();
+}
