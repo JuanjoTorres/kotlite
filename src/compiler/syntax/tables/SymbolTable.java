@@ -36,9 +36,6 @@ public class SymbolTable {
         //Inicializar fichero de tabla de simbolos
         Output.initSymbolTable();
 
-        //Inicializar fichero de tabla de variable
-        Output.initVariableTable();
-
         //Inicializar fichero de codigo de tres direcciones
         Output.truncateThreeAddressCode();
 

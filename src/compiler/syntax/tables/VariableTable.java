@@ -12,9 +12,6 @@ public class VariableTable {
         if (!table.containsKey(key)) {
             //Insertar variable en la tabla de variables
             table.put(key, variable);
-
-            //Escribir variable en el fichero de la tabla de variables
-            Output.writeVariable(key, variable);
         }
     }
 

@@ -16,9 +16,6 @@ public class ProcedureTable {
         // Insertar procedimiento en la tabla de procedimientos
         table.put(key, procedure);
 
-        // Escribir procedimiento en el fichero de la tabla de procedimientos
-        Output.writeProcedure(key, procedure);
-
         return true;
     }
 

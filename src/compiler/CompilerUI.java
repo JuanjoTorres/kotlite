@@ -7,8 +7,7 @@ import compiler.output.Output;
 import compiler.syntax.Parser;
 import compiler.syntax.ParserSym;
 import compiler.syntax.symbols.SymbolBase;
-import compiler.syntax.tables.ProcedureTable;
-import compiler.syntax.tables.VariableTable;
+import compiler.syntax.tables.*;
 import java_cup.runtime.ComplexSymbolFactory;
 import java_cup.runtime.Symbol;
 
@@ -20,6 +19,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 
 public class CompilerUI extends JFrame {
 
@@ -122,6 +122,19 @@ public class CompilerUI extends JFrame {
         Output.writeInfo("Generando código de tres direcciones");
 
         Output.writeThreeAddressCodes(Generator.getThreeAddressCodes());
+
+
+        //Imprimir tabla de procedimientos
+        HashMap<String, Procedure> procedureTable = ProcedureTable.getTable();
+        Output.initProcedureTable();
+        procedureTable.forEach(Output::writeProcedure);
+        Output.closeProcedureTable();
+
+        //Imprimir tabla de variables
+        HashMap<String, Variable> variableTable = VariableTable.getTable();
+        Output.initVariableTable();
+        variableTable.forEach(Output::writeVariable);
+        Output.closeVariableTable();
 
         //TODO Cargar código de tres direcciones en la interfaz
 
