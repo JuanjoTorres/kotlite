@@ -1,3 +1,7 @@
 fun main (): None {
-    print("Hola mundo!");
+
+    print("Adios Mundo!");  // Funciona
+
+    var mensajes : String = "Hola Mundo!"; // No funciona
+    print(mensajes);
 }
