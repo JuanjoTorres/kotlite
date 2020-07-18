@@ -189,7 +189,9 @@ public class AssemblyGenerator {
                 break;
 
             case "RTN":
-                stringBuilder.append("    ret 0\n");
+                procedure = procedureTable.get(operand1);
+
+                stringBuilder.append("    ret ").append(procedure.getNumParams() * 4).append("\n");
                 break;
 
             case "IFGOTO":

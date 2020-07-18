@@ -1,6 +1,5 @@
 package compiler.syntax.symbols;
 
-import compiler.intermediate.Generator;
 import compiler.syntax.tables.Subtype;
 
 import java.io.PrintWriter;
@@ -18,9 +17,8 @@ public class SymbolRtnpart extends SymbolBase {
         String functionLabel = generator.popFunctionLabel();
 
         //Escibir C3D con operación RTN
-        generator.addThreeAddressCode("RTN", functionLabel, "", "");
-
-        generator.pushFunctionLabel(functionLabel);
+        if (!functionLabel.equals("main"))
+            generator.addThreeAddressCode("RTN", functionLabel, "", "");
     }
 
     // [FORMA] Rtnpart ::= RETURN Factor
@@ -34,8 +32,6 @@ public class SymbolRtnpart extends SymbolBase {
 
         //Escibir C3D con operación RTN
         generator.addThreeAddressCode("RTN", functionLabel, "", "");
-
-        generator.pushFunctionLabel(functionLabel);
     }
 
     public Subtype getSubtype() {

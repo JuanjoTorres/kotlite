@@ -15,8 +15,10 @@ public class SymbolId extends SymbolBase {
 
         this.id = id;
 
+        System.out.println("ID: " + id);
+
         //Hacer push en la pila de etiquetas de funciones
-        generator.pushFunctionLabel(id);
+        generator.pushIdLabel(id);
     }
 
     public Variable getVariable() {

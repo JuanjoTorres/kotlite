@@ -11,6 +11,7 @@ public class Generator {
     private static int condTrueNumber = 0;
     private static int condFalseNumber = 0;
 
+    private Stack<String> idLabelStack = new Stack<>();
     private Stack<String> functionLabelStack = new Stack<>();
 
     private Stack<String> condFalseStack = new Stack<>();
@@ -35,6 +36,14 @@ public class Generator {
 
     public void pushFunctionLabel(String label) {
         functionLabelStack.push(label);
+    }
+
+    public String popIdLabel() {
+        return idLabelStack.pop();
+    }
+
+    public void pushIdLabel(String label) {
+        idLabelStack.push(label);
     }
 
     public String popCondTrueLabel() {
