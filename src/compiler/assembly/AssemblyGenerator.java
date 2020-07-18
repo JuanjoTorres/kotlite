@@ -16,6 +16,7 @@ public class AssemblyGenerator {
     private static final String FILENAME = "assembly_output";
     private static final String FILE_EXTENSION = ".asm";
     private static final String STRING_MAX_SIZE = "512";
+    private static final int VARIABLE_SIZE = 4;
 
     private HashMap<String, Variable> variableTable;
     private HashMap<String, Procedure> procedureTable;
@@ -103,8 +104,6 @@ public class AssemblyGenerator {
                 else
                     stringBuilder.append("    ").append(id).append(" dd ").append(variable.getValue()).append("\n");
             }
-
-
         });
 
         //Código
@@ -129,7 +128,6 @@ public class AssemblyGenerator {
         }
     }
 
-
     private void writeOp(StringBuilder stringBuilder, ThreeAddressCode tAC) {
 
         String operation = tAC.getOperation();
@@ -144,6 +142,8 @@ public class AssemblyGenerator {
         stringBuilder.append("    Op2: ").append(operand2);
         stringBuilder.append("    Dest: ").append(destination).append("\n");
 
+        Procedure procedure;
+
         switch (operation) {
             case "SKIP":
                 //Antes del skip de la primera función hay que hacer un jump a nuestro función inicial
@@ -154,24 +154,42 @@ public class AssemblyGenerator {
 
                 stringBuilder.append(destination).append(": nop\n");
                 break;
+            case "PMB":
+
+                procedure = procedureTable.get(destination.split("#")[1]);
+
+                int numParams = procedure.getNumParams();
+
+                for (int i = 0; i < numParams; i++) {
+                    stringBuilder.append("    mov eax, [esp+").append(4 + (numParams * 4) - (i * 4)).append("]\n");
+                    stringBuilder.append("    mov [").append(procedure.getParams().get(i).getId()).append("], eax\n");
+                }
+                break;
+
+            case "PARAM":
+                stringBuilder.append("    mov eax, [").append(destination).append("]\n");
+                stringBuilder.append("    push eax\n");
+                break;
 
             case "CALL":
-                stringBuilder.append("    call ").append(destination).append("\n");
-                //TODO Calcular espacio
-                stringBuilder.append("    mov ebx, 8\n");
-                stringBuilder.append("    add ebx, esp\n");
-                //TODO Calcular posición de varible de retorno en la pila
-                stringBuilder.append("    mov eax, [esp+8]\n");
-                stringBuilder.append("    mov [" + destination + "], eax\n");
+                //TODO Mirar el tipo de retorno de la función, si es NONE no hace falta reservar espacio paara el return
+
+                procedure = procedureTable.get(operand1.split("#")[1]);
+
+                int numArgs = procedure.getNumParams();
+
+                // Reservamos 4 bytes para el resultado que devolvemos
+                stringBuilder.append("    sub esp, 4\n");
+                stringBuilder.append("    call ").append(operand1).append("\n");
+                // Liberamos el espacio utilizado por los parámetros de entrada
+                if (numArgs > 0)
+                    stringBuilder.append("    add esp, ").append(numArgs * VARIABLE_SIZE).append("\n");
+                // Recuperamos el resultado devuelto sobre el registro eax
+                stringBuilder.append("    pop eax\n");
                 break;
 
             case "RTN":
-                //TODO Falta mover la variable de retorno a la pila
-                stringBuilder.append("    mov esp, ebp\n");
-                stringBuilder.append("    pop ebp\n");
-                stringBuilder.append("    mov edi, [4 + DISP]\n");
-                stringBuilder.append("    pop edi\n");
-                stringBuilder.append("    ret\n");
+                stringBuilder.append("    ret 0\n");
                 break;
 
             case "IFGOTO":
@@ -276,7 +294,7 @@ public class AssemblyGenerator {
 
             case "PRINT":
                 //Si es una variable inicializada, pasar valor, sino referencia
-                if (variableTable.get(operand1).getValue() != null)
+                if (variableTable.get(operand1) != null && variableTable.get(operand1).getValue() != null)
                     stringBuilder.append("    mov eax, ").append(operand1).append("\n");
                 else
                     stringBuilder.append("    mov eax, [").append(operand1).append("]\n");

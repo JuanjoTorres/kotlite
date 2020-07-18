@@ -7,6 +7,7 @@ import compiler.syntax.tables.Symbol;
 import compiler.syntax.tables.Type;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 public class SymbolFunction extends SymbolBase {
 
@@ -60,10 +61,14 @@ public class SymbolFunction extends SymbolBase {
         Procedure procedure = id.getProcedure();
 
         //Poner número de parámetros
-        if (argsdec != null)
+        if (argsdec != null) {
             procedure.setNumParams(argsdec.getArgs().size());
-        else
+            procedure.setParams(argsdec.getArgs());
+            System.out.println("La funcion " + id.getName() + " tiene " + argsdec.getArgs().size() + " argumentos");
+        } else {
+            System.out.println("La funcion " + id.getName() + " no tiene argumentos");
             procedure.setNumParams(0);
+        }
     }
 
     @Override

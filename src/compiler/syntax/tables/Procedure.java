@@ -1,8 +1,12 @@
 package compiler.syntax.tables;
 
+import java.util.ArrayList;
+
 public class Procedure {
 
     private static int NUM_PROC = 0;
+
+    private ArrayList<Variable> params = new ArrayList<>();
 
     private String startLabel;
     private int numParams;
@@ -44,5 +48,16 @@ public class Procedure {
         return "fun#" + funName;
     }
 
+    public ArrayList<Variable> getParams() {
+        return params;
+    }
 
+    public void setParams(ArrayList<Symbol> args) {
+        for (Symbol symbol : args) {
+            Variable variable = new Variable(symbol.getId());
+            variable.setType(Type.ARG);
+            variable.setSubtype(symbol.getSubtype());
+            params.add(variable);
+        }
+    }
 }

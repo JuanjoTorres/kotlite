@@ -19,6 +19,7 @@ public class SymbolFuncstart extends SymbolBase {
 
         //Añadir código de tres direcciones con skip y la etiqueta
         generator.addThreeAddressCode("SKIP", "", "", procedure.getStartLabel());
+        generator.addThreeAddressCode("PMB", "", "", procedure.getStartLabel());
 
     }
 

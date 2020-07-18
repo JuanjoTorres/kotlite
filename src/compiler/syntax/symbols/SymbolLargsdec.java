@@ -36,7 +36,7 @@ public class SymbolLargsdec extends SymbolBase {
             Output.writeError("Error semántico en posición " + line + ":" + column + " - El ID " + id.getName() +
                     " ya se encuentra en la tabla de símbolos en el ámbito actual");
         else
-            variableTable.put(symbol.getId(), new Variable(generator.generateVariable()));
+            variableTable.put(id.getName(), new Variable(id.getName()));
     }
 
     // [FORMA] Largsdec ::= Largsdec SEMICOLON Id COLON Basic
@@ -57,7 +57,7 @@ public class SymbolLargsdec extends SymbolBase {
             Output.writeError("Error semántico en posición " + line + ":" + column + " - El ID " + id.getName() +
                     " ya se encuentra en la tabla de símbolos en el ámbito actual");
         else
-            variableTable.put(symbol.getId(), new Variable(generator.generateVariable()));
+            variableTable.put(id.getName(), new Variable(id.getName()));
     }
 
     public void setArgs(ArrayList<Symbol> args) {

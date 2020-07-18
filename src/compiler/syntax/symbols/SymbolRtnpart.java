@@ -1,5 +1,6 @@
 package compiler.syntax.symbols;
 
+import compiler.intermediate.Generator;
 import compiler.syntax.tables.Subtype;
 
 import java.io.PrintWriter;
@@ -13,6 +14,13 @@ public class SymbolRtnpart extends SymbolBase {
     // [FORMA] Rtnpart ::= .
     public SymbolRtnpart() {
         super("Rtnpart", 0);
+
+        String functionLabel = generator.popFunctionLabel();
+
+        //Escibir C3D con operación RTN
+        generator.addThreeAddressCode("RTN", functionLabel, "", "");
+
+        generator.pushFunctionLabel(functionLabel);
     }
 
     // [FORMA] Rtnpart ::= RETURN Factor
@@ -22,8 +30,12 @@ public class SymbolRtnpart extends SymbolBase {
         this.factor = factor;
         this.subtype = factor.getSubtype();
 
+        String functionLabel = generator.popFunctionLabel();
+
         //Escibir C3D con operación RTN
-        generator.addThreeAddressCode("RTN", factor.getVariable().getId(), "", "");
+        generator.addThreeAddressCode("RTN", functionLabel, "", "");
+
+        generator.pushFunctionLabel(functionLabel);
     }
 
     public Subtype getSubtype() {
