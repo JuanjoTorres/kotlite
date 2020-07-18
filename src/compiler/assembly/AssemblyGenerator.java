@@ -208,7 +208,10 @@ public class AssemblyGenerator {
             //TODO Está dando fallos al copiar con variables de tipo String como destino
             case "COPY":
                 //Copia entre dos variables (Dos direcciones de memoria)
-                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                if (!variableTable.get(operand1).getId().contains("#"))
+                    stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                else
+                    stringBuilder.append("    mov eax, ").append(operand1).append("\n");
                 stringBuilder.append("    mov [").append(destination).append("], eax\n");
                 break;
 
