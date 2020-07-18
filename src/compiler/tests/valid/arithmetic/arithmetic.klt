@@ -1,0 +1,18 @@
+var globalA: Int;
+var globalB: Int = 2;
+var globalC: Int;
+
+fun main (): None {
+    var comentario: String;
+
+    globalA = 1;
+    globalB = 4;
+    globalC = 4 - 5;
+    print("La resta es %d", globalC);
+    globalC = 4 / 5;
+    print("La division es %d", globalC);
+    globalC = 20 / 5;
+    print("La division es %d", globalC);
+    globalC = 4 * 5;
+    print("La multiplicacion es %d", globalC);
+}
