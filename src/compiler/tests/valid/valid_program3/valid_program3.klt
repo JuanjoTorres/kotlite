@@ -59,9 +59,6 @@ fun main(): None {
         }
     }
 
-    if (conductor == "Mi madre") {
-        print("Mi madre me cuida mucho");
-    }
     comprobarTemperatura(40);
     print("El conductor es:");
     print(conductor);

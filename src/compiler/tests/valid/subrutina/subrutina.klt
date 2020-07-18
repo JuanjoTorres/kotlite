@@ -1,7 +1,8 @@
-fun escribir (): None {
-    print("Estoy en la subrutina");
+fun escribir (p1: Int; p2: Int): None {
+    print("Parametro 1: %d", p1);
+    print("Parametro 2: %d", p2);
 }
 
 fun main (): None {
-    escribir();
+    escribir(1, 2);
 }
