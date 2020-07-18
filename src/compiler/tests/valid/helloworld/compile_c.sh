@@ -1,1 +1,0 @@
-nasm -f elf -l hello_c.lst hello_c.asm && gcc -m32 hello_c.o -o hello_c.out

@@ -1,4 +1,5 @@
-SKIP |  |  | fun_main_2
-COPY | "Hola mundo!" |  | t1
-PARAM |  |  | t1
-CALL | fun_print_1 |  | t2
+SKIP |  |  | fun#main
+PMB |  |  | fun#main
+COPY | t#1 |  | mensajes
+PRINT | t#2 |  | 
+PRINT | mensajes |  | 

@@ -1,12 +1,12 @@
 
-fun get5(): Int {
+fun get(num : Int): Int {
     return 5;
 }
 
 fun main (): None {
     var numero: Int;
 
-    numero = get5();
+    numero = get(5);
 
     print("El numero es: ", numero);
 }
