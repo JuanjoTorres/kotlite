@@ -1,16 +1,26 @@
-var globalA: Boolean = true;
-val globalB: Boolean = false;
+var verdadero: Boolean = true;
+val falso: Boolean = false;
 
 fun main (): None {
-    if (!!!globalB) {
-        print("He entrado dentro del condicional OR");
+
+    print("Not verdadero: ", !true);
+    print("Not falso: ", !false);
+    print("OR true y true: ", true or false);
+    print("OR true y false: ", true or false);
+    print("OR false y false: ", true or false);
+    print("AND true y true: ", true and false);
+    print("AND true y false: ", true and false);
+    print("AND false y false: ", true and false);
+
+    if (!falso) {
+        print("Not falso es true");
     } else {
-        print("No he entrado dentro del condicional OR");
+        print("Error, no debería haber entrado aqui");
     }
 
-    if (globalB or (globalA and globalB)) {
-        print("He entrado dentro del condicional AND");
+    if (verdadero and (falso or verdadero)) {
+        print("Verdadero AND (falso OR verdaero) es true");
     } else {
-        print("No he entrado dentro del condicional AND");
+        print("Error 2, no debería haber entrado aqui");
     }
 }
