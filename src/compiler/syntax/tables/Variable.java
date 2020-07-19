@@ -19,21 +19,17 @@ public class Variable {
 
         if (count)
             this.numVariable = ++numVar;
-
-        System.out.println("1 . Declarando variable numero " + numVariable + " ID " + this.id);
     }
 
     public Variable(String id, String parentFunction, boolean count) {
-        if (parentFunction == null)
-            this.id = "global$" + id;
-        else
-            this.id = parentFunction + "$" + id;
+
+        String prefix = (parentFunction == null) ? "global$" : parentFunction;
+
+        this.id = prefix + "$" + id;
         this.parentFunction = parentFunction;
 
         if (count)
             this.numVariable = ++numVar;
-
-        System.out.println("Declarando variable numero " + numVariable + " ID " + this.id);
     }
 
     public int getDeep() {

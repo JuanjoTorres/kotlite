@@ -128,11 +128,6 @@ public class SymbolStatment extends SymbolBase {
         else
             instruction = "PRINT";
 
-        if (bool.getVariable() == null)
-            System.out.println("Bool 1 es nulo");
-        if (bool2.getVariable() == null)
-            System.out.println("Bool 2 es nulo");
-
         // Copiar valor de retorno en la variable del ID
         generator.addThreeAddressCode(instruction, bool.getVariable().getId(), bool2.getVariable().getId(), "");
     }

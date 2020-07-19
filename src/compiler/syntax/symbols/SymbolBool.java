@@ -57,9 +57,6 @@ public class SymbolBool extends SymbolBase {
 
         subtype = relation.getSubtype();
         variable = relation.getVariable();
-
-        if (variable == null)
-            System.out.println("B0ol relation variable es nula");
     }
 
     public Variable getVariable() {

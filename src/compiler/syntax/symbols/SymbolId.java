@@ -1,5 +1,6 @@
 package compiler.syntax.symbols;
 
+import compiler.output.Output;
 import compiler.syntax.tables.Procedure;
 import compiler.syntax.tables.Subtype;
 import compiler.syntax.tables.Variable;
@@ -15,8 +16,6 @@ public class SymbolId extends SymbolBase {
 
         this.id = id;
 
-        System.out.println("ID: " + id);
-
         //Hacer push en la pila de etiquetas de funciones
         generator.pushIdLabel(id);
     }
@@ -24,18 +23,11 @@ public class SymbolId extends SymbolBase {
     public Variable getVariable() {
         Variable variable = variableTable.get(generator.peekFunctionLabel() + "$" + id);
 
-
-        System.out.println("Buscando " + generator.peekFunctionLabel() + "$" + id);
-
-        if (variable == null) {
-            System.out.println("El id buscado es NULO");
-            System.out.println("Buscando " + "global$" + id);
+        if (variable == null)
             variable = variableTable.get("global$" + id);
-        }
 
-        if (variable == null) {
-            System.out.println("El id global buscado es NULO");
-        }
+        if (variable == null)
+            Output.writeError("Error semántico - No se ha encontrado la variable " + id + " en esta ámbito");
 
         return variable;
     }

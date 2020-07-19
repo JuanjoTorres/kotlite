@@ -64,9 +64,7 @@ public class SymbolFunction extends SymbolBase {
         if (argsdec != null) {
             procedure.setNumParams(argsdec.getArgs().size());
             procedure.setParams(argsdec.getArgs());
-            System.out.println("La funcion " + id.getName() + " tiene " + argsdec.getArgs().size() + " argumentos");
         } else {
-            System.out.println("La funcion " + id.getName() + " no tiene argumentos");
             procedure.setNumParams(0);
         }
     }
