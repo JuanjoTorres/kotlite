@@ -38,7 +38,7 @@ public class SymbolTerm extends SymbolBase {
         Variable unaryVar = unary.getVariable();
 
         //Generar variable y meterla en la tabla de variables
-        variable = new Variable(generator.generateVariable());
+        variable = new Variable(generator.generateVariable(), generator.peekFunctionLabel(), true);
         variable.setType(Type.VAR);
         variable.setSubtype(subtype);
         variableTable.put(variable.getId(), variable);

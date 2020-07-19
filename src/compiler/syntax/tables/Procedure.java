@@ -71,7 +71,8 @@ public class Procedure {
 
     public void setParams(ArrayList<Symbol> args) {
         for (Symbol symbol : args) {
-            Variable variable = new Variable(symbol.getId());
+            Variable variable = new Variable(symbol.getId(), startLabel.split("#")[1], false);
+            variable.setSize(4);
             variable.setType(Type.ARG);
             variable.setSubtype(symbol.getSubtype());
             params.add(variable);

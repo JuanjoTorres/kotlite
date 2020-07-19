@@ -45,4 +45,5 @@ CUANDO EL VALOR DE UNA VARIABLE ESTA FUERA DE SU RANGO SE HACE EL MODULO DE ESE 
 LAS VARAIBLES TEMPORALES SE LES ASIGNA DIRECTAMENTE EL VALOR SI ES UN LITERAL NUMERICO O STRING
 
 TODO
-Manejar el control de variables en diferentes ambitos (while, if)
+Falla el condicional con literal if (true)
+Manejar el control de variables en diferentes ambitos (while, if) -> Probar con if y bucles

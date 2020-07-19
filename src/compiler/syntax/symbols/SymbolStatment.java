@@ -28,7 +28,7 @@ public class SymbolStatment extends SymbolBase {
                     " es del tipo subyacente " + id.getSubtype() + " y se le ha asignado un valor del tipo " + bool.getSubtype());
 
         // Copiar valor de retorno en la variable del ID
-        generator.addThreeAddressCode("COPY", bool.getVariable().getId(), "", id.getName());
+        generator.addThreeAddressCode("COPY", bool.getVariable().getId(), "", id.getVariable().getId());
     }
 
     // [FORMA] Statment ::= IF LPAREN Bool RPAREN LBRACKET Decls Statments
@@ -74,7 +74,7 @@ public class SymbolStatment extends SymbolBase {
                     " es del tipo subyacente " + id.getSubtype() + " y se la ha asignado un valor de retorno de función del tipo " + functioncall.getSubtype());
 
         // Copiar valor de retorno en la variable del ID
-        generator.addThreeAddressCode("COPY", functioncall.getVariable().getId(), "", id.getName());
+        generator.addThreeAddressCode("COPY", functioncall.getVariable().getId(), "", id.getVariable().getId());
     }
 
     // [FORMA] Statment ::= Functioncall SEMICOLON
@@ -127,6 +127,11 @@ public class SymbolStatment extends SymbolBase {
             instruction = "PRINTBOOL";
         else
             instruction = "PRINT";
+
+        if (bool.getVariable() == null)
+            System.out.println("Bool 1 es nulo");
+        if (bool2.getVariable() == null)
+            System.out.println("Bool 2 es nulo");
 
         // Copiar valor de retorno en la variable del ID
         generator.addThreeAddressCode(instruction, bool.getVariable().getId(), bool2.getVariable().getId(), "");

@@ -14,9 +14,26 @@ public class Variable {
     private Type type;
     private Subtype subtype;
 
-    public Variable(String id) {
+    public Variable(String id, boolean count) {
         this.id = id;
-        this.numVariable = ++numVar;
+
+        if (count)
+            this.numVariable = ++numVar;
+
+        System.out.println("1 . Declarando variable numero " + numVariable + " ID " + this.id);
+    }
+
+    public Variable(String id, String parentFunction, boolean count) {
+        if (parentFunction == null)
+            this.id = "global$" + id;
+        else
+            this.id = parentFunction + "$" + id;
+        this.parentFunction = parentFunction;
+
+        if (count)
+            this.numVariable = ++numVar;
+
+        System.out.println("Declarando variable numero " + numVariable + " ID " + this.id);
     }
 
     public int getDeep() {

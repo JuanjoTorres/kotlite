@@ -64,9 +64,10 @@ public class SymbolFunctioncall extends SymbolBase {
 
             //Crear variable por cada parametro
             for (int i = 0; i < args.getArgs().size(); i++) {
-                Variable variable = new Variable(args.getArgs().get(i).getId());
+                Variable variable = new Variable(args.getArgs().get(i).getId(), false);
                 variable.setType(Type.ARG);
                 variable.setSubtype(args.getArgs().get(i).getSubtype());
+                variable.setParentFunction(generator.peekFunctionLabel());
                 variableTable.put(variable.getId(), variable);
 
                 //Generar código de tres direcciones
@@ -75,7 +76,7 @@ public class SymbolFunctioncall extends SymbolBase {
         }
 
         //Generar variable y meterla en la tabla de variables
-        variable = new Variable(generator.generateVariable());
+        variable = new Variable(generator.generateVariable(), generator.peekFunctionLabel(), true);
         variable.setType(Type.VAR);
         variable.setSubtype(subtype);
         variableTable.put(variable.getId(), variable);

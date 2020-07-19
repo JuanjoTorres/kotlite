@@ -1,6 +1,7 @@
 package compiler.syntax.symbols;
 
 import compiler.output.Output;
+import compiler.syntax.ParserSym;
 import compiler.syntax.tables.Symbol;
 import compiler.syntax.tables.Type;
 import compiler.syntax.tables.Variable;
@@ -30,17 +31,12 @@ public class SymbolDecl extends SymbolBase {
                     " ya se encuentra en la tabla de símbolos en el ámbito actual");
 
         //Generar variable y meterla en la tabla de variables
-        variable = new Variable(id.getName());
+        variable = new Variable(id.getName(), generator.peekFunctionLabel(), true);
         variable.setSize(4);
         variable.setDeep(symbolTable.getDeep());
-        variable.setType(Type.CONST);
+        variable.setType(type.getType());
         variable.setSubtype(basic.getSubtype());
 
-        // Añadir identificador a la función que la contiene
-        if (generator.peekFunctionLabel() != null)
-            variable.setParentFunction(generator.peekFunctionLabel());
-
-        variableTable.put(variable.getId(), variable);
         variableTable.put(variable.getId(), variable);
     }
 
@@ -63,22 +59,18 @@ public class SymbolDecl extends SymbolBase {
                     " ya se encuentra en la tabla de símbolos en el ámbito actual");
 
         //Generar variable y meterla en la tabla de variables
-        variable = new Variable(id.getName());
+        variable = new Variable(id.getName(), generator.peekFunctionLabel(), true);
         variable.setSize(4);
         variable.setDeep(symbolTable.getDeep());
         variable.setType(Type.VAR);
         variable.setSubtype(basic.getSubtype());
-
-        // Añadir identificador a la función que la contiene
-        if (generator.peekFunctionLabel() != null)
-            variable.setParentFunction(generator.peekFunctionLabel());
 
         variableTable.put(variable.getId(), variable);
 
         Variable boolVar = bool.getVariable();
 
         //Añadir código de tres direcciones con la operacion
-        generator.addThreeAddressCode("COPY", boolVar.getId(), "", id.getName());
+        generator.addThreeAddressCode("COPY", boolVar.getId(), "", variable.getId());
     }
 
     @Override

@@ -22,7 +22,22 @@ public class SymbolId extends SymbolBase {
     }
 
     public Variable getVariable() {
-        return variableTable.get(id);
+        Variable variable = variableTable.get(generator.peekFunctionLabel() + "$" + id);
+
+
+        System.out.println("Buscando " + generator.peekFunctionLabel() + "$" + id);
+
+        if (variable == null) {
+            System.out.println("El id buscado es NULO");
+            System.out.println("Buscando " + "global$" + id);
+            variable = variableTable.get("global$" + id);
+        }
+
+        if (variable == null) {
+            System.out.println("El id global buscado es NULO");
+        }
+
+        return variable;
     }
 
     public Procedure getProcedure() {

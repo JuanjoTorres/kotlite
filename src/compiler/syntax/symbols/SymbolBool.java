@@ -36,9 +36,10 @@ public class SymbolBool extends SymbolBase {
         subtype = Subtype.BOOLEAN;
 
         //Generar variable y meterla en la tabla de variables
-        variable = new Variable(generator.generateVariable());
+        variable = new Variable(generator.generateVariable(), generator.peekFunctionLabel(), true);
         variable.setType(Type.VAR);
         variable.setSubtype(subtype);
+        variable.setDeep(symbolTable.getDeep());
         variableTable.put(variable.getId(), variable);
 
         Variable boolVar = bool.getVariable();
@@ -56,6 +57,9 @@ public class SymbolBool extends SymbolBase {
 
         subtype = relation.getSubtype();
         variable = relation.getVariable();
+
+        if (variable == null)
+            System.out.println("B0ol relation variable es nula");
     }
 
     public Variable getVariable() {

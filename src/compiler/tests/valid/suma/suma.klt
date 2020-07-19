@@ -1,11 +1,12 @@
-var global: Int;
+var numero: Int = 5;
 
 fun sumar (num1: Int; num2: Int): Int {
     return (num1 + num2);
 }
 
 fun main (): None {
-    global = sumar(3, -5);
+    var numero: Int = -5;
+    var resultado: Int;
 
-    print("La suma es %d", global);
+    print("La suma es %d", resultado);
 }

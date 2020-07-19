@@ -36,18 +36,14 @@ public class SymbolLargsdec extends SymbolBase {
             Output.writeError("Error semántico en posición " + line + ":" + column + " - El ID " + id.getName() +
                     " ya se encuentra en la tabla de símbolos en el ámbito actual");
         else {
-            Variable variable = new Variable(id.getName());
+            Variable variable = new Variable(id.getName(), generator.peekFunctionLabel(), true);
 
             variable.setSize(4);
             variable.setType(Type.ARG);
             variable.setSubtype(basic.getSubtype());
             variable.setDeep(symbolTable.getDeep());
 
-            // Añadir identificador a la función que la contiene
-            if (generator.peekFunctionLabel() != null)
-                variable.setParentFunction(generator.peekFunctionLabel());
-
-            variableTable.put(id.getName(), variable);
+            variableTable.put(variable.getId(), variable);
         }
     }
 
@@ -69,18 +65,15 @@ public class SymbolLargsdec extends SymbolBase {
             Output.writeError("Error semántico en posición " + line + ":" + column + " - El ID " + id.getName() +
                     " ya se encuentra en la tabla de símbolos en el ámbito actual");
         else {
-            Variable variable = new Variable(id.getName());
+
+            Variable variable = new Variable(id.getName(), generator.peekFunctionLabel(), true);
 
             variable.setSize(4);
             variable.setType(Type.ARG);
             variable.setSubtype(basic.getSubtype());
             variable.setDeep(symbolTable.getDeep());
 
-            // Añadir identificador a la función que la contiene
-            if (generator.peekFunctionLabel() != null)
-                variable.setParentFunction(generator.peekFunctionLabel());
-
-            variableTable.put(id.getName(), variable);
+            variableTable.put(variable.getId(), variable);
         }
     }
 

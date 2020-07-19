@@ -50,7 +50,7 @@ public class SymbolFactor extends SymbolBase {
         super("Factor", 0);
 
         //Generar variable
-        variable = new Variable(generator.generateVariable());
+        variable = new Variable(generator.generateVariable(), generator.peekFunctionLabel(), true);
 
         switch (symbol) {
             case ParserSym.TRUE:
@@ -103,7 +103,7 @@ public class SymbolFactor extends SymbolBase {
         }
 
         //Generar variable
-        variable = new Variable(generator.generateVariable());
+        variable = new Variable(generator.generateVariable(), generator.peekFunctionLabel(), true);
         variable.setType(Type.VAR);
         variable.setSubtype(subtype);
         variable.setValue(literal);
