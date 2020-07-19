@@ -27,6 +27,7 @@ fun comprobarTemperatura(temp: Int) : String {
 
 fun calcularKel (temp: Int; texto: String) : None {
     temp = temp + 273;
+    print("Kelvin: %d", temp);
     print(texto);
 }
 

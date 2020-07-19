@@ -1,15 +1,15 @@
-; ------------------------------------
+; ----------------------------------------------------
 ; Código ensamblador en NASM para Linux 32 bits (i386)
 ;
 ; Requisitos en Ubuntu 18.04:
 ;   sudo apt install build-essential gcc-multilib
 ;
 ; Comando para compilar:
-;   nasm -felf64 assembly_output.asm && gcc -m32 assembly_output.o -o assembly_output
+;   nasm -f elf assembly_output.asm && gcc -m32 assembly_output.o -o assembly_output
 ;
 ; Comando para ejecutar:
 ;   ./assembly_output
-;
+; ----------------------------------------------------
 global main
 
 extern printf
@@ -22,43 +22,50 @@ section .data
     t#2 dd 0
     t#1 dd 5
     numero dd 0
-    t#3 db "El numero es: ", 10, 0
+    t#3 db "El numero es: %d", 10, 0
 
 section .text
 
+main:
 
     ; ===== ===== ===== ===== =====
     ; Instrucción SKIP
-    ; Op1:     Op2:     Dest: fun#get5
-fun#get5: nop
+    ; Op1:     Op2:     Dest: fun#get
+    jmp fun#main
+fun#get: nop
+
+    ; ===== ===== ===== ===== =====
+    ; Instrucción PMB
+    ; Op1:     Op2:     Dest: fun#get
 
     ; ===== ===== ===== ===== =====
     ; Instrucción RTN
-    ; Op1: t#1    Op2:     Dest:
-    mov esp, ebp
-    pop ebp
-    mov edi, [4 + DISP]
-    pop edi
-    ret
+    ; Op1: get    Op2:     Dest: t#1
+    mov eax, 222222
+    mov [esp+4], eax
+    ret 0
 
     ; ===== ===== ===== ===== =====
     ; Instrucción SKIP
     ; Op1:     Op2:     Dest: fun#main
-main:
+fun#main: nop
+
+    ; ===== ===== ===== ===== =====
+    ; Instrucción PMB
+    ; Op1:     Op2:     Dest: fun#main
 
     ; ===== ===== ===== ===== =====
     ; Instrucción CALL
-    ; Op1: fun#get5    Op2:     Dest: t#2
-    call t#2
-    mov ebx, 8
-    add ebx, esp
-    mov eax, [esp+8]
+    ; Op1: fun#get    Op2:     Dest: t#2
+    sub esp, 4
+    call fun#get
+    pop eax
     mov [t#2], eax
 
     ; ===== ===== ===== ===== =====
     ; Instrucción COPY
     ; Op1: t#2    Op2:     Dest: numero
-    mov eax, [t#2]
+    mov eax, t#2
     mov [numero], eax
 
     ; ===== ===== ===== ===== =====
