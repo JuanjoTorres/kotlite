@@ -1,4 +1,4 @@
-; ------------------------------------
+; ----------------------------------------------------
 ; Código ensamblador en NASM para Linux 32 bits (i386)
 ;
 ; Requisitos en Ubuntu 18.04:
@@ -9,7 +9,7 @@
 ;
 ; Comando para ejecutar:
 ;   ./assembly_output
-;
+; ----------------------------------------------------
 global main
 
 extern printf
@@ -20,7 +20,9 @@ section .bss
 ; Sección de memoria para las variables inicializadas
 section .data
     t#2 dd 0
-    t#1 db "Estoy en la subrutina", 10, 0
+    t#1 dd 8
+    numero dd 0
+    t#3 db "El resultado es: %d", 10, 0
 
 section .text
 
@@ -28,17 +30,34 @@ main:
 
     ; ===== ===== ===== ===== =====
     ; Instrucción SKIP
-    ; Op1:     Op2:     Dest: fun#escribir
+    ; Op1:     Op2:     Dest: fun#get
     jmp fun#main
-fun#escribir: nop
+fun#get: nop
 
     ; ===== ===== ===== ===== =====
-    ; Instrucción PRINT
-    ; Op1: t#1    Op2:     Dest: 
-    mov eax, t#1
-    push eax
-    call printf
+    ; Instrucción PMB
+    ; Op1:     Op2:     Dest: fun#get
+    push ebp            ; Guardar anterior base pointer para llamadas anidadas
+    mov ebp, esp        ; Nuevo base pointer = stack pointer -> @ return
+    push eax            ; Guardar valor de eax en la pila
+    push ebx            ; Guardar valor de ebx en la pila
+
+    ; Almacenar variables locales en la pila
+
+    ; Intrucciones de la rutina
+
+    ; ===== ===== ===== ===== =====
+    ; Instrucción RTN
+    ; Op1: get    Op2:     Dest: t#1
+
+    pop ebx
     pop eax
+    pop ebp
+
+
+    mov eax, [t#1]
+    mov [esp+4], eax
+    ret 0
 
     ; ===== ===== ===== ===== =====
     ; Instrucción SKIP
@@ -46,13 +65,33 @@ fun#escribir: nop
 fun#main: nop
 
     ; ===== ===== ===== ===== =====
+    ; Instrucción PMB
+    ; Op1:     Op2:     Dest: fun#main
+
+    ; ===== ===== ===== ===== =====
     ; Instrucción CALL
-    ; Op1: fun#escribir    Op2:     Dest: t#2
-    call t#2
-    mov ebx, 8
-    add ebx, esp
-    mov eax, [esp+8]
+    ; Op1: fun#get    Op2:     Dest: t#2
+    sub esp, 4
+    call fun#get
+    mov eax, [esp-0]
     mov [t#2], eax
+
+    ; ===== ===== ===== ===== =====
+    ; Instrucción COPY
+    ; Op1: t#2    Op2:     Dest: numero
+    mov eax, [t#2]
+    mov [numero], eax
+
+    ; ===== ===== ===== ===== =====
+    ; Instrucción PRINTINT
+    ; Op1: t#3    Op2: numero    Dest:
+    mov ebx, [numero]
+    push ebx
+    mov eax, t#3
+    push eax
+    call printf
+    pop eax
+    pop ebx
 
     ; ===== ===== ===== ===== =====
     ; exit(0)

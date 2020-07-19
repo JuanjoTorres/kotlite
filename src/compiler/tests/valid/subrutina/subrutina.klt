@@ -1,14 +1,13 @@
-fun escribir2 (p3: Int; p4: Int): None {
-    print("Parametro 3: %d", p3);
-    print("Parametro 4: %d", p4);
-}
-fun escribir (p1: Int; p2: Int): None {
+fun escribir (p1: Int; p2: Int): Int {
     print("Parametro 1: %d", p1);
     print("Parametro 2: %d", p2);
-
-    escribir2(3,4);
+    return 111;
 }
 
 fun main (): None {
-    escribir(1, 2);
+    var resultado: Int;
+
+    resultado = escribir(1, 2);
+
+    print("El resultado 1 es %d: ", resultado);
 }

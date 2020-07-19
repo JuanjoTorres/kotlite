@@ -1,0 +1,40 @@
+fun escribir3 (p6: Int): Int {
+    print("Parametro 6: %d", p6);
+
+    return 333;
+}
+
+fun escribir2 (p3: Int; p4: Int; p5: Int): Int {
+    var resultado3: Int;
+
+    resultado3 = escribir3(6);
+
+    print("Parametro 3: %d", p3);
+    print("Parametro 4: %d", p4);
+    print("Parametro 5: %d", p5);
+
+    print("El resultado 3 es %d: ", resultado3);
+
+    return 222;
+}
+
+fun escribir (p1: Int; p2: Int): Int {
+    var resultado2: Int;
+
+    resultado2 = escribir2(3,4,5);
+
+    print("Parametro 1: %d", p1);
+    print("Parametro 2: %d", p2);
+
+    print("El resultado 2 es %d: ", resultado2);
+
+    return 111;
+}
+
+fun main (): None {
+    var resultado: Int;
+
+    resultado = escribir(1, 2);
+
+    print("El resultado 1 es %d: ", resultado);
+}

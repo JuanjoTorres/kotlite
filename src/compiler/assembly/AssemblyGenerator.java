@@ -73,36 +73,15 @@ public class AssemblyGenerator {
         //Declarar todas las variables excepto las de tipo String sin inicializar
         variableTable.forEach((id, variable) -> {
 
+            //Strings sin inicializar, se ignora. Van en sección .bss
             if (variable.getSubtype() == Subtype.STRING && variable.getValue() == null)
                 return;
 
             if (variable.getSubtype() == Subtype.STRING) {
-                stringBuilder.append("    ").append(id).append(" db " + variable.getValue() + ", 10, 0\n");
-            } else if (variable.getSubtype() == Subtype.BOOLEAN) {
-                //Booleanos: true = 1, false = 0
-
-                //Si no está inicializado o es falso -> 0, sio es true -> 1
-                if (variable.getValue() == null || variable.getValue().equals("false"))
-                    stringBuilder.append("    ").append(id).append(" dd 0\n");
-                else
-                    stringBuilder.append("    ").append(id).append(" dd 1\n");
-
-            } else if (variable.getSubtype() == Subtype.NONE) {
-                stringBuilder.append("    ").append(id).append(" dd 0\n");
+                stringBuilder.append("    ").append(id).append(" db ").append(variable.getValue()).append(", 10, 0\n");
             } else {
-                //Por descarte es de tipo entero
-
-                //Si no tiene valor, inicializar en 0
-                if (variable.getValue() == null)
-                    stringBuilder.append("    ").append(id).append(" dd 0").append("\n");
-
-                    //Comprobar literales numéricos dentro del margen de valores máximos y mínimos permitidos
-                else if (Long.parseLong(variable.getValue()) > Integer.MAX_VALUE)
-                    stringBuilder.append("    ").append(id).append(" dd ").append(Integer.MAX_VALUE).append("\n");
-                else if (Long.parseLong(variable.getValue()) < Integer.MIN_VALUE)
-                    stringBuilder.append("    ").append(id).append(" dd ").append(Integer.MIN_VALUE).append("\n");
-                else
-                    stringBuilder.append("    ").append(id).append(" dd ").append(variable.getValue()).append("\n");
+                //Si no es String, inicializar en 0
+                stringBuilder.append("    ").append(id).append(" dd 0").append("\n");
             }
         });
 
@@ -156,14 +135,29 @@ public class AssemblyGenerator {
                 break;
             case "PMB":
 
+                //Ignorar PMB de main
+                if (destination.equals("fun#main")) {
+                    stringBuilder.append("    ; Ignorar preambulo de main").append("\n");
+                    break;
+                }
+
+                // Guardar registros en la pila
+                stringBuilder.append("    push ebp\n");
+                stringBuilder.append("    mov ebp, esp\n");
+                stringBuilder.append("    push eax\n");
+                stringBuilder.append("    push ebx\n");
+
                 procedure = procedureTable.get(destination.split("#")[1]);
 
                 int numParams = procedure.getNumParams();
                 int desplazamiento = VARIABLE_SIZE + (numParams * VARIABLE_SIZE);
 
+                if (procedure.getSubtype() != Subtype.NONE)
+                    desplazamiento += 4;
+
                 //Guardar parámetros en la pila con el desplazamiento adecuado (4 + 4* numParam)
                 for (int i = 0; i < numParams; i++) {
-                    stringBuilder.append("    mov eax, [esp+").append(desplazamiento - (i * VARIABLE_SIZE)).append("]\n");
+                    stringBuilder.append("    mov eax, [ebp+").append(desplazamiento - (i * VARIABLE_SIZE)).append("]\n");
                     stringBuilder.append("    mov [").append(procedure.getParams().get(i).getId()).append("], eax\n");
                 }
                 break;
@@ -174,8 +168,6 @@ public class AssemblyGenerator {
                 break;
 
             case "CALL":
-                //TODO Mirar el tipo de retorno de la función, si es NONE no hace falta reservar espacio paara el return
-
                 procedure = procedureTable.get(operand1.split("#")[1]);
 
                 int numArgs = procedure.getNumParams();
@@ -183,26 +175,40 @@ public class AssemblyGenerator {
                 if (procedure.getSubtype() != Subtype.NONE)
                     // Reservamos 4 bytes para el resultado que devolvemos
                     stringBuilder.append("    sub esp, " + VARIABLE_SIZE + "\n");
+
                 stringBuilder.append("    call ").append(operand1).append("\n");
+
                 if (procedure.getSubtype() != Subtype.NONE) {
                     // Recuperamos el resultado devuelto sobre el registro eax
-                    stringBuilder.append("    mov eax, [esp-").append(VARIABLE_SIZE * numArgs).append("]\n");
+                    stringBuilder.append("    pop eax\n");
                     // Copiamos el resultado al destino
                     stringBuilder.append("    mov [").append(destination).append("], eax\n");
                 }
+
+                // Recuperamos el espacio reservado para los parametros
+                stringBuilder.append("    add esp, ").append(VARIABLE_SIZE * numArgs).append("\n");
                 break;
 
             case "RTN":
                 procedure = procedureTable.get(operand1);
 
+                int desplazamientoRtn = VARIABLE_SIZE;
+                if (procedure.getSubtype() != Subtype.NONE)
+                    desplazamientoRtn += 4;
+
                 //Si tiene retorno hay que guardarlo en la pila
                 if (procedure.getSubtype() != Subtype.NONE) {
                     stringBuilder.append("    mov eax, [").append(destination).append("]\n");
-                    stringBuilder.append("    mov [esp+" + (VARIABLE_SIZE) + "], eax\n");
+                    stringBuilder.append("    mov [ebp+").append(desplazamientoRtn).append("], eax\n");
                 }
 
-                //Recuperar el espacio utilizado para guardar los argumentos de entrada
-                stringBuilder.append("    ret ").append(procedure.getNumParams() * VARIABLE_SIZE).append("\n");
+                // Recuperar los registros guardados en la pila
+                stringBuilder.append("    pop ebx\n");
+                stringBuilder.append("    pop eax\n");
+                stringBuilder.append("    pop ebp\n");
+
+                //Retorn
+                stringBuilder.append("    ret\n");
                 break;
 
             case "IFGOTO":
@@ -216,7 +222,33 @@ public class AssemblyGenerator {
                 stringBuilder.append("    jmp ").append(destination).append("\n");
                 break;
 
-            //TODO Está dando fallos al copiar con variables de tipo String como destino
+            case "COPY_LITERAL":
+                //Si es un String literal se ignora, porque ya se inicializa en memoria
+                if (operand1.startsWith("\"")) {
+                    stringBuilder.append("    ; Copy de String literal se ignora, ya está en memoria").append("\n");
+                    break;
+                }
+
+                //Comprobar boolean, si es false 0 sino -1
+                if (operand1.equals("true"))
+                    operand1 = "-1";
+                else if (operand1.equals("false"))
+                    operand1 = "0";
+
+                //TODO PROBAR nulls, se copia un valor 0
+                if (operand1.equals("null"))
+                    operand1 = "0";
+
+                //Comprobar literales numéricos dentro del margen de valores máximos y mínimos permitidos
+                if (Long.parseLong(operand1) > Integer.MAX_VALUE)
+                    operand1 = String.valueOf(Integer.MAX_VALUE);
+                else if (Long.parseLong(operand1) < Integer.MIN_VALUE)
+                    operand1 = String.valueOf(Integer.MIN_VALUE);
+
+                stringBuilder.append("    mov eax, ").append(operand1).append("\n");
+                stringBuilder.append("    mov [").append(destination).append("], eax\n");
+                break;
+
             case "COPY":
                 //Tipo string en variable temporal no lleva corchetes
                 if (variableTable.get(operand1).getSubtype() == Subtype.STRING && variableTable.get(operand1).getId().contains("#")) {
