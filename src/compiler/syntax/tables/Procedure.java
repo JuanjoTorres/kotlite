@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Procedure {
 
-    private static int NUM_PROC = 0;
+    private static int numProc = 0;
 
     private ArrayList<Variable> params = new ArrayList<>();
 
@@ -17,7 +17,7 @@ public class Procedure {
 
     public Procedure(String name) {
         this.startLabel = Procedure.nextProcedure(name);
-        this.numProcedure = ++NUM_PROC;
+        this.numProcedure = ++numProc;
         this.deep = 1;
     }
 
@@ -31,6 +31,10 @@ public class Procedure {
 
     public String getStartLabel() {
         return startLabel;
+    }
+
+    public void setStartLabel(String startLabel) {
+        this.startLabel = startLabel;
     }
 
     public int getNumParams() {
@@ -47,6 +51,10 @@ public class Procedure {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    public int getNumProcedure() {
+        return numProcedure;
     }
 
     public int getDeep() {

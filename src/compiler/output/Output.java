@@ -113,7 +113,7 @@ public class Output {
             buffer.write("</head><body>");
             buffer.write("<h1>Práctica Compiladores - UIB</h1>");
             buffer.write("<h2>Tabla de procedimientos</h2>");
-            buffer.write("<table><tr><th>Context</th><th>ID</th><th>Type</th><th>SubType</th><th>Args</th></tr>");
+            buffer.write("<table><tr><th>NP</th><th>ID</th><th>Label</th><th>Deep</th><th>Params</th><th>Size</th><th>Return</th></tr>");
 
             buffer.close();
         } catch (IOException e) {
@@ -131,11 +131,13 @@ public class Output {
             BufferedWriter buffer = new BufferedWriter(fileWriter);
 
             //Añadir entrada a la tabla html
-            buffer.write("<tr><td>ID : " + id
-                    + "</td><td>Initial Lab: " + procedure.getStartLabel()
+            buffer.write("<tr><td>NP : " + procedure.getNumProcedure()
+                    + "<td>ID : " + id
+                    + "</td><td>Label: " + procedure.getStartLabel()
                     + "</td><td>Deep: " + procedure.getDeep()
                     + "</td><td>Params: " + procedure.getNumParams()
-                    + "</td><td>Size: " + procedure.getSize() + "</td></tr>");
+                    + "</td><td>Size: " + (procedure.getNumParams() * 4)
+                    + "</td><td>Return: " + procedure.getSubtype() + "</td></tr>");
 
             buffer.close();
 
@@ -175,7 +177,7 @@ public class Output {
             buffer.write("</head><body>");
             buffer.write("<h1>Práctica Compiladores - UIB</h1>");
             buffer.write("<h2>Tabla de variables</h2>");
-            buffer.write("<table><tr><th>Context</th><th>ID</th><th>Type</th><th>SubType</th><th>Args</th></tr>");
+            buffer.write("<table><tr><th>NV</th><th>ID</th><th>Deep</th><th>Size</th><th>Parent</th><th>Type</th><th>SubType</th><th>Value</th></tr>");
 
             buffer.close();
         } catch (IOException e) {
@@ -188,12 +190,25 @@ public class Output {
      */
     public static void writeVariable(String id, Variable variable) {
 
+        String color;
+
+        if (variable.getId().contains("#"))
+            color = "#D2B4DE";
+        else if (variable.getType() == Type.ARG)
+            color = "#FAD7A0";
+        else if (variable.getType() == Type.CONST)
+            color = "#F1948A";
+        else if (variable.getDeep() == 0)
+            color = "#82E0AA";
+        else
+            color = "#A9CCE3";
+
         try {
             FileWriter fileWriter = new FileWriter(VARIABLE_FILE, true);
             BufferedWriter buffer = new BufferedWriter(fileWriter);
 
             //Añadir entrada a la tabla html
-            buffer.write("<tr><td>Id : " + id + "</td><td>Subtype : " + variable.getSubtype() + "</td><td>Size : " + variable.getSize() + "</td></tr>");
+            buffer.write("<tr style='background-color:" + color + "'><td>NV : " + variable.getNumVariable() + "</td><td>Id : " + id + "</td><td>Deep : " + variable.getDeep() + "</td><td>Size : " + variable.getSize() + "</td><td>Parent : " + variable.getParentFunction() + "</td><td>Type : " + variable.getType() + "</td><td>Subtype : " + variable.getSubtype() + "</td><td>Value : " + variable.getValue() + "</td></tr>");
 
 
             buffer.close();

@@ -30,6 +30,12 @@ public class Generator {
         return threeAddressCodes;
     }
 
+    public String peekFunctionLabel() {
+        if (functionLabelStack.isEmpty())
+            return null;
+        return functionLabelStack.peek();
+    }
+
     public String popFunctionLabel() {
         return functionLabelStack.pop();
     }

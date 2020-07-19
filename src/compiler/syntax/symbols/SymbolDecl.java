@@ -31,8 +31,16 @@ public class SymbolDecl extends SymbolBase {
 
         //Generar variable y meterla en la tabla de variables
         variable = new Variable(id.getName());
+        variable.setSize(4);
+        variable.setDeep(symbolTable.getDeep());
         variable.setType(Type.CONST);
         variable.setSubtype(basic.getSubtype());
+
+        // Añadir identificador a la función que la contiene
+        if (generator.peekFunctionLabel() != null)
+            variable.setParentFunction(generator.peekFunctionLabel());
+
+        variableTable.put(variable.getId(), variable);
         variableTable.put(variable.getId(), variable);
     }
 
@@ -56,15 +64,19 @@ public class SymbolDecl extends SymbolBase {
 
         //Generar variable y meterla en la tabla de variables
         variable = new Variable(id.getName());
+        variable.setSize(4);
+        variable.setDeep(symbolTable.getDeep());
         variable.setType(Type.VAR);
         variable.setSubtype(basic.getSubtype());
+
+        // Añadir identificador a la función que la contiene
+        if (generator.peekFunctionLabel() != null)
+            variable.setParentFunction(generator.peekFunctionLabel());
+
         variableTable.put(variable.getId(), variable);
 
         Variable boolVar = bool.getVariable();
-        if(boolVar == null)
-            System.out.println("boolvar es nulo");
-        if(id == null)
-            System.out.println("boolvar es nulo");
+
         //Añadir código de tres direcciones con la operacion
         generator.addThreeAddressCode("COPY", boolVar.getId(), "", id.getName());
     }

@@ -2,8 +2,11 @@ package compiler.syntax.tables;
 
 public class Variable {
 
+    private static int numVar = 0;
+
     private int size;
-    private boolean global;
+    private int deep;
+    private int numVariable;
     private String id;
     private String parentFunction;
     private String value;
@@ -13,14 +16,43 @@ public class Variable {
 
     public Variable(String id) {
         this.id = id;
+        this.numVariable = ++numVar;
+    }
+
+    public int getDeep() {
+        return deep;
+    }
+
+    public void setDeep(int deep) {
+        this.deep = deep;
+    }
+
+    public int getNumVariable() {
+        return numVariable;
     }
 
     public int getSize() {
         return size;
     }
 
+    public void setSize(int size) {
+        this.size = size;
+    }
+
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getParentFunction() {
+        return parentFunction;
+    }
+
+    public void setParentFunction(String parentFunction) {
+        this.parentFunction = parentFunction;
     }
 
     public String getValue() {

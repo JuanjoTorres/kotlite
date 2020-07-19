@@ -8,6 +8,7 @@ import java.util.Stack;
 public class SymbolTable {
 
     private Stack<HashMap> hashMapStack = new Stack<>();
+    private int deep = 0;
 
     public SymbolTable() {
 
@@ -65,11 +66,13 @@ public class SymbolTable {
     public void startBlock() {
         //Aumentar nivel insertando un nuevo hashmap en la pila
         hashMapStack.push(new HashMap());
+        deep++;
     }
 
     public void endBlock() {
         //Reducir nivel eliminando un hashmap de la pila
         hashMapStack.pop();
+        deep--;
     }
 
     public boolean add(Symbol symbol) {
@@ -100,5 +103,13 @@ public class SymbolTable {
         }
 
         return null;
+    }
+
+    /**
+     * Obtener profundidad
+     * @return deep
+     */
+    public int getDeep() {
+        return deep;
     }
 }
