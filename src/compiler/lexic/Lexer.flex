@@ -108,8 +108,8 @@ input = [^\r\n]
 ">="  { return symbol(ParserSym.GTEQU); }
 
 // Valores booleanos
-"true"  { return symbol(ParserSym.TRUE); }
-"false" { return symbol(ParserSym.FALSE); }
+"true"|"True"  { return symbol(ParserSym.TRUE); }
+"false"|"False" { return symbol(ParserSym.FALSE); }
 
 // Tipos
 "Int"     { return symbol(ParserSym.INT); }
@@ -137,7 +137,7 @@ input = [^\r\n]
 {letter}({letter}|{digit}|_)* { return symbol(ParserSym.ID, this.yytext()); }
 
 // Integer
-{digit}+ { return symbol(ParserSym.NUM, this.yytext()); }
+"-"?{digit}+ { return symbol(ParserSym.NUM, this.yytext()); }
 
 // Strings
 {strings} { return symbol(ParserSym.LITERAL, this.yytext()); }

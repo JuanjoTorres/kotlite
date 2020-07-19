@@ -1,6 +1,7 @@
 package compiler.syntax.symbols;
 
 import compiler.output.Output;
+import compiler.syntax.ParserSym;
 import compiler.syntax.tables.Subtype;
 import compiler.syntax.tables.Type;
 import compiler.syntax.tables.Variable;
@@ -17,13 +18,20 @@ public class SymbolUnary extends SymbolBase {
     private Variable variable;
 
     // [FORMA] Unary ::= NOT Unary
-    public SymbolUnary(SymbolUnary unary, int line, int column) {
+    public SymbolUnary(int symbol, SymbolUnary unary, int line, int column) {
         super("Unary", 0);
 
         this.subtype = unary.getSubtype();
-        if (subtype != Subtype.BOOLEAN)
+
+        if (symbol == ParserSym.NOT && subtype != Subtype.BOOLEAN) {
+                Output.writeError("Error semántico en posición " + line + ":" + column +
+                        " - El operador ! (NOT) espera un tipo subyacente BOOLEAN y se ha encontrado un tipo " + subtype);
+        }
+
+        if (symbol == ParserSym.MINUS && subtype != Subtype.INT) {
             Output.writeError("Error semántico en posición " + line + ":" + column +
-                    " - El operador ! (NOT) espera un tipo subyacente BOOLEAN y se ha encontrado un tipo " + subtype);
+                    " - El operador - (MINUS) espera un tipo subyacente INT y se ha encontrado un tipo " + subtype);
+        }
 
         this.unary = unary;
 
@@ -36,7 +44,7 @@ public class SymbolUnary extends SymbolBase {
         variableTable.put(variable.getId(), variable);
 
         //Añadir código de tres direcciones con la operacion
-        generator.addThreeAddressCode("NOT", unaryVar.getId(), "", variable.getId());
+        generator.addThreeAddressCode(ParserSym.terminalNames[symbol], unaryVar.getId(), "", variable.getId());
     }
 
     // [FORMA] Unary ::= Factor

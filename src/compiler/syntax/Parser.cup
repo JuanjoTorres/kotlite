@@ -200,7 +200,9 @@ Term ::= Term:v1 Mult:v2 Unary:v3
               {: RESULT = new SymbolTerm(v1); :};
 
 Unary ::= NOT Unary:v1
-              {: RESULT = new SymbolUnary(v1, lexer.getRow(), lexer.getCol()); :}
+              {: RESULT = new SymbolUnary(ParserSym.NOT, v1, lexer.getRow(), lexer.getCol()); :}
+	    | MINUS Unary:v1
+              {: RESULT = new SymbolUnary(ParserSym.MINUS, v1, lexer.getRow(), lexer.getCol()); :}
 	    | Factor:v1
               {: RESULT = new SymbolUnary(v1); :};
 

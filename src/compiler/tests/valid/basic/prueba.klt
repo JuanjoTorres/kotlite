@@ -1,23 +1,11 @@
-var globalA: Int;
-var globalB: Int = 2;
-var globalC: Int;
+var global: Int;
 
 fun sumar (num1: Int; num2: Int): Int {
-
-    var res: Int;
-
-    globalB = 3;
-    res = num1 + num2;
-    return (2 + 2);
+    return (num1 + num2);
 }
 
 fun main (): None {
-    var comentario: String;
+    global = sumar(3, -5);
 
-    globalA = 1;
-    globalB = 2;
-    globalC = sumar(globalA, globalB);
-
-    comentario = "La suma es %d";
-    print(comentario, globalC);
+    print("La suma es %d", globalC);
 }
