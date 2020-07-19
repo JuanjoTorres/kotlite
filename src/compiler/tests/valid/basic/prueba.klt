@@ -4,11 +4,11 @@ var globalC: Int;
 
 fun sumar (num1: Int; num2: Int): Int {
 
-    globalB = 3;
     var res: Int;
-    res = num1 + num2;
-    return 2 + 2;
 
+    globalB = 3;
+    res = num1 + num2;
+    return (2 + 2);
 }
 
 fun main (): None {
