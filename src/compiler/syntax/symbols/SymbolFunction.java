@@ -7,7 +7,6 @@ import compiler.syntax.tables.Symbol;
 import compiler.syntax.tables.Type;
 
 import java.io.PrintWriter;
-import java.util.ArrayList;
 
 public class SymbolFunction extends SymbolBase {
 
@@ -59,6 +58,7 @@ public class SymbolFunction extends SymbolBase {
 
         //Obtener el procedimiento para calcular sus propiedades
         Procedure procedure = id.getProcedure();
+        procedure.setSubtype(basic.getSubtype());
 
         //Poner número de parámetros
         if (argsdec != null) {

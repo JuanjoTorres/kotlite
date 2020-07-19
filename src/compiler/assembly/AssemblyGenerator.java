@@ -159,9 +159,11 @@ public class AssemblyGenerator {
                 procedure = procedureTable.get(destination.split("#")[1]);
 
                 int numParams = procedure.getNumParams();
+                int desplazamiento = VARIABLE_SIZE + (numParams * VARIABLE_SIZE);
 
+                //Guardar parámetros en la pila con el desplazamiento adecuado (4 + 4* numParam)
                 for (int i = 0; i < numParams; i++) {
-                    stringBuilder.append("    mov eax, [esp+").append(4 + (numParams * 4) - (i * 4)).append("]\n");
+                    stringBuilder.append("    mov eax, [esp+").append(desplazamiento - (i * VARIABLE_SIZE)).append("]\n");
                     stringBuilder.append("    mov [").append(procedure.getParams().get(i).getId()).append("], eax\n");
                 }
                 break;
@@ -178,20 +180,29 @@ public class AssemblyGenerator {
 
                 int numArgs = procedure.getNumParams();
 
-                // Reservamos 4 bytes para el resultado que devolvemos
-                stringBuilder.append("    sub esp, 4\n");
+                if (procedure.getSubtype() != Subtype.NONE)
+                    // Reservamos 4 bytes para el resultado que devolvemos
+                    stringBuilder.append("    sub esp, " + VARIABLE_SIZE + "\n");
                 stringBuilder.append("    call ").append(operand1).append("\n");
-                // Liberamos el espacio utilizado por los parámetros de entrada
-                if (numArgs > 0)
-                    stringBuilder.append("    add esp, ").append(numArgs * VARIABLE_SIZE).append("\n");
-                // Recuperamos el resultado devuelto sobre el registro eax
-                stringBuilder.append("    pop eax\n");
+                if (procedure.getSubtype() != Subtype.NONE) {
+                    // Recuperamos el resultado devuelto sobre el registro eax
+                    stringBuilder.append("    mov eax, [esp-").append(VARIABLE_SIZE * numArgs).append("]\n");
+                    // Copiamos el resultado al destino
+                    stringBuilder.append("    mov [").append(destination).append("], eax\n");
+                }
                 break;
 
             case "RTN":
                 procedure = procedureTable.get(operand1);
 
-                stringBuilder.append("    ret ").append(procedure.getNumParams() * 4).append("\n");
+                //Si tiene retorno hay que guardarlo en la pila
+                if (procedure.getSubtype() != Subtype.NONE) {
+                    stringBuilder.append("    mov eax, [").append(destination).append("]\n");
+                    stringBuilder.append("    mov [esp+" + (VARIABLE_SIZE) + "], eax\n");
+                }
+
+                //Recuperar el espacio utilizado para guardar los argumentos de entrada
+                stringBuilder.append("    ret ").append(procedure.getNumParams() * VARIABLE_SIZE).append("\n");
                 break;
 
             case "IFGOTO":
@@ -207,11 +218,12 @@ public class AssemblyGenerator {
 
             //TODO Está dando fallos al copiar con variables de tipo String como destino
             case "COPY":
-                //Copia entre dos variables (Dos direcciones de memoria)
-                if (!variableTable.get(operand1).getId().contains("#"))
-                    stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
-                else
+                //Tipo string en variable temporal no lleva corchetes
+                if (variableTable.get(operand1).getSubtype() == Subtype.STRING && variableTable.get(operand1).getId().contains("#")) {
                     stringBuilder.append("    mov eax, ").append(operand1).append("\n");
+                } else {
+                    stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                }
                 stringBuilder.append("    mov [").append(destination).append("], eax\n");
                 break;
 

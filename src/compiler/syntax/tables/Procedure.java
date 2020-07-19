@@ -8,6 +8,7 @@ public class Procedure {
 
     private ArrayList<Variable> params = new ArrayList<>();
 
+    private Subtype subtype;
     private String startLabel;
     private int numParams;
     private int size;
@@ -18,6 +19,14 @@ public class Procedure {
         this.startLabel = Procedure.nextProcedure(name);
         this.numProcedure = ++NUM_PROC;
         this.deep = 1;
+    }
+
+    public Subtype getSubtype() {
+        return subtype;
+    }
+
+    public void setSubtype(Subtype subtype) {
+        this.subtype = subtype;
     }
 
     public String getStartLabel() {

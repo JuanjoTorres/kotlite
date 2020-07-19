@@ -16,6 +16,8 @@ public class SymbolRtnpart extends SymbolBase {
 
         String functionLabel = generator.popFunctionLabel();
 
+        this.subtype = Subtype.NONE;
+
         //Escibir C3D con operación RTN
         if (!functionLabel.equals("main"))
             generator.addThreeAddressCode("RTN", functionLabel, "", "");
@@ -31,7 +33,7 @@ public class SymbolRtnpart extends SymbolBase {
         String functionLabel = generator.popFunctionLabel();
 
         //Escibir C3D con operación RTN
-        generator.addThreeAddressCode("RTN", functionLabel, "", "");
+        generator.addThreeAddressCode("RTN", functionLabel, "", factor.getVariable().getId());
     }
 
     public Subtype getSubtype() {
