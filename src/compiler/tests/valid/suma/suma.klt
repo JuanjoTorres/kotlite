@@ -7,5 +7,5 @@ fun sumar (num1: Int; num2: Int): Int {
 fun main (): None {
     global = sumar(3, -5);
 
-    print("La suma es %d", globalC);
+    print("La suma es %d", global);
 }
