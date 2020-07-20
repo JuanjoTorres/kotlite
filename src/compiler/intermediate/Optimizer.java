@@ -91,11 +91,15 @@ public class Optimizer {
             if (tAC.getOperation().equals("PLUS") || tAC.getOperation().equals("MINUS") ||
                     tAC.getOperation().equals("MULTI") || tAC.getOperation().equals("DIV")) {
 
+                //Ambos operandos tienen que ser variables temporales
+                if (!tAC.getOperand1().contains("$t#") || !tAC.getOperand2().contains("$t#"))
+                    continue;
+
                 //Leer las dos variables de la tabla de variables
                 Variable variable1 = variableTable.get(tAC.getOperand1());
                 Variable variable2 = variableTable.get(tAC.getOperand2());
 
-                //Solo si ambas variables tienen valor constante, se puede calcular el resultado
+                //Ambos operandos tienen que tener valor definido
                 if (variable1.getValue() == null || variable2.getValue() == null)
                     continue;
 
@@ -266,7 +270,7 @@ public class Optimizer {
             ThreeAddressCode tAC = threeAddressCodes.get(i);
 
             //Buscamos operación COPY_LITERAL con variables temporales
-            if (!tAC.getOperation().equals("COPY_LITERAL") && tAC.getDestination().contains("$t#"))
+            if (!tAC.getOperation().equals("COPY_LITERAL") || !tAC.getDestination().contains("$t#"))
                 continue;
 
             //Buscar COPY diferido

@@ -5,9 +5,10 @@ var globalC: Int;
 fun main (): None {
     var comentario: String;
 
-    globalA = 1;
-    globalB = 4;
-    globalC = 4 - (-1);
+    globalA = 3;
+    globalB = globalA * 4;
+    globalA = 8;
+    globalC = globalA - (-1);
     print("La resta es %d", globalC);
     globalC = 4 / 5;
     print("La division es %d", globalC);
@@ -15,4 +16,6 @@ fun main (): None {
     print("La division es %d", globalC);
     globalC = 4 * 5;
     print("La multiplicacion es %d", globalC);
+
+    print("Global A es %d", globalA);
 }
