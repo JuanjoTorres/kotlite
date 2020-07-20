@@ -23,7 +23,7 @@ public class Variable {
 
     public Variable(String id, String parentFunction, boolean count) {
 
-        String prefix = (parentFunction == null) ? "global$" : parentFunction;
+        String prefix = (parentFunction == null) ? "global" : parentFunction;
 
         this.id = prefix + "$" + id;
         this.parentFunction = parentFunction;
