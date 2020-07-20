@@ -18,16 +18,32 @@ public class ThreeAddressCode {
         return operation;
     }
 
+    public void setOperation(String operation) {
+        this.operation = operation;
+    }
+
     public String getOperand1() {
         return operand1;
+    }
+
+    public void setOperand1(String operand1) {
+        this.operand1 = operand1;
     }
 
     public String getOperand2() {
         return operand2;
     }
 
+    public void setOperand2(String operand2) {
+        this.operand2 = operand2;
+    }
+
     public String getDestination() {
         return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 
     @Override

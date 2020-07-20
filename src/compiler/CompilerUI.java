@@ -2,6 +2,7 @@ package compiler;
 
 import compiler.assembly.AssemblyGenerator;
 import compiler.intermediate.Generator;
+import compiler.intermediate.Optimizer;
 import compiler.lexic.Lexer;
 import compiler.output.Output;
 import compiler.syntax.Parser;
@@ -153,7 +154,11 @@ public class CompilerUI extends JFrame {
         new AssemblyGenerator(false).toAssembly();
 
         Output.writeInfo("Optimizando código de tres direcciones y tabla de variables");
-        //TODO Optimizar
+
+        // Aplicar optimizaciones
+        int optimizaciones = new Optimizer().optimize();
+
+        Output.writeInfo("Se han aplicado " + optimizaciones);
 
         Output.writeInfo("Generando código de tres direcciones optimizado");
 

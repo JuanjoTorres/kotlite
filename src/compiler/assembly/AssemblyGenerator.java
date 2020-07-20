@@ -43,7 +43,7 @@ public class AssemblyGenerator {
 
         StringBuilder stringBuilder = new StringBuilder();
 
-        //TODO Mirar enlace: https://www.devdungeon.com/content/hello-world-nasm-assembler
+        //TODO Mirar enlace: https://www.devdungeon.com/content/hello-world-nasm-assemblerSUM
 
         //Escribir cabecera del fichero
         stringBuilder.append("; ----------------------------------------------------\n");
