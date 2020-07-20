@@ -229,9 +229,9 @@ public class AssemblyGenerator {
                     break;
                 }
 
-                //Comprobar boolean, si es false 0 sino -1
+                //Comprobar boolean, si es true 1, false 0
                 if (operand1.equals("true"))
-                    operand1 = "-1";
+                    operand1 = "1";
                 else if (operand1.equals("false"))
                     operand1 = "0";
 
