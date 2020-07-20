@@ -20,7 +20,7 @@ public class Generator {
     private Stack<String> endloopLabelStack = new Stack<>();
     private Stack<String> startloopLabelStack = new Stack<>();
 
-    private static ArrayList<ThreeAddressCode> threeAddressCodes = new ArrayList<>();
+    private static ArrayList<ThreeAddressCode> threeAddressCodes;
 
     public void addThreeAddressCode(String operation, String op1, String op2, String destination) {
         threeAddressCodes.add(new ThreeAddressCode(operation, op1, op2, destination));
@@ -110,5 +110,9 @@ public class Generator {
 
     public String generateVariable() {
         return "t#" + ++variableNumber;
+    }
+
+    public static void initThreeAddressCode() {
+        threeAddressCodes = new ArrayList<>();
     }
 }

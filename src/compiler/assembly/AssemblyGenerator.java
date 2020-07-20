@@ -14,6 +14,7 @@ import java.util.HashMap;
 public class AssemblyGenerator {
 
     private static final String FILENAME = "assembly_output";
+    private static final String FILENAME_OPTIMIZED = "assembly_output_optimized";
     private static final String FILE_EXTENSION = ".asm";
     private static final String STRING_MAX_SIZE = "512";
     private static final int VARIABLE_SIZE = 4;
@@ -21,12 +22,18 @@ public class AssemblyGenerator {
     private HashMap<String, Variable> variableTable;
     private HashMap<String, Procedure> procedureTable;
 
+    private String fileName;
+    private boolean optimized;
     private boolean gotoMain = false;
 
     /**
      * Constructor sin parámetros
      */
-    public AssemblyGenerator() {
+    public AssemblyGenerator(boolean optimized) {
+        this.optimized = optimized;
+
+        fileName = optimized ? FILENAME_OPTIMIZED : FILENAME;
+
         this.variableTable = VariableTable.getTable();
         this.procedureTable = ProcedureTable.getTable();
     }
@@ -40,16 +47,16 @@ public class AssemblyGenerator {
 
         //Escribir cabecera del fichero
         stringBuilder.append("; ----------------------------------------------------\n");
-        stringBuilder.append("; Código ensamblador en NASM para Linux 32 bits (i386)\n");
+        stringBuilder.append("; Código ensamblador ").append(optimized ? " optimizado " : "").append("en NASM para Linux 32 bits (i386)\n");
         stringBuilder.append(";\n");
-        stringBuilder.append("; Requisitos en Ubuntu 18.04:\n");
+        stringBuilder.append("; Requisitos en Ubuntu 18.04 y 20.04:\n");
         stringBuilder.append(";   sudo apt install build-essential gcc-multilib\n");
         stringBuilder.append(";\n");
         stringBuilder.append("; Comando para compilar:\n");
-        stringBuilder.append(";   nasm -f elf " + FILENAME + ".asm && gcc -m32 " + FILENAME + ".o -o " + FILENAME + "\n");
+        stringBuilder.append(";   nasm -f elf " + fileName + ".asm && gcc -m32 " + fileName + ".o -o " + fileName + "\n");
         stringBuilder.append(";\n");
         stringBuilder.append("; Comando para ejecutar:\n");
-        stringBuilder.append(";   ./" + FILENAME + "\n");
+        stringBuilder.append(";   ./").append(fileName).append("\n");
         stringBuilder.append("; ----------------------------------------------------\n");
 
         //Etiqueta de inicio
@@ -102,7 +109,7 @@ public class AssemblyGenerator {
         stringBuilder.append("    int 0x80\n");
 
         //Escribir fichero
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File(FILENAME + FILE_EXTENSION)))) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File(fileName + FILE_EXTENSION)))) {
             bufferedWriter.write(stringBuilder.toString());
         }
     }
@@ -207,7 +214,7 @@ public class AssemblyGenerator {
                 stringBuilder.append("    pop eax\n");
                 stringBuilder.append("    pop ebp\n");
 
-                //Retorn
+                //Return
                 stringBuilder.append("    ret\n");
                 break;
 

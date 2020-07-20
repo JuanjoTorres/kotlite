@@ -1,12 +1,10 @@
 package compiler.syntax.tables;
 
-import compiler.output.Output;
-
 import java.util.HashMap;
 
 public class VariableTable {
 
-    private static final HashMap<String, Variable> table = new HashMap<>();
+    private static HashMap<String, Variable> table;
 
     public void put(String key, Variable variable) {
         if (!table.containsKey(key)) {
@@ -21,5 +19,9 @@ public class VariableTable {
 
     public static HashMap<String, Variable> getTable() {
         return table;
+    }
+
+    public static void init() {
+        table = new HashMap<>();
     }
 }

@@ -78,4 +78,8 @@ public class Procedure {
             params.add(variable);
         }
     }
+
+    public static void restartNumProc() {
+        numProc = 0;
+    }
 }

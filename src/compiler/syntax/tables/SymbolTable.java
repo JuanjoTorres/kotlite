@@ -37,9 +37,6 @@ public class SymbolTable {
         //Inicializar fichero de tabla de simbolos
         Output.initSymbolTable();
 
-        //Inicializar fichero de codigo de tres direcciones
-        Output.truncateThreeAddressCode();
-
         /*
         //YA NO ES NECESARIO, EL PRINT ESTÁ INCLUIDO EN LA GRAMÁTICA
 

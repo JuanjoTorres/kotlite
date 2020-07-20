@@ -22,6 +22,7 @@ public class Output {
     private final static String VARIABLE_FILE = "variable_table.html";
     private final static String PROCEDURE_FILE = "procedure_table.html";
     private final static String THREE_ADDRESS_CODE = "three_address_code.txt";
+    private final static String THREE_ADDRESS_CODE_OPTIMIZED = "three_address_code_optimized.txt";
 
     /**
      * Crear fichero html y inicializar tabla de simbolos
@@ -316,20 +317,25 @@ public class Output {
      *
      * @return result
      */
-    public static void truncateThreeAddressCode() {
+    public static void truncateThreeAddressCode(boolean optimized) {
+
+        String fileName = optimized ? THREE_ADDRESS_CODE_OPTIMIZED : THREE_ADDRESS_CODE;
+
         try {
-            FileWriter fileWriter = new FileWriter(THREE_ADDRESS_CODE);
+            FileWriter fileWriter = new FileWriter(fileName, false);
             fileWriter.write("");
             fileWriter.close();
         } catch (IOException e) {
-            System.err.println("[IOException] Write Error in " + THREE_ADDRESS_CODE + ": " + e.getMessage());
+            System.err.println("[IOException] Write Error in " + fileName + ": " + e.getMessage());
         }
     }
 
-    public static void writeThreeAddressCodes(ArrayList<ThreeAddressCode> threeAddressCodes) {
+    public static void writeThreeAddressCodes(ArrayList<ThreeAddressCode> threeAddressCodes, boolean optimized) {
+
+        String fileName = optimized ? THREE_ADDRESS_CODE_OPTIMIZED : THREE_ADDRESS_CODE;
 
         try {
-            FileWriter fileWriter = new FileWriter(THREE_ADDRESS_CODE, true);
+            FileWriter fileWriter = new FileWriter(fileName, true);
 
             for (ThreeAddressCode threeAddressCode : threeAddressCodes) {
                 fileWriter.write(threeAddressCode.toString() + "\n");
@@ -337,20 +343,7 @@ public class Output {
 
             fileWriter.close();
         } catch (IOException e) {
-            System.err.println("[IOException] Write Error in " + THREE_ADDRESS_CODE + ": " + e.getMessage());
-        }
-    }
-
-    public static void writeThreeAddressCode(String info) {
-
-        System.out.println(info);
-
-        try {
-            FileWriter fileWriter = new FileWriter(THREE_ADDRESS_CODE, true);
-            fileWriter.write(info + "\n");
-            fileWriter.close();
-        } catch (IOException e) {
-            System.err.println("[IOException] Write Error in " + THREE_ADDRESS_CODE + ": " + e.getMessage());
+            System.err.println("[IOException] Write Error in " + fileName + ": " + e.getMessage());
         }
     }
 }

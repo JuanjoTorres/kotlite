@@ -1,12 +1,10 @@
 package compiler.syntax.tables;
 
-import compiler.output.Output;
-
 import java.util.HashMap;
 
 public class ProcedureTable {
 
-    private static HashMap<String, Procedure> table = new HashMap<>();
+    private static HashMap<String, Procedure> table;
 
     public boolean put(String key, Procedure procedure) {
 
@@ -23,8 +21,11 @@ public class ProcedureTable {
         return table.get(key);
     }
 
-
     public static HashMap<String, Procedure> getTable() {
         return table;
+    }
+
+    public static void init() {
+        table = new HashMap<>();
     }
 }

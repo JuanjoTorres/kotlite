@@ -85,6 +85,17 @@ public class CompilerUI extends JFrame {
         //Reiniciar tabla de símbolos
         SymbolBase.symbolTable.init();
 
+        //Reiniciar tablas de variables y procedimientos
+        VariableTable.init();
+        ProcedureTable.init();
+
+        //Reiniciar numero de variable y procedimiento
+        Variable.restartNumVar();
+        Procedure.restartNumProc();
+
+        //Reiniciar arraylist de códio de 3 direcciones
+        Generator.initThreeAddressCode();
+
         Reader sourceCodeReader = new StringReader(sourceCodeEditor.getText());
 
         int numTokens = 0;
@@ -121,8 +132,8 @@ public class CompilerUI extends JFrame {
 
         Output.writeInfo("Generando código de tres direcciones");
 
-        Output.writeThreeAddressCodes(Generator.getThreeAddressCodes());
-
+        Output.truncateThreeAddressCode(false);
+        Output.writeThreeAddressCodes(Generator.getThreeAddressCodes(), false);
 
         //Imprimir tabla de procedimientos
         HashMap<String, Procedure> procedureTable = ProcedureTable.getTable();
@@ -135,6 +146,24 @@ public class CompilerUI extends JFrame {
         Output.initVariableTable();
         variableTable.forEach(Output::writeVariable);
         Output.closeVariableTable();
+
+        Output.writeInfo("Generando código ensamblador");
+
+        //Escribir fichero de ensamblador
+        new AssemblyGenerator(false).toAssembly();
+
+        Output.writeInfo("Optimizando código de tres direcciones y tabla de variables");
+        //TODO Optimizar
+
+        Output.writeInfo("Generando código de tres direcciones optimizado");
+
+        Output.truncateThreeAddressCode(true);
+        Output.writeThreeAddressCodes(Generator.getThreeAddressCodes(), true);
+
+        Output.writeInfo("Generando código ensamblador optimizado");
+
+        //Escribir fichero de ensamblador
+        new AssemblyGenerator(true).toAssembly();
 
         //TODO Cargar código de tres direcciones en la interfaz
 
@@ -154,10 +183,6 @@ public class CompilerUI extends JFrame {
 
         //Leer fichero de errores
         errorEditor.setText(new String(Files.readAllBytes(Paths.get(ERRORS_FILE))));
-
-        //Escribir fichero de ensamblador
-        AssemblyGenerator assemblyGenerator = new AssemblyGenerator();
-        assemblyGenerator.toAssembly();
     }
 
     private void initUI() {

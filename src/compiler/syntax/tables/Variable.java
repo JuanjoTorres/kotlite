@@ -91,4 +91,8 @@ public class Variable {
     public void setSubtype(Subtype subtype) {
         this.subtype = subtype;
     }
+
+    public static void restartNumVar() {
+        numVar = 0;
+    }
 }
