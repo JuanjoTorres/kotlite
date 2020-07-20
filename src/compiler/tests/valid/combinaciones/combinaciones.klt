@@ -1,4 +1,4 @@
-val bolas: Int  = 16;
+val bolas: Int  = 5;
 val seleccion: Int = 3;
 
 fun factorial(valor : Int): Int {
@@ -15,47 +15,59 @@ fun factorial(valor : Int): Int {
 
 fun calcularCombinacionesNR(): Int {
 
-    var factorialN : Int = factorial(bolas);
-    var factorialR : Int = factorial(seleccion);
-    var factorialNR : Int = factorial(bolas - seleccion);
+    var factorialN : Int;
+    var factorialR : Int;
+    var factorialNR : Int;
     var denominador : Int = factorialR * factorialNR;
+    var bolasMenosSeleccion: Int = bolas - seleccion;
+
+    print("Bolas + seleccion: %d", bolasMenosSeleccion);
+
+    factorialN = factorial(bolas);
+    factorialR = factorial(seleccion);
+    factorialNR = factorial(bolasMenosSeleccion);
 
     return (factorialN / denominador);
 }
 
 fun calcularCombinacionesR(): Int {
 
-    var factorialNR1 : Int = factorial(bolas + seleccion - 1);
-    var factorialN1 : Int = factorial(bolas - 1);
-    var factorialR : Int = factorial(seleccion);
-    var denominador : Int = factorialR * factorialN1;
+    var factorialNR1 : Int;
+    var factorialN1 : Int;
+    var factorialR : Int;
+    var denominador : Int;
+
+    var bolasMasSeleccion : Int = bolas + seleccion - 1;
+    var bolasMenosMenos : Int = bolas - 1;
+
+    print("Bolas + seleccion: %d", bolasMasSeleccion);
+    print("Bolas --: %d", bolasMenosMenos);
+
+    factorialNR1 = factorial(bolasMasSeleccion);
+    factorialN1 = factorial(bolasMenosMenos);
+    factorialR = factorial(seleccion);
+    denominador = factorialR * factorialN1;
 
     return (factorialNR1 / denominador);
-}
-
-fun seleccionarCalculo(modo : Boolean): None {
-
-    var mensaje : String;
-
-    if(modo) {
-        mensaje = "Calculando el número de bolas combinaciones sin repetición...";
-    } else {
-        mensaje = "Calculando el número de combinaciones con repetición...";
-    }
-
-    print(mensaje);
 }
 
 fun main (): None {
 
     var conRepeticion : Boolean = True;
     var resultado : Int;
+    var mensaje : String;
 
-    print("*** CALCULO DE COMBINATORIA ***\n");
+    print("*** CALCULO DE COMBINATORIA ***");
     print("Numero de bolas totales: %d.", bolas);
     print("Numero de bolas seleccionadas: %d.", seleccion);
 
-    seleccionarCalculo(conRepeticion);
+    if (conRepeticion) {
+        mensaje = "Calculando el número de bolas combinaciones sin repetición...";
+    } else {
+        mensaje = "Calculando el número de combinaciones con repetición...";
+    }
+
+    print(mensaje);
 
     if (conRepeticion) {
         resultado = calcularCombinacionesR();
