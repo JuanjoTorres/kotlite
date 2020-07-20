@@ -33,8 +33,7 @@ public class SymbolRelation extends SymbolBase {
         switch (oprel.getRelationType()) {
             case ParserSym.EQU:
             case ParserSym.NOTEQU:
-                if (!(expr1.getSubtype() == Subtype.INT && expr2.getSubtype() == Subtype.INT)
-                        || !(expr1.getSubtype() == Subtype.BOOLEAN && expr2.getSubtype() == Subtype.BOOLEAN))
+                if (expr1.getSubtype() != Subtype.INT && expr1.getSubtype() != Subtype.BOOLEAN && expr1.getSubtype() != expr2.getSubtype())
                     Output.writeError("Error semántico en posición " + line + ":" + column + " - El operador relacional " + ParserSym.terminalNames[oprel.getRelationType()] +
                             " requiere ambos operandos del tipo INT o BOOL, y se ha encontrado " + expr1.getSubtype() + " y " + expr2.getSubtype());
                 break;
