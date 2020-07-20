@@ -1,0 +1,9 @@
+var valor : Boolean = true;
+
+fun main (): None {
+    if (valor) {
+        print("Es verdadero!");
+    } else {
+        print("Es falso!");
+    }
+}
