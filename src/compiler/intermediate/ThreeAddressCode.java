@@ -1,7 +1,5 @@
 package compiler.intermediate;
 
-import compiler.syntax.tables.Variable;
-
 public class ThreeAddressCode {
 
     private String operation;
