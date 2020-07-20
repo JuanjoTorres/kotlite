@@ -7,7 +7,7 @@ fun main (): None {
 
     globalA = 1;
     globalB = 4;
-    globalC = 4 - 5;
+    globalC = 4 - (-1);
     print("La resta es %d", globalC);
     globalC = 4 / 5;
     print("La division es %d", globalC);

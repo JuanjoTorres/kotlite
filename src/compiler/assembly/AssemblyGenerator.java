@@ -330,14 +330,15 @@ public class AssemblyGenerator {
             case "MULTI":
                 stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
-                stringBuilder.append("    mul eax, ebx\n");
+                stringBuilder.append("    imul ebx\n");
                 stringBuilder.append("    mov [").append(destination).append("], eax\n");
                 break;
 
             case "DIV":
                 stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                stringBuilder.append("    cdq\n");
                 stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
-                stringBuilder.append("    div eax, ebx\n");
+                stringBuilder.append("    idiv ebx\n");
                 stringBuilder.append("    mov [").append(destination).append("], eax\n");
                 break;
 

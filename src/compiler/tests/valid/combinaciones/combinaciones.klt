@@ -1,0 +1,69 @@
+val bolas: Int  = 16;
+val seleccion: Int = 3;
+
+fun factorial(valor : Int): Int {
+
+    val factorial : Int = 1;
+    while (valor != 0) {
+
+        factorial = factorial * valor;
+        valor = valor - 1;
+    }
+
+    return factorial;
+}
+
+fun calcularCombinacionesNR(): Int {
+
+    var factorialN : Int = factorial(bolas);
+    var factorialR : Int = factorial(seleccion);
+    var factorialNR : Int = factorial(bolas - seleccion);
+    var denominador : Int = factorialR * factorialNR;
+
+    return (factorialN / denominador);
+}
+
+fun calcularCombinacionesR(): Int {
+
+    var factorialNR1 : Int = factorial(bolas + seleccion - 1);
+    var factorialN1 : Int = factorial(bolas - 1);
+    var factorialR : Int = factorial(seleccion);
+    var denominador : Int = factorialR * factorialN1;
+
+    return (factorialNR1 / denominador);
+}
+
+fun seleccionarCalculo(modo : Boolean): None {
+
+    var mensaje : String;
+
+    if(modo) {
+        mensaje = "Calculando el número de bolas combinaciones sin repetición...";
+    } else {
+        mensaje = "Calculando el número de combinaciones con repetición...";
+    }
+
+    print(mensaje);
+}
+
+fun main (): None {
+
+    var conRepeticion : Boolean = True;
+    var resultado : Int;
+
+    print("*** CALCULO DE COMBINATORIA ***\n");
+    print("Numero de bolas totales: %d.", bolas);
+    print("Numero de bolas seleccionadas: %d.", seleccion);
+
+    seleccionarCalculo(conRepeticion);
+
+    if (conRepeticion) {
+        resultado = calcularCombinacionesR();
+    } else {
+        resultado = calcularCombinacionesNR();
+    }
+
+    print("Numero de posibles combinaciones: %d.", resultado);
+    print("Fin del programa.");
+
+}
