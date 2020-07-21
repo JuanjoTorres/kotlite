@@ -1,6 +1,7 @@
 package compiler.intermediate;
 
 import compiler.output.Output;
+import compiler.syntax.tables.Subtype;
 import compiler.syntax.tables.Type;
 import compiler.syntax.tables.Variable;
 import compiler.syntax.tables.VariableTable;
@@ -105,7 +106,8 @@ public class Optimizer {
 
             //Comprobar es un copy literal a una variable de tipo constante o temporal
             if (tAC.getOperation().equals("COPY_LITERAL") &&
-                    variableTable.get(tAC.getDestination()).getType() == Type.CONST) {
+                    variableTable.get(tAC.getDestination()).getType() == Type.CONST &&
+                    variableTable.get(tAC.getDestination()).getSubtype() != Subtype.STRING) {
 
                 String constantId = tAC.getDestination();
                 Variable constant = variableTable.get(tAC.getDestination());
