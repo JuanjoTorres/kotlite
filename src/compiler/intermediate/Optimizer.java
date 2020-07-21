@@ -25,6 +25,8 @@ public class Optimizer {
     }
 
     public int optimize() {
+
+        //Hacer optimizaciones mientras haya cambios
         while (cambios) {
             cambios = false;
             saltosAdyacentes(threeAddressCodes);
@@ -35,6 +37,31 @@ public class Optimizer {
             asignacionesDiferidas(threeAddressCodes);
             reduccionFuerza(threeAddressCodes);
         }
+
+        ArrayList<String> unusedVariables = new ArrayList<>();
+
+        //Recorrer la tabla de variables y eliminar las variables que no se utilizan en el C3D
+        variableTable.forEach((id, variable) -> {
+
+            boolean used = false;
+
+            for (ThreeAddressCode tAC : threeAddressCodes) {
+                if (tAC.getOperand1().equals(id) || tAC.getOperand2().equals(id) || tAC.getDestination().equals(id)) {
+                    used = true;
+                    break;
+                }
+            }
+
+            //Si no se usa añadirla a la lista para eliminarla
+            if (!used) unusedVariables.add(id);
+
+        });
+
+        //Recorrer la tabla de variables y eliminar las variables que no se utilizan en el C3D
+        for (String unusedVariable : unusedVariables)
+            variableTable.remove(unusedVariable);
+
+        Output.writeInfo("Se han eliminado " + unusedVariables.size() + " variables en desuso de la tabla de variables.");
 
         return optimizations;
     }
