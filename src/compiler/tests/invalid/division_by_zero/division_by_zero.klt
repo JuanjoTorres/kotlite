@@ -1,0 +1,7 @@
+var globalC: Int;
+
+fun main (): None {
+    print("Antes division");
+    globalC = 4 / 0;
+    print("La division es %d", globalC);
+}
