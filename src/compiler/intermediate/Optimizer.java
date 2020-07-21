@@ -1,5 +1,6 @@
 package compiler.intermediate;
 
+import compiler.output.Output;
 import compiler.syntax.tables.Variable;
 import compiler.syntax.tables.VariableTable;
 
@@ -164,7 +165,7 @@ public class Optimizer {
                 variableTable.remove(tAC.getOperand1());
                 variableTable.remove(tAC.getOperand2());
 
-                System.out.println("Cambios en operacionesConstantes");
+                Output.writeInfo("Aplicada optimización de operaciones constantes");
 
                 //Hay cambios
                 cambios = true;
@@ -252,7 +253,7 @@ public class Optimizer {
                     }
                 }
 
-                System.out.println("Cambios en eliminacionCodigoInaccesible");
+                Output.writeInfo("Aplicada optimización de eliminación de código inaccesible");
 
                 //Hay cambios
                 cambios = true;
@@ -296,7 +297,7 @@ public class Optimizer {
                     //Eliminar COPY_LITERAL original
                     threeAddressCodes.remove(i);
 
-                    System.out.println("Cambios en asignacionesDiferidas");
+                    Output.writeInfo("Aplicada optimización de asignaciones diferidas");
 
                     //Hay cambios
                     cambios = true;

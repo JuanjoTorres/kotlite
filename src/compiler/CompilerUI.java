@@ -158,7 +158,7 @@ public class CompilerUI extends JFrame {
         // Aplicar optimizaciones
         int optimizaciones = new Optimizer().optimize();
 
-        Output.writeInfo("Se han aplicado " + optimizaciones);
+        Output.writeInfo("Se han aplicado " + optimizaciones + " optimizaciones.");
 
         Output.writeInfo("Generando código de tres direcciones optimizado.");
 

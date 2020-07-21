@@ -13,8 +13,8 @@ import java.util.HashMap;
 
 public class AssemblyGenerator {
 
-    private static final String FILENAME = "assembly_output";
-    private static final String FILENAME_OPTIMIZED = "assembly_output_optimized";
+    private static final String FILENAME = "assembly";
+    private static final String FILENAME_OPTIMIZED = "assembly_optim";
     private static final String FILE_EXTENSION = ".asm";
     private static final String STRING_MAX_SIZE = "512";
     private static final int VARIABLE_SIZE = 4;
@@ -43,7 +43,7 @@ public class AssemblyGenerator {
 
         StringBuilder stringBuilder = new StringBuilder();
 
-        //TODO Mirar enlace: https://www.devdungeon.com/content/hello-world-nasm-assemblerSUM
+        //TODO Mirar enlace: https://www.devdungeon.com/content/hello-world-nasm-assembler
 
         //Escribir cabecera del fichero
         stringBuilder.append("; ----------------------------------------------------\n");
@@ -53,7 +53,7 @@ public class AssemblyGenerator {
         stringBuilder.append(";   sudo apt install build-essential gcc-multilib\n");
         stringBuilder.append(";\n");
         stringBuilder.append("; Comando para compilar:\n");
-        stringBuilder.append(";   nasm -f elf " + fileName + ".asm && gcc -m32 " + fileName + ".o -o " + fileName + "\n");
+        stringBuilder.append(";   nasm -f elf " + fileName + ".asm && gcc -m32 " + fileName + ".o -o " + fileName + " && rm " + fileName + ".o\n");
         stringBuilder.append(";\n");
         stringBuilder.append("; Comando para ejecutar:\n");
         stringBuilder.append(";   ./").append(fileName).append("\n");
