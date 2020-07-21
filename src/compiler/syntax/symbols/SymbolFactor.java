@@ -104,10 +104,15 @@ public class SymbolFactor extends SymbolBase {
 
         //Si es un entero comprobar que no se salga del rango
         if (subtype == Subtype.INT) {
-            if (Long.parseLong(literal) > Integer.MAX_VALUE)
+            if (Long.parseLong(literal) > Integer.MAX_VALUE) {
+                Output.writeInfo(" * WARNING: El número " + literal + " es mayor que el valor máximo de un Int de 32 bits." +
+                        " Se ha reducido su valor a " + Integer.MAX_VALUE);
                 literal = String.valueOf(Integer.MAX_VALUE);
-            else if (Long.parseLong(literal) < Integer.MIN_VALUE)
+            } else if (Long.parseLong(literal) < Integer.MIN_VALUE) {
+                Output.writeInfo(" * WARNING: El número " + literal + " es menor que el valor mínimo de un Int de 32 bits." +
+                        " Se ha aumentado su valor a " + Integer.MIN_VALUE);
                 literal = String.valueOf(Integer.MIN_VALUE);
+            }
         }
 
         //Generar variable
