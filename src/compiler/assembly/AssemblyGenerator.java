@@ -237,7 +237,10 @@ public class AssemblyGenerator {
                 break;
 
             case "PARAM":
-                stringBuilder.append("    mov eax, [").append(destination).append("]\n");
+                if (variableTable.get(destination).getSubtype() == Subtype.STRING)
+                    stringBuilder.append("    mov eax, ").append(destination).append("\n");
+                else
+                    stringBuilder.append("    mov eax, [").append(destination).append("]\n");
                 stringBuilder.append("    push eax\n");
                 break;
 
@@ -547,6 +550,8 @@ public class AssemblyGenerator {
 
             case "PRINT":
                 //Si es una variable inicializada, pasar valor, sino referencia
+
+                //Si es una variable inicializada, pasar valor, sino referencia
                 if (variableTable.get(operand1) != null && variableTable.get(operand1).getValue() != null)
                     stringBuilder.append("    mov eax, ").append(operand1).append("\n");
                 else
@@ -564,7 +569,10 @@ public class AssemblyGenerator {
                     stringBuilder.append("    mov ebx, ").append(operand2).append("\n");
 
                 stringBuilder.append("    push ebx\n");
-                stringBuilder.append("    mov eax, ").append(operand1).append("\n");
+                if (variableTable.get(operand1) != null && variableTable.get(operand1).getValue() != null)
+                    stringBuilder.append("    mov eax, ").append(operand1).append("\n");
+                else
+                    stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 stringBuilder.append("    push eax\n");
                 stringBuilder.append("    call printf\n");
                 stringBuilder.append("    pop eax\n");
