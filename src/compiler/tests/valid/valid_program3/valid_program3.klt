@@ -36,6 +36,7 @@ fun main(): None {
     val tengoCoche: Boolean = true;
     var conductor: String = "";
     var jugadores: Int = 5;
+    var mensaje : String;
 
     if (!piernaRota) {
         conductor = "Yo";
@@ -59,7 +60,9 @@ fun main(): None {
         }
     }
 
-    comprobarTemperatura(40);
+    mensaje = comprobarTemperatura(40);
+
+    print(mensaje);
     print("El conductor es:");
     print(conductor);
 
