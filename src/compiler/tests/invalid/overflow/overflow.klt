@@ -1,0 +1,8 @@
+var globalC: Int;
+
+fun main (): None {
+    // globalC = 999999 * (2 + 4 + 3 + 5 + (6666 + 3 + 3) + (-5));
+    // globalC = (500000000000) + 500000000000;
+    globalC = (-50000) - 5000;
+    print("El resultado es %d", globalC);
+}
