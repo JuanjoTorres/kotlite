@@ -20,6 +20,7 @@ public class Output {
     private final static String ERRORS_FILE = "errors.txt";
     private final static String SYMBOLS_FILE = "symbols_table.html";
     private final static String VARIABLE_FILE = "variable_table.html";
+    private final static String VARIABLE_FILE_OPTIMIZED = "variable_table_optimized.html";
     private final static String PROCEDURE_FILE = "procedure_table.html";
     private final static String THREE_ADDRESS_CODE = "three_address_code.txt";
     private final static String THREE_ADDRESS_CODE_OPTIMIZED = "three_address_code_optimized.txt";
@@ -165,10 +166,12 @@ public class Output {
     /**
      * Crear fichero html y inicializar tabla de variables
      */
-    public static void initVariableTable() {
+    public static void initVariableTable(boolean optimized) {
+
+        String fileName = optimized ? VARIABLE_FILE_OPTIMIZED : VARIABLE_FILE;
 
         try {
-            FileWriter fileWriter = new FileWriter(VARIABLE_FILE);
+            FileWriter fileWriter = new FileWriter(fileName);
             BufferedWriter buffer = new BufferedWriter(fileWriter);
 
             buffer.write("<!DOCTYPE html><html><head>");
@@ -182,14 +185,16 @@ public class Output {
 
             buffer.close();
         } catch (IOException e) {
-            System.err.println("[IOException] Write Error in " + VARIABLE_FILE + ": " + e.getMessage());
+            System.err.println("[IOException] Write Error in " + fileName + ": " + e.getMessage());
         }
     }
 
     /**
      * Añadir simbolo al fichero de tabla de símbolos
      */
-    public static void writeVariable(String id, Variable variable) {
+    public static void writeVariable(String id, Variable variable, boolean optimized) {
+
+        String fileName = optimized ? VARIABLE_FILE_OPTIMIZED : VARIABLE_FILE;
 
         String color;
 
@@ -205,7 +210,7 @@ public class Output {
             color = "#A9CCE3";
 
         try {
-            FileWriter fileWriter = new FileWriter(VARIABLE_FILE, true);
+            FileWriter fileWriter = new FileWriter(fileName, true);
             BufferedWriter buffer = new BufferedWriter(fileWriter);
 
             //Añadir entrada a la tabla html
@@ -215,22 +220,25 @@ public class Output {
             buffer.close();
 
         } catch (IOException e) {
-            System.err.println("[IOException] Write Error in " + VARIABLE_FILE + ": " + e.getMessage());
+            System.err.println("[IOException] Write Error in " + fileName + ": " + e.getMessage());
         }
     }
 
     /**
      * Cerrar fichero html de tabla de variables
      */
-    public static void closeVariableTable() {
+    public static void closeVariableTable(boolean optimized) {
+
+        String fileName = optimized ? VARIABLE_FILE_OPTIMIZED : VARIABLE_FILE;
+
         try {
-            FileWriter fileWriter = new FileWriter(VARIABLE_FILE, true);
+            FileWriter fileWriter = new FileWriter(fileName, true);
             BufferedWriter buffer = new BufferedWriter(fileWriter);
 
             buffer.write("</table></body></html>");
             buffer.close();
         } catch (IOException e) {
-            System.err.println("[IOException] Write Error in " + VARIABLE_FILE + ": " + e.getMessage());
+            System.err.println("[IOException] Write Error in " + fileName + ": " + e.getMessage());
         }
     }
 

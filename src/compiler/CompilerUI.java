@@ -136,17 +136,21 @@ public class CompilerUI extends JFrame {
         Output.truncateThreeAddressCode(false);
         Output.writeThreeAddressCodes(Generator.getThreeAddressCodes(), false);
 
+        Output.writeInfo("Generando tabla de procedimientos.");
+
         //Imprimir tabla de procedimientos
         HashMap<String, Procedure> procedureTable = ProcedureTable.getTable();
         Output.initProcedureTable();
         procedureTable.forEach(Output::writeProcedure);
         Output.closeProcedureTable();
 
+        Output.writeInfo("Generando tabla de variables.");
+
         //Imprimir tabla de variables
         HashMap<String, Variable> variableTable = VariableTable.getTable();
-        Output.initVariableTable();
-        variableTable.forEach(Output::writeVariable);
-        Output.closeVariableTable();
+        Output.initVariableTable(false);
+        variableTable.forEach((id, variable) -> Output.writeVariable(id, variable, false));
+        Output.closeVariableTable(false);
 
         Output.writeInfo("Generando código ensamblador.");
 
@@ -159,6 +163,13 @@ public class CompilerUI extends JFrame {
         int optimizaciones = new Optimizer().optimize();
 
         Output.writeInfo("Se han aplicado " + optimizaciones + " optimizaciones.");
+
+        Output.writeInfo("Generando tabla de variables optimizada.");
+
+        //Imprimir tabla de variables
+        Output.initVariableTable(true);
+        variableTable.forEach((id, variable) -> Output.writeVariable(id, variable, true));
+        Output.closeVariableTable(true);
 
         Output.writeInfo("Generando código de tres direcciones optimizado.");
 
