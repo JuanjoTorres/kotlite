@@ -109,6 +109,14 @@ public class SymbolFactor extends SymbolBase {
         variable.setValue(literal);
         variableTable.put(variable.getId(), variable);
 
+        //Si es un entero comprobar que no se salga del rango
+        if (subtype == Subtype.INT) {
+            if (Long.parseLong(literal) > Integer.MAX_VALUE)
+                literal = String.valueOf(Integer.MAX_VALUE);
+            else if (Long.parseLong(literal) < Integer.MIN_VALUE)
+                literal = String.valueOf(Integer.MIN_VALUE);
+        }
+
         //Añadir código de tres direcciones con la operacion
         generator.addThreeAddressCode("COPY_LITERAL", literal, "", variable.getId());
     }
