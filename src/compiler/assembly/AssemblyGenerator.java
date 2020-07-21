@@ -317,7 +317,7 @@ public class AssemblyGenerator {
                 if (Long.parseLong(operand1) > Integer.MAX_VALUE) {
                     tAC.setOperand1(String.valueOf(Integer.MAX_VALUE));
                     operand1 = String.valueOf(Integer.MAX_VALUE);
-                }  else if (Long.parseLong(operand1) < Integer.MIN_VALUE) {
+                } else if (Long.parseLong(operand1) < Integer.MIN_VALUE) {
                     tAC.setOperand1(String.valueOf(Integer.MIN_VALUE));
                     operand1 = String.valueOf(Integer.MIN_VALUE);
                 }
@@ -337,62 +337,139 @@ public class AssemblyGenerator {
                 break;
 
             case "EQU":
-                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
-                stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
+                //Si contiene el símbolo $ es una variable, sino un literal
+                if (operand1.contains("$"))
+                    stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                else
+                    stringBuilder.append("    mov eax, ").append(operand1).append("\n");
+
+                if (operand2.contains("$"))
+                    stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
+                else
+                    stringBuilder.append("    cmp eax, ").append(operand2).append("\n");
+
                 stringBuilder.append("    sete [").append(destination).append("]\n");
                 break;
 
             case "NOTEQU":
-                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
-                stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
+                if (operand1.contains("$"))
+                    stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                else
+                    stringBuilder.append("    mov eax, ").append(operand1).append("\n");
+
+                if (operand2.contains("$"))
+                    stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
+                else
+                    stringBuilder.append("    cmp eax, ").append(operand2).append("\n");
+
                 stringBuilder.append("    setne [").append(destination).append("]\n");
                 break;
 
             case "LT":
-                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
-                stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
+                if (operand1.contains("$"))
+                    stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                else
+                    stringBuilder.append("    mov eax, ").append(operand1).append("\n");
+
+                if (operand2.contains("$"))
+                    stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
+                else
+                    stringBuilder.append("    cmp eax, ").append(operand2).append("\n");
+
                 stringBuilder.append("    setl [").append(destination).append("]\n");
                 break;
 
             case "LTEQU":
-                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
-                stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
+                if (operand1.contains("$"))
+                    stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                else
+                    stringBuilder.append("    mov eax, ").append(operand1).append("\n");
+
+                if (operand2.contains("$"))
+                    stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
+                else
+                    stringBuilder.append("    cmp eax, ").append(operand2).append("\n");
+
                 stringBuilder.append("    setle [").append(destination).append("]\n");
                 break;
 
             case "GT":
-                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
-                stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
+                if (operand1.contains("$"))
+                    stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                else
+                    stringBuilder.append("    mov eax, ").append(operand1).append("\n");
+
+                if (operand2.contains("$"))
+                    stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
+                else
+                    stringBuilder.append("    cmp eax, ").append(operand2).append("\n");
+
                 stringBuilder.append("    setg [").append(destination).append("]\n");
                 break;
 
             case "GTEQU":
-                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
-                stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
+                if (operand1.contains("$"))
+                    stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                else
+                    stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+
+                if (operand2.contains("$"))
+                    stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
+                else
+                    stringBuilder.append("    cmp eax, ").append(operand2).append("\n");
+
                 stringBuilder.append("    setge [").append(destination).append("]\n");
                 break;
 
             case "NOT":
-                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                if (operand1.contains("$"))
+                    stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                else
+                    stringBuilder.append("    mov eax, ").append(operand1).append("\n");
+
                 stringBuilder.append("    test eax, eax\n");
                 stringBuilder.append("    setz [").append(destination).append("]\n");
                 break;
 
             case "OR":
-                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
-                stringBuilder.append("    or eax, [").append(operand2).append("]\n");
+                if (operand1.contains("$"))
+                    stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                else
+                    stringBuilder.append("    mov eax, ").append(operand1).append("\n");
+
+                if (operand2.contains("$"))
+                    stringBuilder.append("    or eax, [").append(operand2).append("]\n");
+                else
+                    stringBuilder.append("    or eax, ").append(operand2).append("\n");
+
                 stringBuilder.append("    setnz [").append(destination).append("]\n");
                 break;
 
             case "AND":
-                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
-                stringBuilder.append("    and eax, [").append(operand2).append("]\n");
+                if (operand1.contains("$"))
+                    stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                else
+                    stringBuilder.append("    mov eax, ").append(operand1).append("\n");
+
+                if (operand2.contains("$"))
+                    stringBuilder.append("    and eax, [").append(operand2).append("]\n");
+                else
+                    stringBuilder.append("    and eax, ").append(operand2).append("\n");
+
                 stringBuilder.append("    setnz [").append(destination).append("]\n");
                 break;
 
             case "PLUS":
-                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
-                stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
+                if (operand1.contains("$"))
+                    stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                else
+                    stringBuilder.append("    mov eax, ").append(operand1).append("\n");
+
+                if (operand2.contains("$"))
+                    stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
+                else
+                    stringBuilder.append("    mov ebx, ").append(operand2).append("\n");
+
                 stringBuilder.append("    add eax, ebx\n");
 
                 //Comprobamos si la operacion resultante cabe en un registro de 32 bit
@@ -403,8 +480,17 @@ public class AssemblyGenerator {
                 break;
 
             case "MINUS":
-                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
-                stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
+                if (operand1.contains("$"))
+                    stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                else
+                    stringBuilder.append("    mov eax, ").append(operand1).append("\n");
+
+
+                if (operand2.contains("$"))
+                    stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
+                else
+                    stringBuilder.append("    mov ebx, ").append(operand2).append("\n");
+
                 stringBuilder.append("    sub eax, ebx\n");
 
                 //Comprobamos si la operacion resultante cabe en un registro de 32 bit
@@ -415,8 +501,16 @@ public class AssemblyGenerator {
                 break;
 
             case "MULTI":
-                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
-                stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
+                if (operand1.contains("$"))
+                    stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                else
+                    stringBuilder.append("    mov eax, ").append(operand1).append("\n");
+
+                if (operand2.contains("$"))
+                    stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
+                else
+                    stringBuilder.append("    mov ebx, ").append(operand2).append("\n");
+
                 stringBuilder.append("    imul ebx\n");
 
                 //Comprobamos si la operacion resultante cabe en un registro de 32 bit
@@ -427,13 +521,26 @@ public class AssemblyGenerator {
                 break;
 
             case "DIV":
-                //Verificamos si se trata de un cero
-                stringBuilder.append("    mov eax, [").append(operand2).append("]\n");
+                //Verificamos si el denominador es un cero
+                if (operand2.contains("$"))
+                    stringBuilder.append("    mov eax, [").append(operand2).append("]\n");
+                else
+                    stringBuilder.append("    mov eax, ").append(operand2).append("\n");
+
                 stringBuilder.append("    call handlerErrorByZero\n");
 
-                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                if (operand1.contains("$"))
+                    stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                else
+                    stringBuilder.append("    mov eax, ").append(operand1).append("\n");
+
                 stringBuilder.append("    cdq\n");
-                stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
+
+                if (operand2.contains("$"))
+                    stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
+                else
+                    stringBuilder.append("    mov ebx, ").append(operand2).append("\n");
+
                 stringBuilder.append("    idiv ebx\n");
                 stringBuilder.append("    mov [").append(destination).append("], eax\n");
                 break;
@@ -451,7 +558,11 @@ public class AssemblyGenerator {
 
             case "PRINTBOOL":
             case "PRINTINT":
-                stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
+                if (operand2.contains("$"))
+                    stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
+                else
+                    stringBuilder.append("    mov ebx, ").append(operand2).append("\n");
+
                 stringBuilder.append("    push ebx\n");
                 stringBuilder.append("    mov eax, ").append(operand1).append("\n");
                 stringBuilder.append("    push eax\n");
