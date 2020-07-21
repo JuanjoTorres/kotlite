@@ -1,5 +1,0 @@
-SKIP |  |  | fun#main
-PMB |  |  | fun#main
-COPY | t#1 |  | mensajes
-PRINT | t#2 |  | 
-PRINT | mensajes |  | 

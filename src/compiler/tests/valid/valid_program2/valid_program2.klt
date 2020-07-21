@@ -1,11 +1,9 @@
-val frase: String = "El factorial es :";
-
 fun potencia (base: Int; exp: Int) : Int {
   var resultado: Int = 1;
 
   while (exp > 0) {
     resultado = resultado * base;
-    exp = exp -1;
+    exp = exp - 1;
   }
 
   return resultado;
@@ -16,19 +14,23 @@ fun main () : None {
     var acabar: Boolean = false;
     var base: Int = 10;
     var exp: Int = 4;
-    var factorialRes: Int;
+    var resultado: Int;
+    var frase2 : String = "Con exponente %d.";
+    val frase1 : String = "La potencia de %d.";
 
     while (!acabar) {
 
-       factorialRes = potencia(base, exp);
-       print(frase);
-       //print(factorialRes);
-       base = base -1;
+       resultado = potencia(base, exp);
+       print(frase1, base);
+       print(frase2, exp);
+       print("Es... %d.", resultado);
 
-       if (exp <= 0) {
+       base = base - 1;
+
+       if (base <= 0) {
            acabar = true;
        }
     }
 
-    print("Fin del programa");
+    print("Fin del programa.");
 }

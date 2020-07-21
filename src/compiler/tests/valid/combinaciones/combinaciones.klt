@@ -25,6 +25,7 @@ fun calcularCombinacionesSinRepeticiones(): Int {
     factorialNR = factorial(bolasMenosSeleccion);
     denominador = factorialR * factorialNR;
 
+    print("Denominador: %d.", denominador);
     return (factorialN / denominador);
 }
 

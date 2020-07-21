@@ -1,4 +1,0 @@
-SKIP |  |  | fun_main_2
-COPY | "Hola mundo!" |  | t1
-PARAM |  |  | t1
-CALL | fun_print_1 |  | t2

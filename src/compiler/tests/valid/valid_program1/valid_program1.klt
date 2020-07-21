@@ -1,17 +1,14 @@
-var a: Int = 6;
+val a: Int = 6;
 var b: Int;
 
 fun max(num1: Int; num2: Int): Int {
 
     var res: Int;
 
-    a = 10;
-    b = 10;
-
-    if (num1 < num2 and true) {
+    if (num1 < num2) {
         res = num2;
     } else {
-        res = 4;
+        res = num1;
     }
 
     return res;
@@ -19,13 +16,13 @@ fun max(num1: Int; num2: Int): Int {
 
 fun main (a: Int; b: Int) : None {
     var c: Int;
-    var d: Int;
-    var e: Int;
+    var asa: Int;
+    var d : Int;
 
-    c = 30 + 2 * 3;
-    d = a / 3;
-    e = max(a, b);
+    b = 10;
+    c = 30 + a * 3;
+    d = c / 3;
+    asa = max(b, d);
 
-    print("El numero mas grande es...");
-    //print(c);
+    print("El numero mas grande es... %d.", asa);
 }

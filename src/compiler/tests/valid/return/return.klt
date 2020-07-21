@@ -1,12 +1,19 @@
-
+val num33 : Int = 33;
 fun get(): Int {
-    return 8;
+    return num33;
 }
 
+fun get2(): Int {
+    var numero : Int = 3;
+    numero = numero + 3;
+    return numero;
+}
 fun main (): None {
     var numero: Int;
 
     numero = get();
-
     print("El resultado es: %d", numero);
+
+    numero = get2();
+    print("El resultado del segundo numero es: %d", numero);
 }
