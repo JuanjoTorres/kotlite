@@ -237,7 +237,8 @@ public class AssemblyGenerator {
                 break;
 
             case "PARAM":
-                if (variableTable.get(destination).getSubtype() == Subtype.STRING)
+                //Si es una constante o un string
+                if (!destination.contains("$") || variableTable.get(destination).getSubtype() == Subtype.STRING)
                     stringBuilder.append("    mov eax, ").append(destination).append("\n");
                 else
                     stringBuilder.append("    mov eax, [").append(destination).append("]\n");

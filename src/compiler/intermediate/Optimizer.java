@@ -107,13 +107,19 @@ public class Optimizer {
             if (tAC.getOperation().equals("COPY_LITERAL") &&
                     variableTable.get(tAC.getDestination()).getType() == Type.CONST) {
 
+                String constantId = tAC.getDestination();
+                Variable constant = variableTable.get(tAC.getDestination());
+
                 //Sustituir constante por el valor literal en todas las operaciones que aparezca
                 for (int i = 0; i < threeAddressCodes.size(); i++) {
 
-                    //Si el operando 1 es igual al nombre de la constante
-                    if (threeAddressCodes.get(i).getOperand1().equals(tAC.getDestination())) {
+                    if (constant == null)
+                        continue;
 
-                        String value = variableTable.get(tAC.getDestination()).getValue();
+                    //Si el operando 1 es igual al nombre de la constante
+                    if (threeAddressCodes.get(i).getOperand1().equals(constantId)) {
+
+                        String value = constant.getValue();
 
                         if (value.equals("true") || value.equals("True"))
                             value = "1";
@@ -128,10 +134,9 @@ public class Optimizer {
                     }
 
                     //Si el operando 2 es igual al nombre de la constante
-                    if (threeAddressCodes.get(i).getOperand2().equals(tAC.getDestination())) {
-                        threeAddressCodes.get(i).setOperand2(variableTable.get(tAC.getDestination()).getValue());
+                    if (threeAddressCodes.get(i).getOperand2().equals(constantId)) {
 
-                        String value = variableTable.get(tAC.getDestination()).getValue();
+                        String value = constant.getValue();
 
                         if (value.equals("true") || value.equals("True"))
                             value = "1";
@@ -139,6 +144,23 @@ public class Optimizer {
                             value = "0";
 
                         threeAddressCodes.get(i).setOperand2(value);
+
+                        //Hay cambios
+                        cambios = true;
+                        optimizations++;
+                    }
+
+                    //Si el destino es igual al nombre de la constante
+                    if (threeAddressCodes.get(i).getDestination().equals(constantId)) {
+
+                        String value = constant.getValue();
+
+                        if (value.equals("true") || value.equals("True"))
+                            value = "1";
+                        else if (value.equals("false") || value.equals("False"))
+                            value = "0";
+
+                        threeAddressCodes.get(i).setDestination(value);
 
                         //Hay cambios
                         cambios = true;
