@@ -7,7 +7,7 @@ fun main (): None {
     var num5 : Int = 0;
 
     if (num1 < 10) {
-        print("Entro dentro del menorque");
+        print("Entro dentro del menorque %d", num1);
     }
 
     while (num1 < 10) {
@@ -16,8 +16,7 @@ fun main (): None {
     }
 
     if (num2 <= 10) {
-
-        print("Entro dentro del menorigualque");
+        print("Entro dentro del menorigualque %d", num2);
     }
 
     while (num2 <= 10) {
@@ -26,7 +25,7 @@ fun main (): None {
     }
 
     if (num3 > 0) {
-        print("Entro dentro del mayorque");
+        print("Entro dentro del mayorque %d", num3);
     }
 
     while (num3 > 0) {
@@ -35,7 +34,7 @@ fun main (): None {
     }
 
     if (num4 >= 0) {
-        print("Entro dentro del mayorigualque");
+        print("Entro dentro del mayorigualque %d", num4);
     }
 
     while (num4 >= 0) {
@@ -44,7 +43,7 @@ fun main (): None {
     }
 
     if (num5 == 0) {
-        print("Entro dentro del igual");
+        print("Entro dentro del igual %d", num5);
     }
 
     while (num5 != 10) {

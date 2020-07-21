@@ -1,7 +1,7 @@
 val llueve: Boolean = false;
 val haceSol: Boolean = true;
 
-fun comprobarTemperatura(temp: Int) : String {
+fun comprobarTemperatura(temp: Int) : None {
     var mensaje: String = "";
 
     if (temp <= 15) {
@@ -22,7 +22,7 @@ fun comprobarTemperatura(temp: Int) : String {
         }
     }
 
-    return mensaje;
+    print(mensaje);
 }
 
 fun calcularKel (temp: Int; texto: String) : None {
@@ -60,9 +60,8 @@ fun main(): None {
         }
     }
 
-    mensaje = comprobarTemperatura(40);
+    comprobarTemperatura(40);
 
-    print(mensaje);
     print("El conductor es:");
     print(conductor);
 
