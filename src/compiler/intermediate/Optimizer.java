@@ -110,7 +110,7 @@ public class Optimizer {
                     //Si el operando 1 es igual al nombre de la constante
                     if (threeAddressCodes.get(i).getOperand1().equals(tAC.getDestination())) {
 
-                        String value = variableTable.get(tAC.getDestination()).getValue();
+                        String value = variableTable.get(tAC.getOperand1()).getValue();
 
                         if (value.equals("true") || value.equals("True"))
                             value = "1";
@@ -127,6 +127,15 @@ public class Optimizer {
                     //Si el operando 2 es igual al nombre de la constante
                     if (threeAddressCodes.get(i).getOperand2().equals(tAC.getDestination())) {
                         threeAddressCodes.get(i).setOperand2(variableTable.get(tAC.getDestination()).getValue());
+
+                        String value = variableTable.get(tAC.getOperand2()).getValue();
+
+                        if (value.equals("true") || value.equals("True"))
+                            value = "1";
+                        else if (value.equals("false") || value.equals("False"))
+                            value = "0";
+
+                        threeAddressCodes.get(i).setOperand2(value);
 
                         //Hay cambios
                         cambios = true;

@@ -123,7 +123,7 @@ public class AssemblyGenerator {
         stringBuilder.append("\n    ; ===== ===== ===== ===== =====\n");
         stringBuilder.append("    ; Control de Error: Carry\n");
 
-        stringBuilder.append("    handlerErrorByCarry: nop\n");
+        stringBuilder.append("handlerErrorByCarry: nop\n");
         stringBuilder.append("    cmp bl, 0\n");
         stringBuilder.append("    je checkedCarry\n");
 
@@ -137,14 +137,14 @@ public class AssemblyGenerator {
         stringBuilder.append("    int 0x80\n");
         stringBuilder.append("    mov eax, 1\n");
 
-        stringBuilder.append("\n    checkedCarry: nop\n");
+        stringBuilder.append("\ncheckedCarry: nop\n");
         stringBuilder.append("    ret\n");
 
         //Control de errores Division By Zero
         stringBuilder.append("\n    ; ===== ===== ===== ===== =====\n");
         stringBuilder.append("    ; Control de Error: Division por Zero\n");
 
-        stringBuilder.append("    handlerErrorByZero: nop\n");
+        stringBuilder.append("handlerErrorByZero: nop\n");
         stringBuilder.append("    cmp eax, 0\n");
         stringBuilder.append("    jne checkedByZero\n");
 
@@ -158,7 +158,7 @@ public class AssemblyGenerator {
         stringBuilder.append("    int 0x80\n");
         stringBuilder.append("    mov eax, 1\n");
 
-        stringBuilder.append("\n    checkedByZero: nop\n");
+        stringBuilder.append("\ncheckedByZero: nop\n");
         stringBuilder.append("    ret\n");
 
         stringBuilder.append("main:\n");
