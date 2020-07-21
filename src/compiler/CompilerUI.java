@@ -131,7 +131,7 @@ public class CompilerUI extends JFrame {
 
         Output.writeInfo("ANÁLISIS SINTÁCTICO terminado.");
 
-        Output.writeInfo("Generando código de tres direcciones");
+        Output.writeInfo("Generando código de tres direcciones.");
 
         Output.truncateThreeAddressCode(false);
         Output.writeThreeAddressCodes(Generator.getThreeAddressCodes(), false);
@@ -148,24 +148,24 @@ public class CompilerUI extends JFrame {
         variableTable.forEach(Output::writeVariable);
         Output.closeVariableTable();
 
-        Output.writeInfo("Generando código ensamblador");
+        Output.writeInfo("Generando código ensamblador.");
 
         //Escribir fichero de ensamblador
         new AssemblyGenerator(false).toAssembly();
 
-        Output.writeInfo("Optimizando código de tres direcciones y tabla de variables");
+        Output.writeInfo("Optimizando código de tres direcciones y tabla de variables.");
 
         // Aplicar optimizaciones
         int optimizaciones = new Optimizer().optimize();
 
         Output.writeInfo("Se han aplicado " + optimizaciones);
 
-        Output.writeInfo("Generando código de tres direcciones optimizado");
+        Output.writeInfo("Generando código de tres direcciones optimizado.");
 
         Output.truncateThreeAddressCode(true);
         Output.writeThreeAddressCodes(Generator.getThreeAddressCodes(), true);
 
-        Output.writeInfo("Generando código ensamblador optimizado");
+        Output.writeInfo("Generando código ensamblador optimizado.");
 
         //Escribir fichero de ensamblador
         new AssemblyGenerator(true).toAssembly();
