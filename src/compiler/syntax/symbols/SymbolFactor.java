@@ -102,13 +102,6 @@ public class SymbolFactor extends SymbolBase {
                 break;
         }
 
-        //Generar variable
-        variable = new Variable(generator.generateVariable(), generator.peekFunctionLabel(), true);
-        variable.setType(Type.VAR);
-        variable.setSubtype(subtype);
-        variable.setValue(literal);
-        variableTable.put(variable.getId(), variable);
-
         //Si es un entero comprobar que no se salga del rango
         if (subtype == Subtype.INT) {
             if (Long.parseLong(literal) > Integer.MAX_VALUE)
@@ -116,6 +109,13 @@ public class SymbolFactor extends SymbolBase {
             else if (Long.parseLong(literal) < Integer.MIN_VALUE)
                 literal = String.valueOf(Integer.MIN_VALUE);
         }
+
+        //Generar variable
+        variable = new Variable(generator.generateVariable(), generator.peekFunctionLabel(), true);
+        variable.setType(Type.VAR);
+        variable.setSubtype(subtype);
+        variableTable.put(variable.getId(), variable);
+        variable.setValue(literal);
 
         //Añadir código de tres direcciones con la operacion
         generator.addThreeAddressCode("COPY_LITERAL", literal, "", variable.getId());
