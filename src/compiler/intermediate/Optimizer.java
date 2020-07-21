@@ -374,9 +374,6 @@ public class Optimizer {
                     //Cambiar valor de la nueva variable de destino en tabla de variables
                     variableTable.get(copyDiferido.getDestination()).setValue(valorDiferido);
 
-                    //Eliminar variable temporal de la tabla de variables
-                    variableTable.remove(tAC.getDestination());
-
                     //Eliminar COPY_LITERAL original
                     threeAddressCodes.remove(i);
 
