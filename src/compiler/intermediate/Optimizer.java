@@ -43,6 +43,9 @@ public class Optimizer {
         //Recorrer la tabla de variables y eliminar las variables que no se utilizan en el C3D
         variableTable.forEach((id, variable) -> {
 
+            if (variable.getType() == Type.ARG)
+                return;
+
             boolean used = false;
 
             for (ThreeAddressCode tAC : threeAddressCodes) {
