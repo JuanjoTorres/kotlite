@@ -1,14 +1,15 @@
-val constanteGlobal: Int = 78;
+val constanteGlobal: Int = 21;
 
 fun main (): None {
-    var result: Int;
 
-    result = constanteGlobal * 4;
+    var result: Int = (constanteGlobal * constanteGlobal) * 4;
     print("Multiplicación es %d", result);
-    result = constanteGlobal / 4;
+
+    result = result / 4;
     print("Division es %d", result);
-    result = constanteGlobal + 4;
+
+    result = 500 + constanteGlobal + 400;
     print("Suma es %d", result);
-    result = constanteGlobal - 4;
-    print("Resta es %d", result);
+
+    print("Resta es %d", ((-4) - result));
 }

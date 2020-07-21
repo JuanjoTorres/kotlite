@@ -20,8 +20,6 @@ fun calcularCombinacionesSinRepeticiones(): Int {
     var denominador : Int;
     var bolasMenosSeleccion: Int = bolas - seleccion;
 
-    print("Bolas + seleccion: %d", bolasMenosSeleccion);
-
     factorialN = factorial(bolas);
     factorialR = factorial(seleccion);
     factorialNR = factorial(bolasMenosSeleccion);

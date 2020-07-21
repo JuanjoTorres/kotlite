@@ -1,5 +1,5 @@
 var verdadero: Boolean = true;
-val falso: Boolean = false;
+val falso: Boolean = False;
 
 fun main (): None {
 
@@ -22,5 +22,11 @@ fun main (): None {
         print("Verdadero AND (falso OR verdaero) es true");
     } else {
         print("Error 2, no debería haber entrado aqui");
+    }
+
+    if (!!!!verdadero and (falso or verdadero or falso) and verdadero) {
+        print("Verdadero 4 veces negado AND (falso OR verdadero OR falso) AND verdadero es true");
+    } else {
+        print("Error 3, no debería haber entrado aqui");
     }
 }
