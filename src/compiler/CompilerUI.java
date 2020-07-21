@@ -127,7 +127,9 @@ public class CompilerUI extends JFrame {
         } catch (Exception e) {
             Output.writeError("Error sintáctico en la posición " + scanner.getRow() + ":" + scanner.getCol() + ". No se puede continuar el análisis");
             e.printStackTrace();
-            //No continuar si hay errores sintácticos
+            //Leer fichero de errores y mostrarlos
+            tabbedPane.setSelectedIndex(2);
+            errorEditor.setText(new String(Files.readAllBytes(Paths.get(ERRORS_FILE))));
             return;
         }
 
