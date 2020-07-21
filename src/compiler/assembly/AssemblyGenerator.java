@@ -551,7 +551,6 @@ public class AssemblyGenerator {
             case "PRINT":
                 //Si es una variable inicializada, pasar valor, sino referencia
 
-                //Si es una variable inicializada, pasar valor, sino referencia
                 if (variableTable.get(operand1) != null && variableTable.get(operand1).getValue() != null)
                     stringBuilder.append("    mov eax, ").append(operand1).append("\n");
                 else
@@ -563,6 +562,7 @@ public class AssemblyGenerator {
 
             case "PRINTBOOL":
             case "PRINTINT":
+                //Numero literal no lleva llaves
                 if (operand2.contains("$"))
                     stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
                 else
