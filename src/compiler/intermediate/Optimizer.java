@@ -1,6 +1,7 @@
 package compiler.intermediate;
 
 import compiler.output.Output;
+import compiler.syntax.tables.Type;
 import compiler.syntax.tables.Variable;
 import compiler.syntax.tables.VariableTable;
 
@@ -21,21 +22,6 @@ public class Optimizer {
     public Optimizer() {
         variableTable = VariableTable.getTable();
         threeAddressCodes = Generator.getThreeAddressCodes();
-        //Operaciones constantes
-            /*
-            1 - Recorrer todo el arraylist
-            2 - If operator contains ADD, SUM, DIV, MULT
-            3 - Buscar operandos, que no sean null y los dos son literales,
-                cambiar operacion por COPY, poner resultado en operador 1 y cambiar destino
-             */
-
-        //Asignaciones diferidas -> Quitar variables temporales de un solo uso
-
-        //Eliminación de código inaccesible
-            /*
-                Si hay un IF que es de constantes, se eliminan todas las instrucciones entre el jmp y el skip
-             */
-
     }
 
     public int optimize() {
@@ -78,7 +64,6 @@ public class Optimizer {
      * Ya está optimizado por defecto
      */
     private void asignacionBooleanos(ArrayList<ThreeAddressCode> threeAddressCodes) {
-
     }
 
     /**
@@ -88,23 +73,108 @@ public class Optimizer {
 
         for (ThreeAddressCode tAC : threeAddressCodes) {
 
-            //Comprobar si es una operación arimética
-            if (tAC.getOperation().equals("PLUS") || tAC.getOperation().equals("MINUS") ||
+            //Comprobar es un copy literal a una variable de tipo constante o temporal
+            if (tAC.getOperation().equals("COPY_LITERAL") &&
+                    variableTable.get(tAC.getDestination()).getType() == Type.CONST) {
+
+                //Sustituir constante por el valor literal en todas las operaciones que aparezca
+                for (int i = 0; i < threeAddressCodes.size(); i++) {
+
+                    //Si el operando 1 es igual al nombre de la constante
+                    if (threeAddressCodes.get(i).getOperand1().equals(tAC.getDestination())) {
+                        threeAddressCodes.get(i).setOperand1(variableTable.get(tAC.getDestination()).getValue());
+
+                        //Hay cambios
+                        cambios = true;
+                        optimizations++;
+                    }
+
+                    //Si el operando 2 es igual al nombre de la constante
+                    if (threeAddressCodes.get(i).getOperand2().equals(tAC.getDestination())) {
+                        threeAddressCodes.get(i).setOperand2(variableTable.get(tAC.getDestination()).getValue());
+
+                        //Hay cambios
+                        cambios = true;
+                        optimizations++;
+                    }
+                }
+
+                //Eliminar copy literal original
+                threeAddressCodes.remove(tAC);
+
+                Output.writeInfo("Aplicada optimización de operaciones constantes, sustituida constante por valor literal");
+
+                break;
+            }
+
+            //Comprobar si es una operación arimética con valores constantes
+            else if (tAC.getOperation().equals("PLUS") || tAC.getOperation().equals("MINUS") ||
                     tAC.getOperation().equals("MULTI") || tAC.getOperation().equals("DIV")) {
 
-                //Ambos operandos tienen que ser variables temporales
-                if (!tAC.getOperand1().contains("$t#") || !tAC.getOperand2().contains("$t#"))
+                //Valor de los operandos
+                int value1;
+                int value2;
+
+                if (tAC.getOperand1().contains("$t#") && tAC.getOperand2().contains("$t#")) {
+                    //Ambos operandos son variables temporales
+
+                    //Leer las dos variables de la tabla de variables
+                    Variable variable1 = variableTable.get(tAC.getOperand1());
+                    Variable variable2 = variableTable.get(tAC.getOperand2());
+
+                    //Ambos operandos tienen que tener valor definido
+                    if (variable1.getValue() == null || variable2.getValue() == null)
+                        continue;
+
+                    value1 = Integer.parseInt(variable1.getValue());
+                    value2 = Integer.parseInt(variable2.getValue());
+                } else if (!tAC.getOperand1().contains("$") && tAC.getOperand2().contains("$t#")) {
+                    //El primer operando es temporal y el segundo literal
+
+                    Variable variable2 = variableTable.get(tAC.getOperand2());
+
+                    //La variable temporal tiene que tener valor
+                    if (variable2.getValue() == null)
+                        continue;
+
+                    //El valor literal tiene que ser numerico
+                    if (!tAC.getOperand1().matches("-?\\d+"))
+                        continue;
+
+                    value1 = Integer.parseInt(tAC.getOperand1());
+                    value2 = Integer.parseInt(variable2.getValue());
+                } else if (!tAC.getOperand1().contains("$t#") && tAC.getOperand2().contains("$")) {
+                    //El primer operando es temporal y el segundo literal
+
+                    Variable variable1 = variableTable.get(tAC.getOperand2());
+
+                    //La variable temporal tiene que tener valor
+                    if (variable1.getValue() == null)
+                        continue;
+
+                    //El valor literal tiene que ser numerico
+                    if (!tAC.getOperand2().matches("-?\\d+"))
+                        continue;
+
+                    value1 = Integer.parseInt(variable1.getValue());
+                    value2 = Integer.parseInt(tAC.getOperand2());
+                } else if (!tAC.getOperand1().contains("$") && tAC.getOperand2().contains("$")) {
+                    //Ambos valores son literales
+
+
+                    //Los valores literales tienen que ser numericos
+                    if (!tAC.getOperand1().matches("-?\\d+") || !tAC.getOperand2().matches("-?\\d+"))
+                        continue;
+
+                    value1 = Integer.parseInt(tAC.getOperand1());
+                    value2 = Integer.parseInt(tAC.getOperand2());
+                } else {
+                    //No se cumplen los requisitos
                     continue;
+                }
 
-                //Leer las dos variables de la tabla de variables
-                Variable variable1 = variableTable.get(tAC.getOperand1());
-                Variable variable2 = variableTable.get(tAC.getOperand2());
 
-                //Ambos operandos tienen que tener valor definido
-                if (variable1.getValue() == null || variable2.getValue() == null)
-                    continue;
-
-                //Buscar los dos COPY_LITERAL de los dos operandos
+                //Buscar los dos COPY_LITERAL de los dos operandos, si existen
                 int posCopyLiteral1 = -1;
                 int posCopyLiteral2 = -1;
 
@@ -118,39 +188,28 @@ public class Optimizer {
                         posCopyLiteral2 = i;
                 }
 
-                //Comprobar que se han encontrado las dos posiciones
-                if (posCopyLiteral1 == -1 || posCopyLiteral2 == -1)
-                    continue;
-
-                //Eliminar primero la instrucción que está en una posición más alta
-                if (posCopyLiteral1 > posCopyLiteral2) {
-                    int swap = posCopyLiteral2;
-                    posCopyLiteral2 = posCopyLiteral1;
-                    posCopyLiteral1 = swap;
-                }
-
-                //Eliminar los dos COPY_LITERAL de códio de tres direcciones
-                threeAddressCodes.remove(posCopyLiteral2);
-                threeAddressCodes.remove(posCopyLiteral1);
+                //Eliminar los dos COPY_LITERAL de códio de tres direcciones, si se han encontrado
+                if (posCopyLiteral2 > -1)
+                    threeAddressCodes.remove(posCopyLiteral2);
+                if (posCopyLiteral1 > -1)
+                    threeAddressCodes.remove(posCopyLiteral1);
 
                 int result = 0;
 
                 switch (tAC.getOperation()) {
                     case "PLUS":
-                        result = Integer.parseInt(variable1.getValue()) + Integer.parseInt(variable2.getValue());
+                        result = value1 + value2;
                         break;
                     case "MINUS":
-                        result = Integer.parseInt(variable1.getValue()) - Integer.parseInt(variable2.getValue());
+                        result = value1 - value2;
                         break;
                     case "MULTI":
-                        result = Integer.parseInt(variable1.getValue()) * Integer.parseInt(variable2.getValue());
+                        result = value1 * value2;
                         break;
                     case "DIV":
-                        result = Integer.parseInt(variable1.getValue()) / Integer.parseInt(variable2.getValue());
+                        result = value1 / value2;
                         break;
                 }
-
-                System.out.println("Resultado de la operacion " + tAC.getOperation() + " = " + result);
 
                 //Cambiar instrucción de aritmética a COPY_LITERAL con el valor ya calculado
                 tAC.setOperation("COPY_LITERAL");
@@ -161,20 +220,17 @@ public class Optimizer {
                 Variable destino = variableTable.get(tAC.getDestination());
                 destino.setValue(String.valueOf(result));
 
-                //Eliminar variables temporales de la tabla de variables
-                variableTable.remove(tAC.getOperand1());
-                variableTable.remove(tAC.getOperand2());
-
                 Output.writeInfo("Aplicada optimización de operaciones constantes");
 
                 //Hay cambios
                 cambios = true;
                 optimizations++;
                 break;
-
             }
+
         }
     }
+
 
     /**
      * 5 - Eliminacion de código inaccesible
@@ -195,8 +251,8 @@ public class Optimizer {
                 if (condicion == null)
                     continue;
 
-                boolean condIsTrue = condicion.equals("true") || condicion.equals("True") || condicion.equals("1");
-                boolean condIsFalse = condicion.equals("false") || condicion.equals("False") || condicion.equals("0");
+                boolean condIsTrue = condicion.equals("true") || condicion.equals("True");
+                boolean condIsFalse = condicion.equals("false") || condicion.equals("False");
 
                 String falseLabel = tAC.getDestination();
                 String trueLabel = falseLabel.replace("false", "true");
@@ -312,6 +368,6 @@ public class Optimizer {
      * 9 - Reducció de fuerza
      */
     private void reduccionFuerza(ArrayList<ThreeAddressCode> threeAddressCodes) {
-
+        //No está implementada
     }
 }

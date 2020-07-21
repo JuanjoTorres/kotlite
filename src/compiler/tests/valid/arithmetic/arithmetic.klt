@@ -1,21 +1,14 @@
-var globalA: Int;
-var globalB: Int = 2;
-var globalC: Int;
+val constanteGlobal: Int = 78;
 
 fun main (): None {
-    var comentario: String;
+    var result: Int;
 
-    globalA = 3;
-    globalB = globalA * 4;
-    globalA = 8;
-    globalC = globalA - (-1);
-    print("La resta es %d", globalC);
-    globalC = 4 / 5;
-    print("La division es %d", globalC);
-    globalC = 20 / 5;
-    print("La division es %d", globalC);
-    globalC = 4 * 5;
-    print("La multiplicacion es %d", globalC);
-
-    print("Global A es %d", globalA);
+    result = constanteGlobal * 4;
+    print("Multiplicación es %d", result);
+    result = constanteGlobal / 4;
+    print("Division es %d", result);
+    result = constanteGlobal + 4;
+    print("Suma es %d", result);
+    result = constanteGlobal - 4;
+    print("Resta es %d", result);
 }
