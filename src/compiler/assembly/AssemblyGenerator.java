@@ -238,7 +238,7 @@ public class AssemblyGenerator {
 
             case "PARAM":
                 //Si es una constante o un string
-                if (!destination.contains("$") || variableTable.get(destination).getSubtype() == Subtype.STRING)
+                if (!destination.contains("$t#") || variableTable.get(destination).getSubtype() == Subtype.STRING)
                     stringBuilder.append("    mov eax, ").append(destination).append("\n");
                 else
                     stringBuilder.append("    mov eax, [").append(destination).append("]\n");
@@ -332,7 +332,7 @@ public class AssemblyGenerator {
 
             case "COPY":
                 //Tipo string en variable temporal no lleva corchetes
-                if (variableTable.get(operand1).getSubtype() == Subtype.STRING && variableTable.get(operand1).getId().contains("#")) {
+                if (variableTable.get(operand1).getSubtype() == Subtype.STRING && variableTable.get(operand1).getId().contains("$t#")) {
                     stringBuilder.append("    mov eax, ").append(operand1).append("\n");
                 } else {
                     stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
@@ -342,12 +342,12 @@ public class AssemblyGenerator {
 
             case "EQU":
                 //Si contiene el símbolo $ es una variable, sino un literal
-                if (operand1.contains("$"))
+                if (operand1.contains("$t#"))
                     stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 else
                     stringBuilder.append("    mov eax, ").append(operand1).append("\n");
 
-                if (operand2.contains("$"))
+                if (operand2.contains("$t#"))
                     stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
                 else
                     stringBuilder.append("    cmp eax, ").append(operand2).append("\n");
@@ -356,12 +356,12 @@ public class AssemblyGenerator {
                 break;
 
             case "NOTEQU":
-                if (operand1.contains("$"))
+                if (operand1.contains("$t#"))
                     stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 else
                     stringBuilder.append("    mov eax, ").append(operand1).append("\n");
 
-                if (operand2.contains("$"))
+                if (operand2.contains("$t#"))
                     stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
                 else
                     stringBuilder.append("    cmp eax, ").append(operand2).append("\n");
@@ -370,12 +370,12 @@ public class AssemblyGenerator {
                 break;
 
             case "LT":
-                if (operand1.contains("$"))
+                if (operand1.contains("$t#"))
                     stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 else
                     stringBuilder.append("    mov eax, ").append(operand1).append("\n");
 
-                if (operand2.contains("$"))
+                if (operand2.contains("$t#"))
                     stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
                 else
                     stringBuilder.append("    cmp eax, ").append(operand2).append("\n");
@@ -384,12 +384,12 @@ public class AssemblyGenerator {
                 break;
 
             case "LTEQU":
-                if (operand1.contains("$"))
+                if (operand1.contains("$t#"))
                     stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 else
                     stringBuilder.append("    mov eax, ").append(operand1).append("\n");
 
-                if (operand2.contains("$"))
+                if (operand2.contains("$t#"))
                     stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
                 else
                     stringBuilder.append("    cmp eax, ").append(operand2).append("\n");
@@ -398,12 +398,12 @@ public class AssemblyGenerator {
                 break;
 
             case "GT":
-                if (operand1.contains("$"))
+                if (operand1.contains("$t#"))
                     stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 else
                     stringBuilder.append("    mov eax, ").append(operand1).append("\n");
 
-                if (operand2.contains("$"))
+                if (operand2.contains("$t#"))
                     stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
                 else
                     stringBuilder.append("    cmp eax, ").append(operand2).append("\n");
@@ -412,12 +412,12 @@ public class AssemblyGenerator {
                 break;
 
             case "GTEQU":
-                if (operand1.contains("$"))
+                if (operand1.contains("$t#"))
                     stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 else
                     stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
 
-                if (operand2.contains("$"))
+                if (operand2.contains("$t#"))
                     stringBuilder.append("    cmp eax, [").append(operand2).append("]\n");
                 else
                     stringBuilder.append("    cmp eax, ").append(operand2).append("\n");
@@ -426,7 +426,7 @@ public class AssemblyGenerator {
                 break;
 
             case "NOT":
-                if (operand1.contains("$"))
+                if (operand1.contains("$t#"))
                     stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 else
                     stringBuilder.append("    mov eax, ").append(operand1).append("\n");
@@ -436,12 +436,12 @@ public class AssemblyGenerator {
                 break;
 
             case "OR":
-                if (operand1.contains("$"))
+                if (operand1.contains("$t#"))
                     stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 else
                     stringBuilder.append("    mov eax, ").append(operand1).append("\n");
 
-                if (operand2.contains("$"))
+                if (operand2.contains("$t#"))
                     stringBuilder.append("    or eax, [").append(operand2).append("]\n");
                 else
                     stringBuilder.append("    or eax, ").append(operand2).append("\n");
@@ -450,12 +450,12 @@ public class AssemblyGenerator {
                 break;
 
             case "AND":
-                if (operand1.contains("$"))
+                if (operand1.contains("$t#"))
                     stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 else
                     stringBuilder.append("    mov eax, ").append(operand1).append("\n");
 
-                if (operand2.contains("$"))
+                if (operand2.contains("$t#"))
                     stringBuilder.append("    and eax, [").append(operand2).append("]\n");
                 else
                     stringBuilder.append("    and eax, ").append(operand2).append("\n");
@@ -464,12 +464,12 @@ public class AssemblyGenerator {
                 break;
 
             case "PLUS":
-                if (operand1.contains("$"))
+                if (operand1.contains("$t#"))
                     stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 else
                     stringBuilder.append("    mov eax, ").append(operand1).append("\n");
 
-                if (operand2.contains("$"))
+                if (operand2.contains("$t#"))
                     stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
                 else
                     stringBuilder.append("    mov ebx, ").append(operand2).append("\n");
@@ -484,13 +484,13 @@ public class AssemblyGenerator {
                 break;
 
             case "MINUS":
-                if (operand1.contains("$"))
+                if (operand1.contains("$t#"))
                     stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 else
                     stringBuilder.append("    mov eax, ").append(operand1).append("\n");
 
 
-                if (operand2.contains("$"))
+                if (operand2.contains("$t#"))
                     stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
                 else
                     stringBuilder.append("    mov ebx, ").append(operand2).append("\n");
@@ -505,12 +505,12 @@ public class AssemblyGenerator {
                 break;
 
             case "MULTI":
-                if (operand1.contains("$"))
+                if (operand1.contains("$t#"))
                     stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 else
                     stringBuilder.append("    mov eax, ").append(operand1).append("\n");
 
-                if (operand2.contains("$"))
+                if (operand2.contains("$t#"))
                     stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
                 else
                     stringBuilder.append("    mov ebx, ").append(operand2).append("\n");
@@ -526,21 +526,21 @@ public class AssemblyGenerator {
 
             case "DIV":
                 //Verificamos si el denominador es un cero
-                if (operand2.contains("$"))
+                if (operand2.contains("$t#"))
                     stringBuilder.append("    mov eax, [").append(operand2).append("]\n");
                 else
                     stringBuilder.append("    mov eax, ").append(operand2).append("\n");
 
                 stringBuilder.append("    call handlerErrorByZero\n");
 
-                if (operand1.contains("$"))
+                if (operand1.contains("$t#"))
                     stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 else
                     stringBuilder.append("    mov eax, ").append(operand1).append("\n");
 
                 stringBuilder.append("    cdq\n");
 
-                if (operand2.contains("$"))
+                if (operand2.contains("$t#"))
                     stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
                 else
                     stringBuilder.append("    mov ebx, ").append(operand2).append("\n");
@@ -564,7 +564,7 @@ public class AssemblyGenerator {
             case "PRINTBOOL":
             case "PRINTINT":
                 //Numero literal no lleva llaves
-                if (operand2.contains("$"))
+                if (operand2.contains("$t#"))
                     stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
                 else
                     stringBuilder.append("    mov ebx, ").append(operand2).append("\n");
