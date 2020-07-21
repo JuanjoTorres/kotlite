@@ -247,10 +247,13 @@ public class AssemblyGenerator {
                     operand1 = "0";
 
                 //Comprobar literales numéricos dentro del margen de valores máximos y mínimos permitidos
-                if (Long.parseLong(operand1) > Integer.MAX_VALUE)
+                if (Long.parseLong(operand1) > Integer.MAX_VALUE) {
+                    tAC.setOperand1(String.valueOf(Integer.MAX_VALUE));
                     operand1 = String.valueOf(Integer.MAX_VALUE);
-                else if (Long.parseLong(operand1) < Integer.MIN_VALUE)
+                }  else if (Long.parseLong(operand1) < Integer.MIN_VALUE) {
+                    tAC.setOperand1(String.valueOf(Integer.MIN_VALUE));
                     operand1 = String.valueOf(Integer.MIN_VALUE);
+                }
 
                 stringBuilder.append("    mov eax, ").append(operand1).append("\n");
                 stringBuilder.append("    mov [").append(destination).append("], eax\n");
