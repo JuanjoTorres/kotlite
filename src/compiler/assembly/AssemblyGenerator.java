@@ -91,9 +91,76 @@ public class AssemblyGenerator {
                 stringBuilder.append("    ").append(id).append(" dd 0").append("\n");
             }
         });
+        stringBuilder.append("    errorByOverflow db \"KOTLITE - ERROR DE EJECUCION: Operacion con Overflow\", 10, 0\n");
+        stringBuilder.append("    errorByZero db \"KOTLITE - ERROR DE EJECUCION: Operacion Division por Zero\", 10, 0\n");
+        stringBuilder.append("    errorByCarry db \"KOTLITE - ERROR DE EJECUCION: Operacion con Carry\", 10, 0\n");
 
         //Código
         stringBuilder.append("\nsection .text\n\n");
+
+        //Control de errores Overflow
+        stringBuilder.append("\n    ; ===== ===== ===== ===== =====\n");
+        stringBuilder.append("    ; Control de Error: Overflow\n");
+
+        stringBuilder.append("    handlerErrorByOverflow: nop\n");
+        stringBuilder.append("    cmp bl, 0\n");
+        stringBuilder.append("    je checkedOverflow\n");
+
+        stringBuilder.append("\n    mov eax, errorByOverflow\n");
+        stringBuilder.append("    push eax\n");
+        stringBuilder.append("    call printf\n");
+        stringBuilder.append("    pop eax\n");
+
+        stringBuilder.append("\n    mov ebx, 1\n");
+        stringBuilder.append("    mov eax, 1\n");
+        stringBuilder.append("    int 0x80\n");
+        stringBuilder.append("    mov eax, 1\n");
+
+        stringBuilder.append("\n    checkedOverflow: nop\n");
+        stringBuilder.append("    ret\n");
+
+        //Control de errores Carry
+        stringBuilder.append("\n    ; ===== ===== ===== ===== =====\n");
+        stringBuilder.append("    ; Control de Error: Carry\n");
+
+        stringBuilder.append("    handlerErrorByCarry: nop\n");
+        stringBuilder.append("    cmp bl, 0\n");
+        stringBuilder.append("    je checkedCarry\n");
+
+        stringBuilder.append("\n    mov eax, errorByCarry\n");
+        stringBuilder.append("    push eax\n");
+        stringBuilder.append("    call printf\n");
+        stringBuilder.append("    pop eax\n");
+
+        stringBuilder.append("\n    mov ebx, 1\n");
+        stringBuilder.append("    mov eax, 1\n");
+        stringBuilder.append("    int 0x80\n");
+        stringBuilder.append("    mov eax, 1\n");
+
+        stringBuilder.append("\n    checkedCarry: nop\n");
+        stringBuilder.append("    ret\n");
+
+        //Control de errores Division By Zero
+        stringBuilder.append("\n    ; ===== ===== ===== ===== =====\n");
+        stringBuilder.append("    ; Control de Error: Division por Zero\n");
+
+        stringBuilder.append("    handlerErrorByZero: nop\n");
+        stringBuilder.append("    cmp eax, 0\n");
+        stringBuilder.append("    jne checkedByZero\n");
+
+        stringBuilder.append("\n    mov eax, errorByZero\n");
+        stringBuilder.append("    push eax\n");
+        stringBuilder.append("    call printf\n");
+        stringBuilder.append("    pop eax\n");
+
+        stringBuilder.append("\n    mov ebx, 1\n");
+        stringBuilder.append("    mov eax, 1\n");
+        stringBuilder.append("    int 0x80\n");
+        stringBuilder.append("    mov eax, 1\n");
+
+        stringBuilder.append("\n    checkedByZero: nop\n");
+        stringBuilder.append("    ret\n");
+
         stringBuilder.append("main:\n");
 
         //Escribir cada instrucción
@@ -327,6 +394,11 @@ public class AssemblyGenerator {
                 stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
                 stringBuilder.append("    add eax, ebx\n");
+
+                //Comprobamos si la operacion resultante cabe en un registro de 32 bit
+                stringBuilder.append("    seto bl\n");
+                stringBuilder.append("    call handlerErrorByOverflow\n");
+
                 stringBuilder.append("    mov [").append(destination).append("], eax\n");
                 break;
 
@@ -334,6 +406,11 @@ public class AssemblyGenerator {
                 stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
                 stringBuilder.append("    sub eax, ebx\n");
+
+                //Comprobamos si la operacion resultante cabe en un registro de 32 bit
+                stringBuilder.append("    seto bl\n");
+                stringBuilder.append("    call handlerErrorByOverflow\n");
+
                 stringBuilder.append("    mov [").append(destination).append("], eax\n");
                 break;
 
@@ -341,10 +418,19 @@ public class AssemblyGenerator {
                 stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
                 stringBuilder.append("    imul ebx\n");
+
+                //Comprobamos si la operacion resultante cabe en un registro de 32 bit
+                stringBuilder.append("    setc bl\n");
+                stringBuilder.append("    call handlerErrorByCarry\n");
+
                 stringBuilder.append("    mov [").append(destination).append("], eax\n");
                 break;
 
             case "DIV":
+                //Verificamos si se trata de un cero
+                stringBuilder.append("    mov eax, [").append(operand2).append("]\n");
+                stringBuilder.append("    call handlerErrorByZero\n");
+
                 stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
                 stringBuilder.append("    cdq\n");
                 stringBuilder.append("    mov ebx, [").append(operand2).append("]\n");
