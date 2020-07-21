@@ -3,7 +3,7 @@ val seleccion: Int = 4;
 
 fun factorial(valor : Int): Int {
 
-    val factorial : Int = 1;
+    var factorial : Int = 1;
     while (valor != 0) {
         factorial = factorial * valor;
         valor = valor - 1;
