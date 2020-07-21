@@ -5,7 +5,7 @@
 ;   sudo apt install build-essential gcc-multilib
 ;
 ; Comando para compilar:
-;   nasm -f elf assembly_output.asm && gcc -m32 assembly_output.o -o assembly_output
+;   nasm -f elf assembly.asm && gcc -m32 assembly_output.o -o assembly_output
 ;
 ; Comando para ejecutar:
 ;   ./assembly_output
