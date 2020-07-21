@@ -62,7 +62,7 @@ public class SymbolDecl extends SymbolBase {
         variable = new Variable(id.getName(), generator.peekFunctionLabel(), true);
         variable.setSize(4);
         variable.setDeep(symbolTable.getDeep());
-        variable.setType(Type.VAR);
+        variable.setType(type.getType());
         variable.setSubtype(basic.getSubtype());
 
         variableTable.put(variable.getId(), variable);
