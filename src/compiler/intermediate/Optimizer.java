@@ -41,8 +41,8 @@ public class Optimizer {
                 continue;
             if (operacionesConstantesComparaciones(threeAddressCodes))
                 continue;
-            //if (eliminacionCodigoInaccesible(threeAddressCodes))
-              //  continue;
+            if (eliminacionCodigoInaccesible(threeAddressCodes))
+                continue;
 
             //Si no hay cambios se terminan las optimizaciones
             break;
