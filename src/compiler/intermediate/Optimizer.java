@@ -490,7 +490,6 @@ public class Optimizer {
         return false;
     }
 
-
     /**
      * 5 - Eliminacion de código inaccesible
      *
@@ -510,8 +509,10 @@ public class Optimizer {
             if (condicion.contains("$"))
                 continue;
 
-            boolean condIsTrue = condicion.equals("true") || condicion.equals("True");
-            boolean condIsFalse = condicion.equals("false") || condicion.equals("False");
+            System.out.println("INACCESIBLE: " + tAC.toString() + " en pos " + i);
+
+            boolean condIsTrue = condicion.equals("1");
+            boolean condIsFalse = condicion.equals("0");
 
             String falseLabel = tAC.getDestination();
             String trueLabel = falseLabel.replace("false", "true");
@@ -548,13 +549,17 @@ public class Optimizer {
             }
 
             //Eliminar entre init y end, desde atras hacia alante para no romperlo tot
-            for (int k = end; k > init - 1; k--)
+            for (int k = end; k > init - 1; k--) {
+                System.out.println("ELIMINANDO " + threeAddressCodes.get(k));
                 threeAddressCodes.remove(k);
+            }
 
             //Eliminar IFGOTO o SKIP true en función de si es true o false
             if (condIsTrue) {
                 for (int l = 0; l < threeAddressCodes.size(); l++) {
                     if (threeAddressCodes.get(l).getOperation().equals("IFGOTO") && threeAddressCodes.get(l).getDestination().equals(falseLabel)) {
+
+                        System.out.println("ELIMINANDO TRUE" + threeAddressCodes.get(l));
                         threeAddressCodes.remove(l);
                         break;
                     }
@@ -562,6 +567,7 @@ public class Optimizer {
             } else if (condIsFalse) {
                 for (int l = 0; l < threeAddressCodes.size(); l++) {
                     if (threeAddressCodes.get(l).getOperation().equals("SKIP") && threeAddressCodes.get(l).getDestination().equals(trueLabel)) {
+                        System.out.println("ELIMINANDO FALSE" + threeAddressCodes.get(l));
                         threeAddressCodes.remove(l);
                         break;
                     }
