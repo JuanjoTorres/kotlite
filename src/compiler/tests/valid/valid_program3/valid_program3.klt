@@ -32,7 +32,7 @@ fun calcularKel (temp: Int; texto: String) : None {
 
 fun main(): None {
 
-    val piernaRota: Boolean = false;
+    val piernaRota: Boolean = true;
     val tengoCoche: Boolean = true;
     var conductor: String = "";
     var jugadores: Int = 5;

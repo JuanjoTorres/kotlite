@@ -1,9 +1,0 @@
-SKIP |  |  | fun#get
-PMB |  |  | fun#get
-RTN | get |  | 
-SKIP |  |  | fun#main
-PMB |  |  | fun#main
-PARAM |  |  | t#2
-CALL | fun#get |  | t#3
-COPY | t#3 |  | numero
-PRINTINT | t#4 | numero | 

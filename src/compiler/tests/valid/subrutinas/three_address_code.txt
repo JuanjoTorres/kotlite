@@ -1,4 +1,0 @@
-SKIP |  |  | fun#escribir
-PRINT | t#1 |  | 
-SKIP |  |  | fun#main
-CALL | fun#escribir |  | t#2
