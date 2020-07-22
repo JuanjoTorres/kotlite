@@ -31,10 +31,11 @@ public class CompilerUI extends JFrame {
     private static final int ALTO = 800;
 
     private final static String INFO_FILE = "info.txt";
-    private final static String TOKENS_FILE = "tokens.txt";
-    private final static String ARBOL_FILE = "ArbolSintactico.dot";
+    private final static String C3D_FILE = "three_address_code.txt";
+    private final static String C3D_OPTIM_FILE = "three_address_code_optimized.txt";
+    private final static String VAR_TABLE_FILE = "variable_table.html";
+    private final static String VAR_TABLE_OPTIM_FILE = "variable_table_optimized.html";
     private final static String ERRORS_FILE = "errors.txt";
-    private final static String SYMBOLS_FILE = "symbols_table.html";
 
     private final static String DEFAULT_SOURCE_CODE = "./src/compiler/tests/valid/valid_program1/valid_program1.klt";
 
@@ -47,9 +48,10 @@ public class CompilerUI extends JFrame {
 
     private JEditorPane sourceCodeEditor = new JEditorPane();
     private JEditorPane infoEditor = new JEditorPane();
-    private JEditorPane tokenEditor = new JEditorPane();
-    private JEditorPane arbolEditor = new JEditorPane();
-    private JEditorPane tablaEditor = new JEditorPane();
+    private JEditorPane c3dEditor = new JEditorPane();
+    private JEditorPane c3dOptimEditor = new JEditorPane();
+    private JEditorPane tablaVarEditor = new JEditorPane();
+    private JEditorPane tablaVarOptimEditor = new JEditorPane();
     private JEditorPane errorEditor = new JEditorPane();
 
     /**
@@ -193,13 +195,16 @@ public class CompilerUI extends JFrame {
         infoEditor.setText(new String(Files.readAllBytes(Paths.get(INFO_FILE))));
 
         //Leer fichero de tokens
-        tokenEditor.setText(new String(Files.readAllBytes(Paths.get(TOKENS_FILE))));
+        c3dEditor.setText(new String(Files.readAllBytes(Paths.get(C3D_FILE))));
 
         //Leer fichero del árbol sintáctico
-        arbolEditor.setText(new String(Files.readAllBytes(Paths.get(ARBOL_FILE))));
+        c3dOptimEditor.setText(new String(Files.readAllBytes(Paths.get(C3D_OPTIM_FILE))));
 
         //Leer fichero del simbolos
-        tablaEditor.setText(new String(Files.readAllBytes(Paths.get(SYMBOLS_FILE))));
+        tablaVarEditor.setText(new String(Files.readAllBytes(Paths.get(VAR_TABLE_FILE))));
+
+        //Leer fichero del simbolos
+        tablaVarOptimEditor.setText(new String(Files.readAllBytes(Paths.get(VAR_TABLE_OPTIM_FILE))));
 
         //Leer fichero de errores
         errorEditor.setText(new String(Files.readAllBytes(Paths.get(ERRORS_FILE))));
@@ -240,16 +245,21 @@ public class CompilerUI extends JFrame {
         //Panel con pestañas
         tabbedPane = new JTabbedPane();
 
-        //Panel de tokens
-        tablaEditor.setContentType("text/html");
-        tablaEditor.setEditable(false);
+        //Panel de tabla de variables
+        tablaVarEditor.setContentType("text/html");
+        tablaVarEditor.setEditable(false);
+
+        //Panel de tabla de variables
+        tablaVarOptimEditor.setContentType("text/html");
+        tablaVarOptimEditor.setEditable(false);
 
         tabbedPane.addTab("  Código Fuente ", new JScrollPane(sourceCodeEditor));
-        tabbedPane.addTab("   Información  ", new JScrollPane(infoEditor));
-        tabbedPane.addTab("     Errores    ", new JScrollPane(errorEditor));
-        tabbedPane.addTab(" Tabla símbolos ", new JScrollPane(tablaEditor));
-        tabbedPane.addTab("Árbol Sintáctico", new JScrollPane(arbolEditor));
-        tabbedPane.addTab("     Tokens     ", new JScrollPane(tokenEditor));
+        tabbedPane.addTab(" Información ", new JScrollPane(infoEditor));
+        tabbedPane.addTab(" Errores ", new JScrollPane(errorEditor));
+        tabbedPane.addTab("Código 3 direcciones", new JScrollPane(c3dEditor));
+        tabbedPane.addTab("Código 3 @ Optim", new JScrollPane(c3dOptimEditor));
+        tabbedPane.addTab(" Tabla variables ", new JScrollPane(tablaVarEditor));
+        tabbedPane.addTab("Tabla variables optim", new JScrollPane(tablaVarOptimEditor));
 
         //Add the tabbed pane to this panel.
         panelPrincipal.add(tabbedPane);
