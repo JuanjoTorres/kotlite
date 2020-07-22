@@ -290,7 +290,10 @@ public class AssemblyGenerator {
                 break;
 
             case "IFGOTO":
-                stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                if (operand1.contains("$"))
+                    stringBuilder.append("    mov eax, [").append(operand1).append("]\n");
+                else
+                    stringBuilder.append("    mov eax, ").append(operand1).append("\n");
                 stringBuilder.append("    mov ebx, 1\n");
                 stringBuilder.append("    cmp eax, ebx\n");
                 stringBuilder.append("    jne ").append(destination).append("\n");
