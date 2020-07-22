@@ -14,15 +14,32 @@ fun max(num1: Int; num2: Int): Int {
     return res;
 }
 
-fun main (a: Int; b: Int) : None {
+fun min(num1: Int; num2: Int): Int {
+
+    var res: Int;
+
+    if (num1 > num2) {
+        res = num2;
+    } else {
+        res = num1;
+    }
+
+    return res;
+}
+
+fun main () : None {
     var c: Int;
-    var asa: Int;
     var d : Int;
+    var mayor: Int;
+    var menor: Int;
 
     b = 10;
     c = 30 + a * 3;
     d = c / 3;
-    asa = max(b, d);
 
-    print("El numero mas grande es... %d.", asa);
+    mayor = max(b, d);
+    menor = min(b, d);
+
+    print("El numero mas grande es... %d.", mayor);
+    print("El numero mas pequeño es... %d.", menor);
 }
