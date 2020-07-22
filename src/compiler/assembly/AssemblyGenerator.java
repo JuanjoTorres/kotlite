@@ -229,7 +229,7 @@ public class AssemblyGenerator {
                 if (procedure.getSubtype() != Subtype.NONE)
                     desplazamiento += 4;
 
-                //Guardar parámetros en la pila con el desplazamiento adecuado (4 + 4* numParam)
+                //Guardar parámetros en la pila con el desplazamiento adecuado (4 + 4 * numParam)
                 for (int i = 0; i < numParams; i++) {
                     stringBuilder.append("    mov eax, [ebp+").append(desplazamiento - (i * VARIABLE_SIZE)).append("]\n");
                     stringBuilder.append("    mov [").append(procedure.getParams().get(i).getId()).append("], eax\n");
@@ -237,11 +237,11 @@ public class AssemblyGenerator {
                 break;
 
             case "PARAM":
-                //Si es una constante o un string
-                if (!destination.contains("$") || variableTable.get(destination).getSubtype() == Subtype.STRING)
-                    stringBuilder.append("    mov eax, ").append(destination).append("\n");
-                else
+                //Si es una variable y no es string
+                if (destination.contains("$") && variableTable.get(destination).getSubtype() != Subtype.STRING)
                     stringBuilder.append("    mov eax, [").append(destination).append("]\n");
+                else
+                    stringBuilder.append("    mov eax, ").append(destination).append("\n");
                 stringBuilder.append("    push eax\n");
                 break;
 
@@ -276,7 +276,10 @@ public class AssemblyGenerator {
 
                 //Si tiene retorno hay que guardarlo en la pila
                 if (procedure.getSubtype() != Subtype.NONE) {
-                    stringBuilder.append("    mov eax, [").append(destination).append("]\n");
+                    if (destination.contains("$"))
+                        stringBuilder.append("    mov eax, [").append(destination).append("]\n");
+                    else
+                        stringBuilder.append("    mov eax, ").append(destination).append("\n");
                     stringBuilder.append("    mov [ebp+").append(desplazamientoRtn).append("], eax\n");
                 }
 
