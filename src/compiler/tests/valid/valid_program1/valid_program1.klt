@@ -1,5 +1,5 @@
-val bolas: Int  = 10;
-val seleccion: Int = 4;
+var bolas: Int;
+var seleccion: Int;
 
 fun factorial(valor : Int): Int {
 
