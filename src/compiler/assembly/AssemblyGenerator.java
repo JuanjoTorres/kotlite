@@ -50,7 +50,7 @@ public class AssemblyGenerator {
         stringBuilder.append("; Código ensamblador ").append(optimized ? " optimizado " : "").append("en NASM para Linux 32 bits (i386)\n");
         stringBuilder.append(";\n");
         stringBuilder.append("; Requisitos en Ubuntu 18.04 y 20.04:\n");
-        stringBuilder.append(";   sudo apt install build-essential gcc-multilib\n");
+        stringBuilder.append(";   sudo apt install build-essential gcc-multilib nasm\n");
         stringBuilder.append(";\n");
         stringBuilder.append("; Comando para compilar:\n");
         stringBuilder.append(";   nasm -f elf " + fileName + ".asm && gcc -m32 " + fileName + ".o -o " + fileName + " && rm " + fileName + ".o\n");
