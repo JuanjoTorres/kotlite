@@ -96,13 +96,13 @@ public class AssemblyGenerator {
         stringBuilder.append("    errorByCarry db \"KOTLITE - ERROR DE EJECUCION: Operacion con Carry\", 10, 0\n");
 
         //Código
-        stringBuilder.append("\nsection .text\n\n");
+        stringBuilder.append("\nsection .text\n");
 
         //Control de errores Overflow
         stringBuilder.append("\n    ; ===== ===== ===== ===== =====\n");
         stringBuilder.append("    ; Control de Error: Overflow\n");
 
-        stringBuilder.append("    handlerErrorByOverflow: nop\n");
+        stringBuilder.append("handlerErrorByOverflow: nop\n");
         stringBuilder.append("    cmp bl, 0\n");
         stringBuilder.append("    je checkedOverflow\n");
 
@@ -116,7 +116,7 @@ public class AssemblyGenerator {
         stringBuilder.append("    int 0x80\n");
         stringBuilder.append("    mov eax, 1\n");
 
-        stringBuilder.append("\n    checkedOverflow: nop\n");
+        stringBuilder.append("\ncheckedOverflow: nop\n");
         stringBuilder.append("    ret\n");
 
         //Control de errores Carry
@@ -161,6 +161,8 @@ public class AssemblyGenerator {
         stringBuilder.append("\ncheckedByZero: nop\n");
         stringBuilder.append("    ret\n");
 
+        stringBuilder.append("\n; ===== ===== ===== ===== =====\n");
+        stringBuilder.append("; Inicio del programa\n");
         stringBuilder.append("main:\n");
 
         //Escribir cada instrucción
