@@ -48,8 +48,8 @@ terminal INT, STRING, BOOLEAN, NONE;
 // Bucle y condicionales: while if else
 terminal WHILE, IF, ELSE;
 
-//Función de salida
-terminal PRINT;
+//Función de entrada y salida
+terminal GET, PRINT;
 
 //Variables y constantes: var val
 terminal VAR, VAL;
@@ -167,7 +167,9 @@ Statment ::= Id:id ASSIGN Bool:v1 SEMICOLON
               {: RESULT = new SymbolStatment(id ,v1, lexer.getRow(), lexer.getCol()); :}
 	    | Functioncall:v1 SEMICOLON
               {: RESULT = new SymbolStatment(v1); :}
-	    | PRINT LPAREN Bool:v1 RPAREN SEMICOLON
+	    | Id:id ASSIGN GET LPAREN RPAREN SEMICOLON
+               {: RESULT = new SymbolStatment(id, lexer.getRow(), lexer.getCol()); :}
+        | PRINT LPAREN Bool:v1 RPAREN SEMICOLON
               {: RESULT = new SymbolStatment(v1, lexer.getRow(), lexer.getCol()); :}
 	    | PRINT LPAREN Bool:v1 COMMA Bool:v2 RPAREN SEMICOLON
               {: RESULT = new SymbolStatment(v1, v2, lexer.getRow(), lexer.getCol()); :};

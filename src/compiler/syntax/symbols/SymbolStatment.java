@@ -2,6 +2,8 @@ package compiler.syntax.symbols;
 
 import compiler.output.Output;
 import compiler.syntax.tables.Subtype;
+import compiler.syntax.tables.Type;
+import compiler.syntax.tables.Variable;
 
 import java.io.PrintWriter;
 
@@ -22,6 +24,11 @@ public class SymbolStatment extends SymbolBase {
 
         this.id = id;
         this.bool = bool;
+
+        //Comprobar si es una constante
+        if (id.getVariable().getType() == Type.CONST)
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - La variable " + id.getName() +
+                    " es de tipo constante. No se le puede asignar un valor");
 
         if (id.getSubtype() != bool.getSubtype())
             Output.writeError("Error semántico en posición " + line + ":" + column + " - El id " + id.getName() +
@@ -67,7 +74,10 @@ public class SymbolStatment extends SymbolBase {
         this.id = id;
         this.functioncall = functioncall;
 
-        // ¿Comprobar si es una constante y ya tiene valor asignado?
+        //Comprobar si es una constante
+        if (id.getVariable().getType() == Type.CONST)
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - La variable " + id.getName() +
+                    " es de tipo constante. No se le puede asignar un valor del retorno de una función.");
 
         if (id.getSubtype() != functioncall.getSubtype())
             Output.writeError("Error semántico en posición " + line + ":" + column + " - El id " + id.getName() +
@@ -82,6 +92,34 @@ public class SymbolStatment extends SymbolBase {
 
         super("Statment", 0);
         this.functioncall = functioncall;
+    }
+
+    // [FORMA] Statment ::= Id ASSIGN GET LPAREN RPAREN SEMICOLON
+    public SymbolStatment(SymbolId id, int line, int column) {
+        super("Statment", 0);
+
+        this.id = id;
+
+        //Comprobar si es una constante
+        if (id.getVariable().getType() == Type.CONST)
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - La variable " + id.getName() +
+                    " es de tipo constante. No se le puede asignar un valor de entrada");
+
+        //Comprobar si no es de tipo entero
+        if (id.getVariable().getSubtype() != Subtype.INT)
+            Output.writeError("Error semántico en posición " + line + ":" + column + " - La función GET solo soporta números enteros " +
+                    "como  valor de entrada, y la variable" + id.getName() + "es del tipo " + id.getVariable().getSubtype());
+
+        //Generar variable y meterla en la tabla de variables
+        Variable variable = new Variable(generator.generateVariable(), generator.peekFunctionLabel(), true);
+        variable.setType(Type.VAR);
+        variable.setSubtype(Subtype.INT);
+        variable.setDeep(symbolTable.getDeep());
+        variableTable.put(variable.getId(), variable);
+
+        // Get a variable temporal y copy de variable temporal al id
+        generator.addThreeAddressCode("GET", "", "", variable.getId());
+        generator.addThreeAddressCode("COPY", variable.getId(), "", id.getVariable().getId());
     }
 
     // [FORMA] Statment ::= PRINT LPAREN Bool RPAREN SEMICOLON

@@ -123,6 +123,7 @@ input = [^\r\n]
 "else"  { return symbol(ParserSym.ELSE); }
 
 // Función de salida
+"get" { return symbol(ParserSym.GET); }
 "print" { return symbol(ParserSym.PRINT); }
 
 // Variables y constantes

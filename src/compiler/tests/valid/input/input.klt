@@ -1,0 +1,29 @@
+fun getNum(): Int {
+    var num : Int;
+    num = get();
+    return num;
+}
+
+fun main (): None {
+    var numero1: Int;
+    var numero2: Int;
+    var result: Int;
+
+    print("Dame un numero: ");
+    numero1 = getNum();
+
+    print("Dame otro numero: ");
+    numero2 = getNum();
+
+    print("El numero %d", numero1);
+    print(" elevado a %d", numero2);
+
+    result = numero1;
+
+    while (numero2 > 1) {
+        result = result * numero1;
+        numero2 = numero2 - 1;
+    }
+
+    print(" es igual a: %d", result);
+}

@@ -62,8 +62,7 @@ public class AssemblyGenerator {
         //Etiqueta de inicio
         stringBuilder.append("global main\n\n");
 
-        //TODO Poner también gets? No tenemos función de entrada
-        stringBuilder.append("extern printf\n\n");
+        stringBuilder.append("extern printf, scanf\n\n");
 
         stringBuilder.append("; Sección de memoria para las variables no inicializadas\n");
         stringBuilder.append("section .bss\n");
@@ -91,9 +90,10 @@ public class AssemblyGenerator {
                 stringBuilder.append("    ").append(id).append(" dd 0").append("\n");
             }
         });
-        stringBuilder.append("    errorByOverflow db \"KOTLITE - ERROR DE EJECUCION: Operacion con Overflow\", 10, 0\n");
+        stringBuilder.append("\n    errorByOverflow db \"KOTLITE - ERROR DE EJECUCION: Operacion con Overflow\", 10, 0\n");
         stringBuilder.append("    errorByZero db \"KOTLITE - ERROR DE EJECUCION: Operacion Division por Zero\", 10, 0\n");
         stringBuilder.append("    errorByCarry db \"KOTLITE - ERROR DE EJECUCION: Operacion con Carry\", 10, 0\n");
+        stringBuilder.append("\n    inputFormat db \"%d\", 0\n");
 
         //Código
         stringBuilder.append("\nsection .text\n");
@@ -321,7 +321,6 @@ public class AssemblyGenerator {
                 else if (operand1.equals("false"))
                     operand1 = "0";
 
-                //TODO PROBAR nulls, se copia un valor 0
                 if (operand1.equals("null"))
                     operand1 = "0";
 
@@ -555,6 +554,13 @@ public class AssemblyGenerator {
 
                 stringBuilder.append("    idiv ebx\n");
                 stringBuilder.append("    mov [").append(destination).append("], eax\n");
+                break;
+
+            case "GET":
+                stringBuilder.append("    push ").append(destination).append("\n");
+                stringBuilder.append("    push inputFormat\n");
+                stringBuilder.append("    call scanf\n");
+                stringBuilder.append("    add esp, 8\n");
                 break;
 
             case "PRINT":
