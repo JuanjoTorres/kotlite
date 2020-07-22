@@ -1,5 +1,7 @@
 val num33 : Int = 33;
+
 fun get(): Int {
+    print("El numero es: %d", num33);
     return num33;
 }
 

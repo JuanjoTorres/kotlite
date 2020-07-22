@@ -1,15 +1,21 @@
-val constanteGlobal: Int = 21;
+val constanteGlobal: Int = 2;
 
 fun main (): None {
+    var result: Int;
 
-    var result: Int = (constanteGlobal * constanteGlobal) * 4;
-    print("Multiplicación es %d", result);
+    print("Número introducido = %d", constanteGlobal);
 
-    result = result / 4;
-    print("Division es %d", result);
+    result = (constanteGlobal * constanteGlobal);
+    print("Al cuadrado = %d", result);
 
-    result = 500 + constanteGlobal + 400;
-    print("Suma es %d", result);
+    result = result * 4;
+    print("Multiplicado por 4 = %d", result);
 
-    print("Resta es %d", ((-4) - result));
+    result = result / 2;
+    print("Dividido por 2 = %d", result);
+
+    result = 100 + result;
+    print("Más 100 = %d", result);
+
+    print("Menos 50  = %d", ((-50) + result));
 }
