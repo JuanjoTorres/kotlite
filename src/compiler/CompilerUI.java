@@ -277,7 +277,7 @@ public class CompilerUI extends JFrame {
         chooseFile.setText("Seleccionar fichero de código fuente");
         menu.add(chooseFile);
 
-        resolver.setText("Analizar");
+        resolver.setText("Analizar y compilar");
 
         menu.add(labelMenu);
 
