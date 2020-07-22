@@ -36,7 +36,7 @@ public class CompilerUI extends JFrame {
     private final static String ERRORS_FILE = "errors.txt";
     private final static String SYMBOLS_FILE = "symbols_table.html";
 
-    private final static String DEFAULT_SOURCE_CODE = "./src/compiler/tests/valid/valid_program3/valid_program3.klt";
+    private final static String DEFAULT_SOURCE_CODE = "./src/compiler/tests/valid/valid_program1/valid_program1.klt";
 
     /**
      * UI fields

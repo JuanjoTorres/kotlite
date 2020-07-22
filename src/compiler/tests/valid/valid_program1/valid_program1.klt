@@ -1,45 +1,81 @@
-val a: Int = 6;
-var b: Int;
+val bolas: Int  = 10;
+val seleccion: Int = 4;
 
-fun max(num1: Int; num2: Int): Int {
+fun factorial(valor : Int): Int {
 
-    var res: Int;
-
-    if (num1 < num2) {
-        res = num2;
-    } else {
-        res = num1;
+    var factorial : Int = 1;
+    while (valor != 0) {
+        factorial = factorial * valor;
+        valor = valor - 1;
     }
 
-    return res;
+    return factorial;
 }
 
-fun min(num1: Int; num2: Int): Int {
+fun calcularCombinacionesSinRepeticiones(): Int {
 
-    var res: Int;
+    var factorialN : Int;
+    var factorialR : Int;
+    var factorialNR : Int;
+    var denominador : Int;
+    var bolasMenosSeleccion: Int = bolas - seleccion;
 
-    if (num1 > num2) {
-        res = num2;
+    factorialN = factorial(bolas);
+    factorialR = factorial(seleccion);
+    factorialNR = factorial(bolasMenosSeleccion);
+    denominador = factorialR * factorialNR;
+
+    return (factorialN / denominador);
+}
+
+fun calcularCombinacionesConRepeticiones(): Int {
+
+    var factorialNR1 : Int;
+    var factorialN1 : Int;
+    var factorialR : Int;
+    var denominador : Int;
+
+    var bolasMasSeleccion : Int = bolas + seleccion - 1;
+    var bolasMenosMenos : Int = bolas - 1;
+
+    factorialNR1 = factorial(bolasMasSeleccion);
+    factorialN1 = factorial(bolasMenosMenos);
+    factorialR = factorial(seleccion);
+    denominador = factorialR * factorialN1;
+
+    return (factorialNR1 / denominador);
+}
+
+fun main (): None {
+
+    var conRepeticion : Int;
+    var resultado : Int;
+    var mensaje : String;
+
+    print("*** CALCULO DE COMBINATORIA ***");
+    print("Vamos a calcular de cuantas formas distintas puedes sacar X bolas de una bolsa con Y bolas");
+    print("¿Cuantas bolas quieres que haya en la bolsa?");
+    bolas = get();
+    print("¿Cuantas quieres sacar de la bolsa?");
+    seleccion = get();
+    print("¿Calcular con repetición (1) o sin repetición (0)?");
+    conRepeticion = get();
+
+    if (conRepeticion == 1) {
+        mensaje = "Calculando el número de bolas combinaciones con repetición...";
     } else {
-        res = num1;
+        mensaje = "Calculando el número de combinaciones sin repetición...";
     }
 
-    return res;
-}
+    print(mensaje);
 
-fun main () : None {
-    var c: Int;
-    var d : Int;
-    var mayor: Int;
-    var menor: Int;
+    if (conRepeticion == 1) {
+        resultado = calcularCombinacionesConRepeticiones();
+    } else {
+        resultado = calcularCombinacionesSinRepeticiones();
+    }
 
-    b = 10;
-    c = 30 + a * 3;
-    d = c / 3;
+    print("Numero de posibles combinaciones: %d.", resultado);
+    print("Fin del programa.");
 
-    mayor = max(b, d);
-    menor = min(b, d);
-
-    print("El numero mas grande es... %d.", mayor);
-    print("El numero mas pequeño es... %d.", menor);
 }
