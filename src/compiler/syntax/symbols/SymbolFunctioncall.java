@@ -75,14 +75,20 @@ public class SymbolFunctioncall extends SymbolBase {
             }
         }
 
-        //Generar variable y meterla en la tabla de variables
-        variable = new Variable(generator.generateVariable(), generator.peekFunctionLabel(), true);
-        variable.setType(Type.VAR);
-        variable.setSubtype(subtype);
-        variableTable.put(variable.getId(), variable);
+        if (subtype != Subtype.NONE) {
 
-        // Llamada a función guardando el valor de retorno en variable temporal
-        generator.addThreeAddressCode("CALL", id.getProcedure().getStartLabel(), "", variable.getId());
+            //Generar variable y meterla en la tabla de variables
+            variable = new Variable(generator.generateVariable(), generator.peekFunctionLabel(), true);
+            variable.setType(Type.VAR);
+            variable.setSubtype(subtype);
+            variableTable.put(variable.getId(), variable);
+
+            // Llamada a función guardando el valor de retorno en variable temporal
+            generator.addThreeAddressCode("CALL", id.getProcedure().getStartLabel(), "", variable.getId());
+        } else {
+            // Llamada a función guardando el valor de retorno en variable temporal
+            generator.addThreeAddressCode("CALL", id.getProcedure().getStartLabel(), "", "");
+        }
     }
 
     public Variable getVariable() {
