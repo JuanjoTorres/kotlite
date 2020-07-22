@@ -395,8 +395,6 @@ public class Optimizer {
                     !tAC.getOperation().equals("GT") && !tAC.getOperation().equals("GTEQU"))
                 continue;
 
-            System.out.println("RELACIONAL: " + tAC.toString());
-
             //Si uno de los operandos es una variable ignorar
             if (tAC.getOperand1().contains("$") || tAC.getOperand2().contains("$"))
                 continue;
@@ -509,8 +507,6 @@ public class Optimizer {
             if (condicion.contains("$"))
                 continue;
 
-            System.out.println("INACCESIBLE: " + tAC.toString() + " en pos " + i);
-
             boolean condIsTrue = condicion.equals("1");
             boolean condIsFalse = condicion.equals("0");
 
@@ -550,7 +546,6 @@ public class Optimizer {
 
             //Eliminar entre init y end, desde atras hacia alante para no romperlo tot
             for (int k = end; k > init - 1; k--) {
-                System.out.println("ELIMINANDO " + threeAddressCodes.get(k));
                 threeAddressCodes.remove(k);
             }
 
@@ -558,8 +553,6 @@ public class Optimizer {
             if (condIsTrue) {
                 for (int l = 0; l < threeAddressCodes.size(); l++) {
                     if (threeAddressCodes.get(l).getOperation().equals("IFGOTO") && threeAddressCodes.get(l).getDestination().equals(falseLabel)) {
-
-                        System.out.println("ELIMINANDO TRUE" + threeAddressCodes.get(l));
                         threeAddressCodes.remove(l);
                         break;
                     }
@@ -567,7 +560,6 @@ public class Optimizer {
             } else if (condIsFalse) {
                 for (int l = 0; l < threeAddressCodes.size(); l++) {
                     if (threeAddressCodes.get(l).getOperation().equals("SKIP") && threeAddressCodes.get(l).getDestination().equals(trueLabel)) {
-                        System.out.println("ELIMINANDO FALSE" + threeAddressCodes.get(l));
                         threeAddressCodes.remove(l);
                         break;
                     }
